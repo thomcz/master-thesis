@@ -1,0 +1,135 @@
+%% LaTeX2e class for student theses
+%% sections/content.tex
+%% 
+%% Karlsruhe Institute of Technology
+%% Institute for Program Structures and Data Organization
+%% Chair for Software Design and Quality (SDQ)
+%%
+%% Dr.-Ing. Erik Burger
+%% burger@kit.edu
+%% burger@kit.edu
+%%
+%% Version 1.3.3, 2018-04-17
+
+\chapter{Grundlagen}
+\label{ch:Grundlagen}
+
+\section{Nachrichtenbasierte Middleware (MOM)}
+Ereignissbasierte Systeme bestehen aus Ereignissen, Sendern, Empfängern und einer Middleware \cite{Carzaniga1998}. In einem solchen System werden Ereignisse von einem Sender instanziiert und von einem Empfänger entgegengenommen. Ereignisse sind dabei Datenelemente, die ein bestimmtes Verhalten hervorrufen sollen oder Daten transportieren. Dieser Transport von Ereignissen zwischen Sender und Empfänger wird durch die Middleware ermöglicht. Eine solche Middleware nennt man eine nachrichtenbasierte Middleware (MOM) \cite{Curry05}. Diese bietet eine Infrastruktur zum asynchronen Senden und Empfangen von Nachrichten, in verteilten Systemen an. Teilnehmer einer MOM müssen nicht blockieren und warten, wenn sie eine Nachricht gesendet haben oder empfangen wollen. Dieser asynchroner Mechanismus ist ein großer Vorteil. Außerdem führen MOMs eine Vermittlerschicht zwischen Sender und Empfänger ein, die für den Nachrichtenaustausch genutzt wird. Diese Zwischenschicht führt zu einer losen Kopplung der einzelnen Komponenten.  \\
+%- Vorteile \\
+%- Standards \\
+%-- wie jms and amqp \\
+
+\subsection{Architektur}
+MOMs unterscheiden sich, neben ihrer Implementierung, in ihrer Architektur. Es gibt drei verschiedene Architekturen für MOMs.
+\begin{itemize}
+\item Die \textbf{Peer-To-Peer} Architektur, hat keinen ausgewählten Knoten, der die MOM bereitstellt. Die Funktionalität, die zum kommunizieren benötigt wird, wird von den Sendern und Empfängern bereitgestellt.
+\item In der \textbf{zentralen} Variante läuft die MOM auf einem Zentralen Knoten. Alle Sender und Empfänger sind mit diesem Knoten verbunden. 
+\item Schließlich gibt es noch die \textbf{verteilte} Architektur. Die MOM ist über mehrere Knoten verteilt. Der Austausch von Daten wird mithilfe von Routing-Algorithmen bewerkstelligen. Sender und Empfänger müssen nicht mit dem selben Middlewareknoten verbunden sein.
+\end{itemize}  
+
+\subsection{Warteschlangen}
+Warteschlangen sind ein wichtiger Bestandteil von MOMs, vor allem für deren asynchronen Nachrichtenaustausch. Sender nutzen sie um Nachrichten hinzuschicken. Empfänger nutzen sie um Nachrichten abzuholen. Die Nachrichten in der Warteschlange sind nach einer festgelegten Ordnung geordnet, z.B. First-In-First-Out, also die Nachricht, die als erstes in die Warteschlange eingefügt wurde, wird auch als erste wieder herausgenommen. Eine Warteschlange kann i.d.R. von einem Nutzer konfiguriert werden. Je nach Warteschlange können Größe, Verweildauer, Sortierung, usw. konfiguriert werden.
+
+\subsection{Nachrichtenmodelle}
+Wie eine MOM Nachrichten austauscht, wird in ihrem Nachrichtenmodell festgelegt. Man unterscheidet dabei zwischen dem Point-To-Point und dem Publish/Subscribe Modell. Eine MOM kann auch aus einer Kombination der beiden Modelle bestehen um auf bestimmte Szenarien reagieren zu können.
+\begin{itemize}
+\item Im \textbf{Point-To-Point} Modell gibt es beliebig viele Sender und Empfänger und eine Warteschlange. Die Sender senden ihre Nachrichten asynchron an die Warteschlange. Die Nachrichten werden dann von genau einem Empfänger aus der Warteschlange herausgenommen und verarbeitet.
+\item Beim \textbf{Publish/Subscriber} Modell haben der Sender (Publisher) und der Empfänger (Subscriber) keine Informationen über einander. Der Sender sendet seine Nachricht an eine Warteschlange und alle Empfänger die sich bei dieser angemeldet haben und auf Nachrichten warten, erhalten diese Nachricht.
+\end{itemize}
+
+\section{Palladio Komponenten Modell}
+\label{sec:palladio}
+In der modellgetriebener Softwareentwicklung (MDSD) \cite{MDSD} werden die Rolle von Modellen im Softwareentwicklungsprozess genutzt. Diese Modelle beschreiben die Software auf einer höheren Abstraktionsebene. Mithilfe von Modelltransformationen können die High-Level-Modelle auf Low-Level-Modelle abgebildet werden, die auch Quellcode enthalten können. Das Ziel der modellgetriebenen
+Softwareentwicklung ist die Verbesserung der Softwarequalität und der Wiederverwendbarkeit.
+Außerdem soll eine Erhöhung der Entwicklungseffizienz, zum Beispiel durch Quellcodeerzeugung aus den Modellen, erreicht werden. \par
+Diesen Ansatz verfolgt auch das Palladio Komponentenmodell (PCM) \cite{palladio17} und liefert die technische Grundlage für die Umsetzung und Evaluierung der in dieser Arbeit vorgestellten Konzepte. Das PCM ist eine Architecture-Description-Language (ADL) und unterstützt die Erstellung skalierbarer, zuverlässiger, wartbarer und wiederverwendbarer komponenentenbasierter Softwarearchitekturen. Neben der Beschreibung sind auch Qualitätsanalysen, wie etwa bezüglich der Performanz oder Zuverlässigkeit möglich. Im Folgenden werden Teile des PCM erklärt, die für die Masterarbeit wichtig sind.
+
+%\subsection{Viewpoints}
+%- structural (assembly) \\
+%- behaviour (sequence?) \\
+%- deployment (allocation, deployment decision) \\
+\subsection{Rollen}
+%s.203
+Die Modellierung der verschiedenen MOMs erfolgt mithilfe von Software-Architektur-Modellen. In der modellgetriebenen Softwareentwicklung und in Palladio gibt es dabei verschiedene Rollen, die an unterschiedlichen Teilen der Architektur arbeiten und dort ihr spezifisches Wissen einbringen.
+\begin{itemize}
+\item Die Architektur und der Zusammenhang der einzelnen Komponenten
+miteinander werden vom \textbf{Softwarearchitekt} entworfen. Er ist auch dafür
+zuständig weitere Anweisungen an die anderen Rollen weiterzugeben. Gleichzeitig ist er für das \textbf{System-Modell} zuständig, das die Zusammensetzung der Komponenten charakterisiert.
+\item Das Wissen darüber, wie der Benutzer mit dem System interagiert
+und welche Parameter im Kontrollfluss verwendet werden, stammt vom \textbf{Domänenxperten}. Die Modellierung wird im \textbf{Usage-Modell} festgehalten.
+\item Für das Implementieren und Spezifizieren der einzelnen
+Komponenten ist der \textbf{Komponentenentwickler} verantwortlich. Diese modelliert er im \textbf{Komponen-ten-Repository-Modell}. Es enthält die einzelnen Komponenten und Schnittstellen.
+\item Die Zusammenstellung der Systemumgebung der Software wird vom \textbf{Softwareverteilungsexperten} übernommen. Diese wird von ihm im \textbf{Ausführungsum-gebungs-Modell} festgehalten. Außerdem weist der Softwareverteilungsexperte den Komponenten Ressourcen zu. Dies hält er im \textbf{Komponenten-Allokations-Modell} fest.
+\end{itemize}
+
+Mithilfe der Modellierung der MOMs sollen die verschiedenen Rollen unterstützt werden. Im Rahmen der Masterarbeit wird nicht jede Rolle betrachtet werden. Die Hauptrollen, die mit diesem Ansatz unterstützt werden sollen, sind der Softwarearchitekt und der Softwareverteilungsexperte. 
+\subsection{Qualitätsattribute}
+\subsubsection{Performanz} 
+%(Buch S. 93/94)
+Performanz ist bezüglich des Zeitverhaltens eines Systems eines der wichtigsten Qualitätskriterien. Dies gilt sowohl für zeitkritische, als auch für weniger kritische Systeme. Performanz beinhaltet das Zeitverhalten und die Ressourcen Nutzung eines Systems. Dies wird mit den folgenden drei Metriken gemessen:
+\begin{itemize}
+\item Die \textbf{Antwortzeit} ist die Zeit, die zwischen einer Anfrage an ein System und einer erhaltenen Antwort vergeht. Ein Beispiel hierfür kann die Anfrage an eine Suchmaschine sein, die nach einer Sekunde eine Antwort liefert.
+\item Der \textbf{Durchsatz} bezeichnet die Menge an Anfragen, die pro Zeiteinheit verarbeitet werden können. Zum Beispiel kann ein Webserver 100 Anfragen die Sekunde verarbeiten.
+\item Die \textbf{Auslastung} bezieht sich auf die aktive Nutzung einer Ressource und gibt in Prozent an wie viel diese pro Zeiteinheit arbeitet. 
+\end{itemize}
+Mithilfe der Performanz soll im Rahmen der Masterarbeit untersucht werden, wie sich diese auf das Gesamtsystem auswirkt, wenn verschiedene Nachrichtenwarteschlangen verwendet werden.
+%- Abgrenzung zu dynamischen performanz parameter änderungen \\
+
+\subsubsection{Zuverlässigkeit}
+Ein System, das einen Service wie erwartet und ohne Seiteneffekte anbietet, wir als zuverlässig bezeichnet. Jede Abweichung vom erwarteten Verhalten wird als Fehler betrachtet. Die gesamt Zuverlässigkeit eines Systems wird deshalb als Wahrscheinlichkeit, dass das System fehlerfrei arbeitet, angegeben. Dabei können verschiedene Fehler auftreten:
+\begin{itemize}
+\item \textbf{Softwarefehler} können auftreten, aufgrund von Fehlern in der Implementierung.
+\item \textbf{Hardwarefehler} können auftreten, weil bestimmte Ressourcen nicht verfügbar sind und somit ein Fehler in der Programmausführung auftritt.
+\item \textbf{Netzwerkfehler} können aufgrund von verlorenen Nachrichten auftreten, die über das Netzwerk gesendet werden.
+\end{itemize}
+In Palladio ist es möglich Fehlerwahrscheinlichkeiten an Komponenten und Ressourcen zu annotieren. Im Rahmen der Masterarbeit wird dieses Qualitätsattribut vorerst nicht betrachtet.
+
+\subsubsection{Kosten}
+Hohe Anforderungen führen meist zu hohen Kosten. Deshalb muss i.d.R. zwischen Kosten und Performanz oder Verlässlichkeit abgewogen werden. Palladio ermöglicht Kosten an Komponenten und Ressourcen zu annotieren um Gesamtkosten abzuschätzen und eine Abwägung zwischen den Qualitätsattributen zu treffen. Im Rahmen der Masterarbeit wird dieses Qualitätsattribut nicht betrachtet.
+
+\subsection{Ereignisse}
+Elemente beschreiben? \\
+Mit Bildern?\\
+%Disertation s.103
+
+Source Port: Komponenten die Event triggert \\
+Sink port: Komponente die Event erhaehlt \\
+EventGroup: 
+\begin{itemize}
+    \item Vertrag zwischen Komponenten
+    \item Welche Events koennen empfangen/gesendet werden
+    \item enthaelt EventTypes
+\end{itemize}
+
+EventType: kann payload haben \\
+EventChanel:
+\begin{itemize}
+    \item Genau eine EventGroup
+    \item System Modell
+    \item Sink/Source Connector um damit verbinden
+\end{itemize}
+EventHandler: Signatur in Seff kann EventType sein \\
+EMitAction: 
+\begin{itemize}
+    \item Hat SourceRole
+    \item Hat EventType, die Emited werden
+\end{itemize}
+
+\subsection{Analyse}
+\subsubsection{SimuCom}
+\subsubsection{Simulizar}
+
+\section{Benchmark}
+Im Kontext der Informatik bezeichnet der Begriff Benchmark einen oder mehrere Tests, die ausgeführt werden, um die Leistungsfähigkeit von Computersystemen zu vergleichen. Hierfür wird zwischen verschiedenen Arten von Benchmarks unterschieden \cite{Lilja2004}. 
+\begin{itemize}
+\item \textbf{Mikrobenchmarks} sind Tests einzelner Komponenten ohne Interaktion mit dem Gesamtsystem. Sie werden meistens verwendet, um die maximal mögliche Leistungsfähigkeit einer Komponente zu testen.
+\item \textbf{Synthetische Benchmarks} sind Tests künstlicher Instruktionsfolgen. Die getesteten Instruktionsfolgen können dabei in realen Anwendung vorkommen, müssen aber nicht.
+\item \textbf{Anwendungsbenchmarks} beschreiben vollständige Programme, welche repräsentativ für eine bestimmte Klasse von Anwendungen sind. 
+\end{itemize}
+Im Rahmen der Masterarbeit wird ein Anwendungsbenchmark verwendet um verschiedene MOMs zu untersuchen und zu bewerten.
+
+%- warum sind benchmark sinnvoll? bestehendes und einheitliches system mit dem man sich und andere vergleichen kann!!
+
+
+

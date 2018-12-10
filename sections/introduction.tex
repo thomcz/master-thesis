@@ -1,0 +1,43 @@
+%% LaTeX2e class for student theses
+%% sections/content.tex
+%% 
+%% Karlsruhe Institute of Technology
+%% Institute for Program Structures and Data Organization
+%% Chair for Software Design and Quality (SDQ)
+%%
+%% Dr.-Ing. Erik Burger
+%% burger@kit.edu
+%% burger@kit.edu
+%%
+%% Version 1.3.3, 2018-04-17
+
+\chapter{Einleitung}
+\label{ch:Introduction}
+Moderne Softwaresysteme werden über immer größere Entfernungen verteilt, laufen in unterschiedlichen Umgebungen, auf verschiedener Hardware und Betriebssystemen und sind noch dazu in verschiedenen Programmiersprachen geschrieben. Gleichzeitig werden hohe Anforderungen an Performanz, Verfügbarkeit und Sicherheit gestellt. Dies führt dazu, dass auch die Anforderungen an ihre Kommunikationsinfrastruktur steigen. \par
+Mithilfe von nachrichtenbasierter Middleware (MOM) lassen sich diese Anforderungen erfüllen. Ein Client einer MOM kann sowohl Nachrichten empfangen, als auch senden. Dazu muss er nur mit der MOM verbunden sein. Er muss keine Informationen über die anderen Clients haben. Die MOM fügt nämlich eine Zwischenschicht zwischen den Sendern und Empfängern ein und ermöglicht dadurch Entkopplung und gleichzeitig einen asynchronen Nachrichtenaustausch, sodass die einzelnen Clients nicht blockieren müssen, wenn sie eine Nachricht senden oder empfangen wollen. \par
+ActiveMQ, Kafka, RabbitMQ, Amazon MQ oder ZeroMQ sind nur ein paar Beispiele von MOMs. Es gibt eine Vielzahl von verschiedenen MOMs, die jeweils unterschiedliche Ziele oder Schwerpunkte haben. Kafka legt zum Beispiel mehr Wert auf Performanz als auf Verfügbarkeit \cite{kafka}, während RabbitMQ eine allseitig einsetzbare MOM sein möchte \cite{rabbitmq}. \par
+Um aus dieser Vielzahl an MOMs eine MOM für ein bestimmtes Softwaresystem auszuwählen ist bereits Expertenwissen notwendig. Grund dafür ist neben der Vielzahl auch die hohe Konfigurierbarkeit der einzelnen MOMs. Diese ist gegeben, damit diese einen weiten Anwendungsbereich abdecken kann. Der jeweilige Benutzer kann dann auf spezielle Anforderungen seines Systems reagieren und die MOM seinen wünschen nach anpassen. Eine mögliche Konfiguration könnte zum Beispiel dazu führen, dass die MOM weniger performant ist, aber dafür die Verfügbarkeit verbessert wird. Eine MOM so zu konfigurieren, dass sie den Wünschen des Benutzer entspricht ist nicht trivial und benötigt Expertenwissen. Deshalb ist das Ziel dieser Masterarbeit, den Softwarearchitekten bei der Wahl einer MOM für ein bestimmtes  Softwaresystem, bereits in der Designphase, zu unterstützen. Dazu sollen verschiedenen MOMs als wiederverwendbare Modellbausteine modelliert werden. Mithilfe dieser kann der Softwarearchitekt auf Modellebene die Auswirkung seiner Entscheidung sehen und darauf reagieren. Dazu soll im Rahmen dieser Masterarbeit eine Methode entwickelt werden, wie aus einer MOM ein wiederverwendbarer Modellbaustein wird. Dazu soll eine Auswahl von MOMs verglichen und im Anschluss für das Palladio Komponenten Modell (PCM) modelliert werden. Mithilfe eines Evaluierungssystem soll schließlich überprüft werden, ob mithilfe des Prozesses die Ziele der Masterarbeit erreicht werden können.
+%Wieso werden mqs verwendet? \\
+%- entkoplung \\
+%- skallierbarkeit (horizontal/vertikal) \\
+%- async Kommunikation \\
+%% batching (mehrere Eintraege auf einmal einfuegen)\\
+%- wiederverwendbarkeit\\
+%- arbeit aufteilen \\
+%- bestimmte Garantien die MQ Liefert (reihenfolge, garantierte Lieferung) \\
+%- lastspitzen puffern \\
+%- gegen ausfaelle schutzen (Redundanzen) \\
+
+
+%Problem: \\
+%-	Keine Performanz Vorhersage für MQs \\
+%-	Auswirkungen von Konfigurationen unbekannt \\
+%Idee: wollen bei auswahl von MQ System unterstuetzen \\
+%- sowohl bei der Plannung als auch in der Evolution des Systems \\
+%- Nicht den Entwickler des MQ Systems, aber wie Würde das aussehen, wenn doch? (Abgrenzung) \\
+%Vorteil:\\
+%- MQ Abwaegung auf Architekturebene\\
+%Aktion:\\
+%- experiment \\
+%%- modellierung \\
+%- evaluierung 

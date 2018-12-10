@@ -1,0 +1,102 @@
+%% LaTeX2e class for student theses
+%% sections/evaluation.tex
+%% 
+%% Karlsruhe Institute of Technology
+%% Institute for Program Structures and Data Organization
+%% Chair for Software Design and Quality (SDQ)
+%%
+%% Dr.-Ing. Erik Burger
+%% burger@kit.edu
+%%
+%% Version 1.3.3, 2018-04-17
+
+\chapter{Modellierung}
+\label{ch:modellierung}
+Im Folgenden soll zunaechst untersucht werden ob und wie eine konkrete MOM in Palladio modelliert werden kann und an welchen Stellen die Modellierung an ihre Grenzen kommt. Im Anschluss werden Ansätze vorgestellt, mit denen diese Probleme versucht wurden zu beheben.
+
+
+%Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde im ersten Schritt versucht zu definieren wie eine MOM aussehen soll. 
+%wurde versucht die RMQ Architektur zu modellieren. (Abb beschreiebn). Queues wurden als Passive Ressource modelliert. Ein Aquire wurde als Consume und ein Release als Produce interpretiert. Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen. Außerdem ist dieser Ansatz der expliziten Modellierung einer jeden Queue nicht praktikabel (zu viel Aufwand jede Queue zu modellieren).
+%Modellierung mit bestehenden Elementen (1 Idee mit passive Ressouce)
+
+%Wiederverwendung von Events -> Beschreibung von Events
+
+%Beschreiben der neuen Queues?
+%- Ansatz mit und ohne Queues
+
+%Beschreibung der Modelle
+
+%Beschreibung der ResourceDemands
+
+%Beschreibung der Transformationen (evtl mit einweben von Effekten wie \#Queues = \#Cores)
+
+%Vergleich Analyse und Benchmarks
+\section{Integration Event Based Communication}
+- Beschreibung des Mechanismus (Modell, Transformation) \\
+- Problem:  \\
+-- Kommunikation nur in eine Richtung \\
+-- kein abholen von Nachrichten moeglich \\
+-- kein Modellieren von Queues moeglich (aquire/release \\
+Im Folgenden soll beschrieben werden, wie ein Modell aussehen soll, das eine MOM abbildet \\
+\section{Modell}
+Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde im ersten Schritt versucht zu definieren wie eine MOM aussehen soll. Modellierung von einem Exchange und einer Queue mit passiver Ressource
+\subsection{Repository}
+Queue als Passive Ressource -> kein verfolgen einzelnern Nachrichten durch das system
+
+Aquire: empfangen
+release: senden
+
+\subsection{System}
+
+\subsection{Usage}
+Ankunftsrate als Hebel um Sende-Empfangrate abzubilden
+\subsection{Ressource Environment und Allokation}
+Einen Server fuer Broker
+
+Ein Server fuer Queues
+
+\section{Ressource Demands}
+
+RD fuer senden einer Nachricht wurde ausgemessen
+RD fuer empfang einer Nachricht wurde ausgemessen
+--> RD wurde an dieser Stelle eingebaut
+%RD an Aquire um Latenz abzubilden
+
+%Als erstes sollte die Sende und Empfangsrate abgebildet werden. Beobachtet man (ref zu Messung verschiedene Senderaten) bemerkt man fuer die ersten Messungen, solange Warteschlange nicht allzu voll wird, einen linearen Anstieg der Latenz. Daraus laesst sich zunaechst folgender RD ableiten:
+
+
+
+
+
+
+%Latenz: Unter Latenz versteht man im MOM Kontext, die Zeit, die eine einzelne Nachricht braucht um beim Consumer anzukommen. Da jede Nachricht einen Zeitstempel bekommt kann die Zeit gemessen werden, wenn sie aus der Warteschlange entnommen wurde.
+
+welche Effekte koennen wir so hoffentlich abbilden
+
+\section{Untersuchung des MOM Bausteins}
+Einfaches Szenario: Sender/Empfaenger, einer sendet, einer empfaengt, unterschiedliche Ankuftszeiten -> Ansteigen der Queue + Response Time, unterschiedliche Ressource Environment kann Response Time beeinflussen
+
+Die Nachrichtenmenge sollen ueber die Ankunftsrate des Senders und Empfaengers geregelt werden. Die Idee ist, dass es keinen Unterschied macht ob ein sender pro Zeiteinheit 1000 Nachrichten verschickt oder pro Zeiteinheit 1000 mal Ankommt und jeweils eine Nachricht verschickt. Sommit erhalten wir fuer Sende- und Empfangsrate die Formel: 1 / Senderate.
+
+Mit dieser Modellierung erhalten wir folgende Ergebnisse: ...
+
+Benchmark Szenarien versuchen nachzustellen und vergleichen:
+- Max Durchsatz (durch RE (latenz, throughput (wenn bytesize), mom, Sender) beschraenkt?)
+- Latenz einer Nachricht (mit/ohne netzwerklatenz)
+- lazyqueues (geht warsch nur per transformation (RD anpassen)) (per usage var [0,1] * lazyQueyesRD + MsgRD)
+- Nachrichtengroesse (geht warsch nicht, weil passive Ressource keine groesse hat)
+- Mehrere Empfaenger/Sender 
+
+\section{Grenzen}
+Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen.
+
+einige dinge 
+welche Moeglichkeiten gibt es? Dominiks Queue Modell
+
+
+%Nachdem eine MOM in das Experimentsystem eingebaut wurde, soll sie im Anschluss in Palladio modelliert werden. Wie bereits erwähnt existiert eine Palladio Modellierung des Experimentsystem, auf der aufgebaut werden kann. Bei der Modellierung der MOM soll zunächst die Standardkonfiguration und in späteren Iterationen Parametrisierbarkeit modelliert werden. Dazu soll zunächst versucht werden die MOM mithilfe vorhandener PCM Elementen zu modellieren und Unzugänglichkeiten zu identifizieren. Die Idee ist, mithilfe von Architecture-Templates \cite{architcturetemplate} diese Unzugänglichkeiten zu beseitigen. Dabei handelt es sich um wiederverwendbare Muster, die auf Palladio-Modelle angewendet werden können. Beispielsweise kann anstelle der manuellen Modellierung eines Lastverteilers auch das Architectural-Template für Lastverteiler verwendet werden. %Da diese Anwendung nur aus wenigen kleinen Schritten besteht, können Architekten viel Modellierungsaufwand einsparen.
+
+
+%(-- RabitMQ Config:)\\% https://www.rabbitmq.com/configure.html\\
+%(-- Kafka Config:)\\ %https://kafka.apache.org/documentation/#brokerconfigs 
+

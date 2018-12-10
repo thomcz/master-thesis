@@ -1,0 +1,32 @@
+%% LaTeX2e class for student theses
+%% sections/evaluation.tex
+%% 
+%% Karlsruhe Institute of Technology
+%% Institute for Program Structures and Data Organization
+%% Chair for Software Design and Quality (SDQ)
+%%
+%% Dr.-Ing. Erik Burger
+%% burger@kit.edu
+%%
+%% Version 1.3.3, 2018-04-17
+
+\chapter{Verwandte Arbeiten}
+\label{ch:Verwandte}
+Im Folgenden wird der aktuelle Forschungsstand bzgl. der Modellierung und Benchmarking von MOMs beschrieben. Dabei werden Arbeiten vorgestellt, die als Grundlage dieser Masterarbeit dienen, bzw. von denen sich diese Arbeit abgrenzt.
+
+\section{Benchmarking und Leistungmodellierung}
+Eine Übersicht über Techniken zum Benchmarking und zur Leistungsmodellierung von ereignisbasierten Systemen wurde in \cite{Kounev2009} veröffentlicht. Als Benchmark wird dort der SPECJms2007 verwendet. Die verwendeten MOMs implementieren alle die JMS Schnittstelle. \par
+In der Arbeit von Liu et al. \cite{Liu2005} werden Vorhersagen der Performanz für komponentenbasierte Systeme getroffen. Die Systeme werden dabei in einem Java EE-Applikationsserver eingesetzt. Allerdings umfassen die Workloads nicht mehrere Nachrichtenaustausche oder verschiedene Arten von Interaktionen. \par
+%Außerdem Nur für java enterprise und benchmarking manuell durchführen. Auf Implementierungsebene.\cite{Liu2005} \\ 
+Die Arbeit von Sachs et al. \cite{Sachs2013} stellt Modellierungsmuster für die Performanz von Warteschlangen oder Nachrichtenkanälen vor. Die Muster bilden dabei die verschiedenen Charakteristiken auf Petrinetze ab. Dieser Ansatz erfordert deshalb Expertenwissen und befindet sich auf einem anderen Abstraktionniveau wie der Ansatz der Masterarbeit. \par
+Der Ansatz aus \cite{Kounev2008} stellt auch eine Methodik zur Charakterisierung und Per-formance-Modellierung von verteilten ereignisbasierten Systemen vor. Dieser ist aber auf die Verfügbarkeit von Überwachungsdaten, aus dem laufenden System, angewiesen und daher nur anwendbar, wenn eine laufende Systemimplementierung vorhanden ist. \par
+Alle in diesem Abschnitt vorgestellten Ansätze arbeiten auf einer anderen Abstraktionsebene als der Ansatz der Masterarbeit, der bereits zu Modellierungszeit ohne großes Expertenwissen und ohne vorhandene Systemimplementierung den Softwarearchitekten unterstützen will.
+
+\section{Konfigurationsentscheidung für MOMs}
+\label{sec:config_mom}
+In der Literatur finden sich verschiedene Arbeiten der jeweiligen MOM-Hersteller, die ihre MOM mit der Konkurrenz vergleicht. In \cite{kafka} vergleichen die Autoren Kafka mit ActiveMQ und RabbitMQ. Dabei zeigen sie, um wie viel besser ihr Ansatz, im Hinblick auf Performanz, ist. Auch in der Arbeit von Dobbelaere et al. \cite{Dobbelaere2017} wird Kafka und RabbitMQ im Hinblick auf Performanz und Verfügbarkeit verglichen. Dabei werden jeweils die Standardkonfigurationen verwendet. \par
+MOMs haben eine Vielzahl von Konfigurationsmöglichkeiten. Trotzdem findet sich sehr wenig Literatur darüber, welche Konfigurationsentscheidung zum Beispiel die beste Performanz oder Verfügbarkeit bringt. Diese Informationen werden oft in den jeweiligen Blogs der MOM-Hersteller in einem Beitrag geteilt. Einen solchen Beitrag bietet der Hersteller der MOM RabbitMQ an. In einer dreiteiligen Serie \cite{rabbitconfig} beschreiben die Autoren neben vielen nützlichen Tipps, jeweils die optimale Konfigurationen für RabbitMQ um hohe Performanz oder Verfügbarkeit zu erhalten. Auch die Hersteller von ActiveMQ bieten eine Beitrag über Performanztuning an \cite{activemqconfig}. Dort wird beschrieben wie durch Konfiguration der Durchsatz erhöht werden kann. Für Kafka bieten die Hersteller eine Artikel \cite{kafkaconfig} an, mit dem 2-Millionen Schreibzugriffe pro Sekunde möglich sind. \par
+Mithilfe dieser Arbeiten soll für die jeweilige MOM wichtige Konfigurationen identifiziert werden, die ausschlaggebend für die Performanz sind.
+
+\section{Modellierung eventbasierter Interaktion in komponentenbasierten Architekturen}
+Der in der Dissertation von Rathfelder \cite{Rathfelder2013} vorgestellte Ansatz bietet eine Abstraktionen zur Modellierung ereignisbasierter Interaktionen auf Architekturebene an. Mithilfe der Arbeit soll es möglich sein eine Architektur eines ereignisbasierten Systems unabhängig von der eingesetzten Kommunikationstechnologie und Middleware zu modellieren. Dabei werden werden plattformspezifische Details, wie z.B. die Zustellung von Ereignisse und die Architektur einer Middleware abstrahiert. Qualitätsvorhersagen sollen dabei nicht eingeschränkt werden. Die in dieser Arbeit verwendeten Systeme und ihrer Implementierung sowie Modellierung sollen in dieser Masterarbeit als Grundlage dienen. Im Gegensatz dazu, soll der in dieser Masterarbeit erarbeitet Ansatz die Qualitätsvorhersagen für konkrete und konfigurierbare Middlewares ermöglichen.
