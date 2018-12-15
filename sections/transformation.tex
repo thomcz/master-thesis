@@ -12,3 +12,69 @@
 
 \chapter{Transformation}
 \label{ch:transformation}
+Idee des Event Mechanismus: man moechte konkret ueber nachrichten/events reden und nicht abstrakt ueber interfaces. Event Transformation liefert am Ende Modell mit Interfaces usw. \\
+Deshalb: Event Mechanismus wiederverwenden \\
+
+aber: alternative Transformation die events in meine Modellierung transformiert
+
+\section{Beschreibung}
+Sender Komponente hat:\\
+- SourceRole mit EventGroup (EG)\\
+- Seff mit EmitAction\\
+-- EventType (ET) der zu EG passt\\
+-- SourceRole EG (SoR) \\
+
+Empfaenger Komponente hat:\\
+- SinkRole (SiR) (EG wie Sender)\\
+- Seff (EventHandler, d.h. als Described Service ist ET eingetragen) hat ET vom Sender
+
+
+Transformation\\
+Repository\\
+- Fuege MOM Komponente mit provided IMOM ein + Queue
+(MOM entweder nur per Transformation generieren oder auch wie in Eventtransformation ueber Namen)
+
+Sender\\
+- Sender erstellt RequiredRole fuer IMOM "senderRequiresMOM"\\
+- Die EmitAction des Sender Seffs wird mit ExternalCall ersetzt\\
+-- CalledService: IMOM.distribute\\
+-- RoleExternalService: "senderRequiresMOM"\\
+-- uebergebe UsageVariable mit Type: EventType\\
+
+Receiver\\
+(- erstelle IReceiver mit Operation recvMsg (Global)\\
+- Receiver provided IReceiver\\
+- erstelle in SEFF GuardedBranches\\
+-- fuer jede sourceRole erstelle GuardedBranch, der ueber UsageVariable und ET unterschieden wird)\\
+
+- Fuer jede SourceRole erstelle IReceiverSourceRole Interface, dass provided wird\\
+- EventHandler Seff aendert Described Seff zu jeweilige IReceiverSourceRole.recvMsg\\
+- Receiver erstellt RequiredRole fuer IMOM "recvRequiresMOM"\\
+-- uebergebe UsageVariable mit Type: EventType\\
+
+MOM\\
+- fuer jeden EventType erstelle Queue\\
+-- passiveRessource \\
+-- Aquire/Release mechanismus\\
+-- provided IQueue\\
+
+- fuer jeden EventType erstelle requiredRole fuer obige provided Queues\\
+- in receive Seff\\
+-- branch Action die entscheided welche Queue genommen wird (UsageVariable == EventType) zum aquire\\
+
+- in distribute Seff\\
+-- branch Action die entscheided welche Queue genommen wird (UsageVariable == EventType) zum release\\
+
+System\\
+- laufe durch Repository und deploye alles :D\\
+- fuer jeden IReceiver provide einen SystemProvide\\
+- finde zu jedem Source einen Sink und direkte Verbindung/schalte EventChannel dazwischen\\
+
+Usage\\
+- fuer jeden SystemProvide ein UsageScenario, das Nachrichten empfaengt\\
+
+ResourceEnv\\
+- Middleware Container generieren oder vom User modellieren lassen und per Namenskonvention deployen\\
+
+Allocation\\
+- alle Queues + IMOM (+ EventChannels) werden auf gleichen ResouceContainer deployed\\

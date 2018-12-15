@@ -42,13 +42,6 @@ Die MOM sollte \textbf{Programmiersprachen unabhängig} sein.
 %\section{Auswahl der MOMs}
 %In diesem Schritt sollen zwei bis drei MOMs ausgewählt werden. Dabei sollen die zuvor erarbeiteten Anforderungen einbezogen werden. Da sich bereits im Rahmen des Proposals mit dem Thema auseinander gesetzt wurde, wurden bereits drei starke Kandidaten identifiziert, die die bereits erarbeiteten Anforderungen erfüllen.
 
-\section{Testmaschinen}
-\label{sec:testmachine}
-In diesem Abschnitt sollen die benutzten Maschinen Dokumentiert werden, mit denen die verschiedenen MOMs untersucht wurden:
-\begin{itemize}
-    \item Testmaschine A: Localhost
-    \item Testmaschine B: VM
-\end{itemize}
 
 \section{RabbitMQ}
 RabbitMQ ist, mit 35,000 aktiven Produktivumgebungen, eine der am weitesten verbreitete MOM. 
@@ -70,12 +63,27 @@ Da in dieser Arbeit der Fokus auf der Performanz verschiedener MOMs liegt, wurde
     \item mehrere Warteschlangen und Verbraucher
 \end{itemize}
 Diese Eigenschaften wurden im folgenden untersucht um zu prüfen ob sie einen messbaren einfluss auf die Performanz haben.
-\subsection{Benchmark}
+
+\section{Kafka}
+Kafka wurde bei LinkedIn entwickelt und hauptsächlich für die Protokollierung eingesetzt \cite{kafka}. Die grundlegenden Merkmale hinter Kafka sind das Performanz über Zuverlässigkeit gestellt wird und dadurch hoher Durchsatz und niedrige Latenzzeiten ermöglicht werden. Kafka kann sowohl für Online- als auch für die Offline-Protokoll-ierung eingesetzt werden. In ihrer Arbeit zeigen die Entwickler, dass Kafka mindestens doppelt so viele Nachrichten senden und vier mal so viele Nachrichten empfangen kann, als ActiveMQ und RabbitMQ.
+
+\subsection{Best Practice}
+
+\section{Benchmark}
+
+\subsection{Testmaschinen}
+\label{sec:testmachine}
+In diesem Abschnitt sollen die benutzten Maschinen Dokumentiert werden, mit denen die verschiedenen MOMs untersucht wurden:
+\begin{itemize}
+    \item Testmaschine A: Localhost
+    \item Testmaschine B: VM
+\end{itemize}
+
+\subsection{RMQ}
 Im Folgenden soll besprochen werden, welche Eigenschaften in RMQ Auswirkungen auf die Performanz haben. Dazu wurde das Performanz Test Werkzeug von RMQ benutzt. Dieses erlaubt es die gesendeten und empfangenen Nachrichten und ihre Latenz zu messen. Dabei ist die Zeit gemeint, die eine Nachricht braucht bis sie vom Empfänger aus der Warteschlange herausgenommen wird, nachdem sie vom Sender dort abgelegt wurde. Das Werkzeug kann konfiguriert werden um bestimmte Szenarien zu simulieren. Unter anderem laesst sich die Anzahl zu sendenden und zu empfangenen Nachrichte pro Sekunde einstellen. Eine weitere Konfiguration ist das einstellen bestimmte Nachrichtengroessen. Im Folgenden sollen die Ergebnisse der Messungen vorgestellt werden. Dabei werden die einzelnen Ergebnisse und ihr Versuchsaufbau vorgestellt.
-
-
-\subsection{Ergebnisse}
-In diesem Abschnitt werden die Ergebnisse der Performanzmessungen von RMQ vorgestellt. Die benutzten Systeme waren sind in \autoref{sec:testmachine} beschrieben. Sollten sich bestimmte Szenarien auf verschiedenen Maschinen unterschiedlich verhalten, wird dies angemerkt. Falls keine Anmerkung erfolgt, heisst das, dass bei der Messungen kein Einfluss erkannt werden konnte. Jedes Ergebnis wird wie folgt vorgestellt: Zunaechst wird das jeweilige Szeanario vorgestellt. Im naechsten Schritt werden die Beobachtungen beschrieben und im Anschluss das daraus resultierende Ergebnis.
+%\subsection{Ergebnisse}
+%In diesem Abschnitt werden die Ergebnisse der Performanzmessungen von RMQ vorgestellt. 
+Die benutzten Systeme sind in \autoref{sec:testmachine} beschrieben. Sollten sich bestimmte Szenarien auf verschiedenen Maschinen unterschiedlich verhalten, wird dies angemerkt. Falls keine Anmerkung erfolgt, heisst das, dass bei der Messungen kein Einfluss erkannt werden konnte. Jedes Ergebnis wird wie folgt vorgestellt: Zunaechst wird das jeweilige Szeanario vorgestellt. Im naechsten Schritt werden die Beobachtungen beschrieben und im Anschluss das daraus resultierende Ergebnis.
 
 \subsubsection{Maximaler Durchsatz und Antwortzeit}
 %A
@@ -117,6 +125,8 @@ Die Ergebnisse sind in \autoref{img:senderate1-A} zu sehen. Dabei handelt es sic
 \end{figure}
 %E
 Diese Unterschiede lassen sich auf die Netzwerklatenz zuruckfuehren. Im Testsystem A befinden sich Sender, Empfaenger und Brooker auf einer Maschine. Deshalb gibt es keine Netzwerklatenz und die Durchnittslatenz ist dementspraechend niedrig. Bei Testsystem B befinden sich der Brooker und der Empfaenger auf einer anderen Maschine. Deshalb spielt die Netzwerklatenz hier eine Rolle und die Latenz einzelner Nachrichten ist dementsprechend hoeher. Somit konnte ein Einflussfaktor fuer die Performanz identifiziert werden. 
+
+TODO: Latenz bei 1 Nachricht mit verschiedenen groessen
 
 %Unterschied zu 1000/5000 Nachrichten
 %Das zeigt aber auch, dass wenn Sende- und Empfangsrate gleich sind, die Latenz gleich. Anzahl Msgs machen kaum unterschied. Nur wenn Nachrichten in der Queue landen, erhoeht sich die latenz. Das heißt, dass die Füllemenge einer Warteschlange einfluss auf die Performanz hat.
@@ -180,6 +190,27 @@ Das Ergebnis ist in \autoref{img:msgsize} zu sehen. Die Abbildung zeigt, dass mi
   \label{img:msgsize}
 \end{figure}
 
+\subsubsection{Maximale zu sendende Datenmenge}
+Zu pruefen war, die moegliche Datenmenge die gesendet und empfangen werden kann. Dazu wurden wieder Nachrichten unterschiedlicher Groesse gesendet. Die Nachrichten waren zwischen 100 Bytes und 200000 Bytes (2MB). Es wurden zwei Messungen durchgefuehrt. Die erste war mit einem Sender und keinem Empfaenger. Die zweite mit einem Sender und einem Empfaenger. 
+%B
+Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfaenger vorhande ist, mit zunehmender Nachrichtengroesse die insgesamt gesendete Datenmenge an einen Wert bei ca. 230 MByte/s annaehert. Wenn ein Empfaenger vorhanden ist, naehert sich die Datenmenge an 174 MByte/s an.
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/max-byte-throughput-A.png}
+  \caption{Max Datenmenge ca. 230/174 (kein Empfaenger/mit Empfaenger), Testsystem A}
+  \label{img:maxByteThroughputA}
+\end{figure}
+Auf Testsystem B wurde die selbe Messung durchgefuehrt. 
+Die Ergebnisse sind in \autoref{img:maxByteThroughputB} zu sehen. Die Datenmengen sind hier weniger gross. Bei dem Fall, dass kein Empfaenger vorhanden ist, naehert sich die  insgesamt gesendete Datenmenge an den Wert 1.1 MByte/s an. Wenn ein Empfaenger vorhanden ist, naehert sich die Datenmenge ebenfalls an 1.1 MByte/s an.
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/max-byte-throughput-B.png}
+  \caption{Max Datenmenge ca. 1.1/1.1 (kein Empfaenger/mit Empfaenger), Testsystem B}
+  \label{img:maxByteThroughputB}
+\end{figure}
+%E
+Die Messung zeigt einen limitierenden Faktor bzgl. der moeglich zu sendenden Nachrichtenmege. Dieser wird vor allem bei Testsystem B bemerkbar. Dort ist die moegliche zu sendende Datenmenge 1.1 Mbyte, was mit einer Upload Messung uebereinstimmt. Somit koennen in bestimmten Situationen nicht genug Daten gesendet werden und der Durchsatz wird limitiert.
+
 \subsubsection{Mehrere Empfaenger}
 In \autoref{subsub:maxlength} war bereits zu sehen, dass volle Warteschlangen einen Einfluss auf die Latenz haben. In dieser Messung soll geprueft werden ob mehrere Empfaenger eine Warteschlange genauso schnell abarbeiten koennnen wie ein einzelner und somit die Latenz gemeinsam in den Griff bekommen koennen. Dazu wurde die Senderate eines Senders auf 1000 Nachrichten und die Empfangsrate auf 200 Nachrichten pro Sekunde limitiert. Alle Empfaenger greifen auf die selbe Warteschlange zu.
 %B
@@ -225,12 +256,16 @@ Das die 5 Sender jeweils nur 1/5 der moeglichen Senderate senden, kann dadurch e
 %\subsection{ActiveMQ}
 %ActiveMQ \cite{activeMQ} ist eine Open-Source-MOM, die seit 2004 kontinuierlich weiter entwickelt wird. ActiveMQ ist in Java geschrieben und implementiert den Java Message Service (JMS) \cite{jms}. Dabei handelt es sich um eine Programmierschnittstelle zur Ansteuerung einer MOM. Dabei soll eine lose gekoppelte, verlässliche und asynchrone Kommunikation zwischen den Komponenten einer verteilten Anwendung ermöglicht werden. ActiveMQ verfügt außerdem über mehrere Betriebsarten für hohe Verfügbarkeit und einen robusten horizontalen Skalierungsmechanismus. Darüber hinaus ist es sehr flexibel in der Konfiguration und unterstützt eine Vielzahl von Transportprotokollen, darunter auch AMQP.
 
-\section{Kafka}
-Kafka wurde bei LinkedIn entwickelt und hauptsächlich für die Protokollierung eingesetzt \cite{kafka}. Die grundlegenden Merkmale hinter Kafka sind das Performanz über Zuverlässigkeit gestellt wird und dadurch hoher Durchsatz und niedrige Latenzzeiten ermöglicht werden. Kafka kann sowohl für Online- als auch für die Offline-Protokoll-ierung eingesetzt werden. In ihrer Arbeit zeigen die Entwickler, dass Kafka mindestens doppelt so viele Nachrichten senden und vier mal so viele Nachrichten empfangen kann, als ActiveMQ und RabbitMQ.
-\subsection{Benchmark}
-\subsection{Ergebnisse}
-Ableitung von ResourceDemands -> Regressionsfkt
+\subsection{Zusammenfassung}
+welche Einflussfaktoren konnnten identifiziert werden und werden weiter betrachtet? 
 
+welche weiteren Einflussfaktoren gibt es, die aus bestimmten gruenden nicht betrachtet werden \\
+\subsection{Kafka}
+
+\subsection{Zusammenfassung}
+welche Einflussfaktoren konnnten identifiziert werden und werden weiter betrachtet? 
+
+welche weiteren Einflussfaktoren gibt es, die aus bestimmten gruenden nicht betrachtet werden \\
 \section{Vergleich von MOMs}
 %--	Vergleich: https://stackshare.io/stackups/activemq-vs-kafka-vs-rabbitmq  \\
 

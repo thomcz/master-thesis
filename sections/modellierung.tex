@@ -39,8 +39,15 @@ Im Folgenden soll zunaechst untersucht werden ob und wie eine konkrete MOM in Pa
 -- kein Modellieren von Queues moeglich (aquire/release \\
 Im Folgenden soll beschrieben werden, wie ein Modell aussehen soll, das eine MOM abbildet \\
 \section{Modell}
-Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde im ersten Schritt versucht zu definieren wie eine MOM aussehen soll. Modellierung von einem Exchange und einer Queue mit passiver Ressource
+Warum sinnvoll eine MOM explizit zu modellieren? \\
+- eroeffnet neue Moeglichkeiten //
+- bestimmte effekte mit bisheriger modellierung nicht moeglich\\
+Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde im ersten Schritt versucht zu definieren wie eine MOM aussehen soll. Die untersuchten Architekturen hatten als Gemeinsamkeit einen Verteiler (Exchange) und eine Warteschlange. Modellierung von einem Exchange und einer Queue mit passiver Ressource
+\\
+Ziel ist es nicht ein spezielle Verhalten einer MOM zu modellieren, zum Beispiel lazy Queues, sondern das allgemeine Verhalten von MOMs in verschiedenen Szenarien modellieren zu koennen.
 \subsection{Repository}
+Exchange verteilt Msgs
+
 Queue als Passive Ressource -> kein verfolgen einzelnern Nachrichten durch das system
 
 Aquire: empfangen
@@ -51,15 +58,24 @@ release: senden
 \subsection{Usage}
 Ankunftsrate als Hebel um Sende-Empfangrate abzubilden
 \subsection{Ressource Environment und Allokation}
-Einen Server fuer Broker
-
-Ein Server fuer Queues
+Einen Server fuer MOM
 
 \section{Ressource Demands}
+In (section max byte throughput) wurde gemessen, was die moegliche Datenmenge ist, die gesendet werden kann (Durchsatz). Dieser Wert wird im Ressource Environment in die jeweiligen Linking Ressources eingetragen. Dabei wird fuer den LR zwischen Sender und MOM der Wert fuer keine Empfaenger eingetragen und fuer die LR zwischen Empfaenger und MOM der Wert fuer mit Empfaenger. \\
 
-RD fuer senden einer Nachricht wurde ausgemessen
-RD fuer empfang einer Nachricht wurde ausgemessen
---> RD wurde an dieser Stelle eingebaut
+Latenz einer Nachricht mit verschiedener Bytegroesse wurde ausgemessen (siehe latenz verschiedenen Msg größen). Mithilfe einer Regressionsanalyse konnte ein RD der Form a*log(b*bytesize) identifiziert werden. Fuer a und b wurden folgende Werte bestimmt: ... (oder erst bei der Evaluation?) \\
+
+Wo Nachrichten hingeschrieben wurden waren auch ein wichtiger Einflussfaktor. Deshalb wurde fuer RMQ fuer den Fall das Lazy Queues simuliert werden sollen ein RD der Form:... aus der Differenz der Messungen mit und ohne LazyQueues bestimmt. \\
+
+Ausserdem wurde die Netzwerklatenz als einflussreicher Faktor identifiziert. Dieser wird bei Simulationen mit Teststystem A 0 bleiben. Wenn Testsystem B modelliert werden soll, wird hier folgende Latenz eingetragen: 0.01 \\
+- TODO: tabelle mit Werten fuer alle RDs
+
+Als Eingabe fuer das System soll im Usage Modell die zu sendende Nachrichtengroesse mithilfe einer UsageVariable und der Characteristic: Bytesize angegeben werden.\\
+
+Die Anzahl an Nachrichten die gesendet oder empfangen werden koennen werden ueber die Ankuftzeit gesteuert.\\
+ArrivalTime / Anzahl Msgs \\
+oder einfach Bytesize * Anazahl Nachrichten \\
+
 %RD an Aquire um Latenz abzubilden
 
 %Als erstes sollte die Sende und Empfangsrate abgebildet werden. Beobachtet man (ref zu Messung verschiedene Senderaten) bemerkt man fuer die ersten Messungen, solange Warteschlange nicht allzu voll wird, einen linearen Anstieg der Latenz. Daraus laesst sich zunaechst folgender RD ableiten:
@@ -74,25 +90,47 @@ RD fuer empfang einer Nachricht wurde ausgemessen
 welche Effekte koennen wir so hoffentlich abbilden
 
 \section{Untersuchung des MOM Bausteins}
-Einfaches Szenario: Sender/Empfaenger, einer sendet, einer empfaengt, unterschiedliche Ankuftszeiten -> Ansteigen der Queue + Response Time, unterschiedliche Ressource Environment kann Response Time beeinflussen
+Einfaches Szenario: Sender/Empfaenger, einer sendet, einer empfaengt.\\
+Simulation 1: \\
+Ankunftszeiten gleich \\
+Bytesize sind zwische 100 und 10000 \\
+Queue sollte immer leer sein, weil Nachricht gleich raus genommen \\
+Vergleich mit echten Messungen \\
+- RespnseTime \\
+- Queue verhalten \\
 
-Die Nachrichtenmenge sollen ueber die Ankunftsrate des Senders und Empfaengers geregelt werden. Die Idee ist, dass es keinen Unterschied macht ob ein sender pro Zeiteinheit 1000 Nachrichten verschickt oder pro Zeiteinheit 1000 mal Ankommt und jeweils eine Nachricht verschickt. Sommit erhalten wir fuer Sende- und Empfangsrate die Formel: 1 / Senderate.
+Simulation 2: \\
+- Simulation 1 mit Latenz \\
 
-Mit dieser Modellierung erhalten wir folgende Ergebnisse: ...
+Simulation 3: \\
+- Mehrere Empfaenger/Sender \\
+zuerest unterschiedliche Ankuftszeiten Sender 0.5 und Empfaenger 1 \\
+-> Ansteigen der Queue \\
+jetzt weiterer Empfaenger \\
+-> Queue wieder leer\\
 
-Benchmark Szenarien versuchen nachzustellen und vergleichen:
-- Max Durchsatz (durch RE (latenz, throughput (wenn bytesize), mom, Sender) beschraenkt?)
-- Latenz einer Nachricht (mit/ohne netzwerklatenz)
-- lazyqueues (geht warsch nur per transformation (RD anpassen)) (per usage var [0,1] * lazyQueyesRD + MsgRD)
-- Nachrichtengroesse (geht warsch nicht, weil passive Ressource keine groesse hat)
-- Mehrere Empfaenger/Sender 
+Simulation 4: \\
+- Max Durchsatz \\
+- eine Nachricht mit max Bytesize schicken \\
+-> Respnse time sollte ansteigen \\
+
+- latenz und througput anpassen um Testsystem B zu simulieren \\
+
+Simulation5: \\
+- lazyqueues (geht warsch nur per transformation (RD anpassen)) (per usage var [0,1] * lazyQueyesRD + MsgRD) \\
+- Response time wird mehr \\
+
+
+
+%Die Nachrichtenmenge sollen ueber die Ankunftsrate des Senders und Empfaengers geregelt werden. Die Idee ist, dass es keinen Unterschied macht ob ein sender pro Zeiteinheit 1000 Nachrichten verschickt oder pro Zeiteinheit 1000 mal Ankommt und jeweils eine Nachricht verschickt. Sommit erhalten wir fuer Sende- und Empfangsrate die Formel: 1 / Senderate.
+
+
 
 \section{Grenzen}
-Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen.
+Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen\\
 
-einige dinge 
-welche Moeglichkeiten gibt es? Dominiks Queue Modell
-
+welche Moeglichkeiten gibt es? Dominiks Queue Modell. Direkt drauf verweisen, oder eine/diese Idee beschreiben.\\
+%Queue Fuellstand ist unbekannt \\
 
 %Nachdem eine MOM in das Experimentsystem eingebaut wurde, soll sie im Anschluss in Palladio modelliert werden. Wie bereits erwähnt existiert eine Palladio Modellierung des Experimentsystem, auf der aufgebaut werden kann. Bei der Modellierung der MOM soll zunächst die Standardkonfiguration und in späteren Iterationen Parametrisierbarkeit modelliert werden. Dazu soll zunächst versucht werden die MOM mithilfe vorhandener PCM Elementen zu modellieren und Unzugänglichkeiten zu identifizieren. Die Idee ist, mithilfe von Architecture-Templates \cite{architcturetemplate} diese Unzugänglichkeiten zu beseitigen. Dabei handelt es sich um wiederverwendbare Muster, die auf Palladio-Modelle angewendet werden können. Beispielsweise kann anstelle der manuellen Modellierung eines Lastverteilers auch das Architectural-Template für Lastverteiler verwendet werden. %Da diese Anwendung nur aus wenigen kleinen Schritten besteht, können Architekten viel Modellierungsaufwand einsparen.
 
