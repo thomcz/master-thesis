@@ -28,9 +28,34 @@ Für das Evaluierungssystem wurden im Folgenden Anforderungen festgelegt.
 \end{itemize}
 
 \section{SPECJms2007}
-Ein System das die in \autoref{sec:systemanforderungen} aufgestellten Anforderungen erfüllt ist das im SPECJms2007 Benchmark verwendete Testsystem \cite{Sachs2013}. Der Benchmark soll eine reale ereignisbasierte Anwendung darstellen und umfasst eine Reihe von verschiedener Interaktionen, die einen komplexen Mix aus Transaktionen darstellen, der sowohl Punkt-zu-Punkt- als auch Publish/Subscribe-Nachrichten einschließlich One-to-One-, One-to-Many- und Many-to-Many-Kommunikation umfasst. Bei dem System handelt es sich um ein Lieferkettenmanagement für eine Supermarktkette. Das System besteht aus vier Rollen, die in sieben verschiedenen Interaktionsmöglichkeiten miteinander kommunizieren können. Das System erlaubt verschiedene konfigurationen durch den Benutzer, wie die Nachrichtenröße oder die Skalierungsart. Für die Masterarbeit liegt sowohl die Implementierung des Benchmarks, als auch eine Modellierung aus einer früheren Arbeit von Christoph Rathfelder \cite{Rathfelder2013} vor. Dieses System soll als Experimentsystem verwendet werden um die verschiedenen MOMs zu vergleichen und zum kalibrieren der später erstellten Modellierung. 
+Ein System das die in \autoref{sec:systemanforderungen} aufgestellten Anforderungen erfüllt ist das im SPECJms2007 Benchmark verwendete Testsystem \cite{Sachs2013}. Der Benchmark stellt eine reale ereignisbasierte Anwendung dar und umfasst eine Reihe von verschiedener Interaktionen, die sowohl Punkt-zu-Punkt- als auch Publish/Subscribe-Nachrichten einschließlich One-to-One-, One-to-Many- und Many-to-Many-Kommunikation umfasst. Das Hauptziel des SPECjms2007 Benchmarks ist es, einen Standard-Workload bereitzustellen, der die Leistung und Skalierbarkeit von JMS-basierten Message-Oriented Middleware-Plattformen bewertet. Bei dem System handelt es sich um ein Lieferkettenmanagement für eine Supermarktkette. Der Benchmark verwendet verschiedene Nachrichtentypen und verwendet Nachrichten verschiedenen Größe. Für die Masterarbeit liegt sowohl die Implementierung des Benchmarks, als auch eine Modellierung aus einer früheren Arbeit von Christoph Rathfelder \cite{Rathfelder2013} vor. Dieses System soll als Experimentsystem verwendet werden um die verschiedenen MOMs zu vergleichen und zum kalibrieren der später erstellten Modellierung. 
 
-\subsection{Szenarien}
+\subsection{Anwendungsszenario}
+Das gewählte Anwendungsszenario bildet die Lieferkette eines Supermarktunternehmens ab. Beteiligte lassen sich wie folgt gruppieren: 
+\begin{itemize}
+    \item Hauptquartier (HQ): Für die Buchhaltung des Unternehmens verantwortlich. Beobachtet den Geld und Warenfluss im System. Verwaltet Informationen ueber Waren und definiert Preise.
+    \item Supermarkt (SM): Verkauft Waren an Kunden. Im Benchmark liegt der Fokus auf der Verwaltung der eigenen Warenlager. Jeder SM ist mit einem Vertriebszentrum verbunden.
+    \item Vertriebszentrum (DC): Beliefert SM mit Waren. Ein DC nimmt Aufträge von SMs an und liefert diese. Wenn ein DC die Waren nicht vorrätig hat, werden diese Waren von einem Zulieferer angefordert. Außerdem sind DCs dafür verantwortlich Verkaufsstatistiken an das HQ zu senden.
+    \item Zulieferer (SP): SPs sind nicht Teil des Supermarktunternehmens. Jeder SP bietet eine bestimmte Art von Waren an. Diese werden an DCs geliefert, wenn angefordert.
+\end{itemize}
+In \autoref{img:specjmsInteraction} sind die vier Rollen zu sehen und wie sie miteinander kommunizieren. SpecJms sieht insgesamt sieben verschiedenen Interaktionsmöglichkeiten vor: 
+\begin{itemize}
+    \item Interaktion 1: Diese Interaktion modelliert die Auftrags- und Versandabwicklung zwischen SMs und DCs. Die Interaktion wird ausgelöst, wenn Waren im Lager eines SM aufgebraucht sind. Der SM bestellt bei einem DC Nachschub um seine Waren aufzufüllen. In \autoref{img:specjmsInteraction1} ist der Ablauf als Sequenzdiagramm abgebildet. Zunächst sendet der SM eine Order Nachricht an den DC. Der DC bestätigt dem SM den Eingang der Nachricht. Als nächstes werden die Waren verschickt. Dabei werden sie von einem RFID Leser erfasst. Schließlich sendet der DC Informationen über die Transaktion an das HQ. Sobald die Lieferung beim SM ankommt wird eine Bestätigung an DC gesendet.
+\end{itemize}
+
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/specjms_scenario.png}
+  \caption{Anwendungszenario des SpecJms}
+  \label{img:specjmsInteraction}
+\end{figure}
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/Interaction1Diag.png}
+  \caption{Interaktion 1}
+  \label{img:specjmsInteraction1}
+\end{figure}
+Das System besteht aus vier Rollen, die in sieben verschiedenen Interaktionsmöglichkeiten miteinander kommunizieren können. 
 Alle aufzaehlen\\
 warum wurden nur 2 und wiese genau diese ausgewaehlt? (Zeit, welche kommunikationsarten konnten abgedeckt werden?)\\
 Nachrichtenmodelle mit einbeziehen \\
@@ -44,10 +69,17 @@ Szenario 2 (DC muss Waren auffüllen)
 %- 3. teilmenge der interaktionen und fokus auf p/s \\
 
 \subsection{Konfiguration}
-Kann vertikal skalliert werden (Anzahl Msg wird erhoeht, Consumer bleiben gleich)\\
-Kann hoizontal skalliert werden (Anzahl msg bleibt gleich, Consumer werden mehr)\\
-Msg Size kann angepasst werden\\
-- Formel + Tabellen angeben?!
+Das System erlaubt verschiedene konfigurationen durch den Benutzer, wie die Skalierungsart oder die Nachrichtenröße. Das Szenario kann vertikal (Anzahl Msg (Produkte die verkauft werden) wird erhoeht, Consumer bleiben gleich) oder
+hoizontal skalliert werden (Anzahl msg bleibt gleich, Consumer (SM) werden mehr)\\
+
+Für jede Nachricht wird die Größe anhand festgelegter Parameter berechnet. Diese sind in \autoref{img:specjmsMsgSize} abgebildet. Die Größe wird mit folgender Formel berechnet: m1 + x * b, wobei x vom Benutzer des Benchmarks eingestellt werden kann.
+
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/specjmsmsgsize.png}
+  \caption{Evtl. in Anhang}
+  \label{img:specjmsMsgSize}
+\end{figure}
 
 \section{Beschreibung des Modells}
 Modelle sind uebernommen worden aus diss. Nicht komplettes Modell beschreiben, sondern nur die Modelle der Interaktionen
@@ -59,6 +91,14 @@ Pub/sub ueber EventChannel \\
 Start einer Interaktion wird durch Trigger ausgeloesst \\
 \subsection{Ressource und Allocation}
 \subsection{Usage}
+\subsection{MOM}
+RD fuer jede Moegliche Nachricht angegeben und davor ausgerechnet, siehe \autoref{img:specjmsMsgSizeRd} \\
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/specjmsmsgsizerd.png}
+  \caption{Evtl. in Anhang}
+  \label{img:specjmsMsgSizeRd}
+\end{figure}
 
 
 \subsection{Anpassung des Modells}
@@ -69,6 +109,7 @@ msg size wird nicht mehr in MOM fuer jede Nachricht berechnet und eingepflegt, s
 evtl ankunftsraten anpassen
 
 \section{Goal-Question-Metric}
+TODO aktualisieren \\
 Die GQM-Methode \cite{gqm} spezifiziert Ziele für das zu validierende Konzept. Daraufhin werden zu den Zielen Fragen spezifiziert, mit denen die Erfüllung des Ziels überprüft werden soll. Schließlich werden Metriken festgelegt, durch die die Fragen beantwortet werden sollen. In \autoref{tab:gqm} sind erste Überlegungen festgehalten. Diese Überlegungen sind nicht vollständig und werden im Rahmen der Masterarbeit weiter ausgebaut.\par
 Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modellierung von MOMs in Palladio zu ermöglichen. Dafür wurden zwei Fragen definiert. Die erste Frage prüft ob sich MOMs überhaupt modellieren lassen. Die zweite Frage prüft die Modularität der MOM Bausteine. Das zweite Ziel ist, dass die Entscheidungsfindung, welche MOM verwendet werden soll, bereits zur Modellierungszeit und aus Architekturperspektive verbessert werden soll. Die dazu definierte Frage soll prüfen ob die Analyseergebnisse brauchbar, bzw. ob sich die Probleme einer Architekturentscheidung aus den Analyseergebnissen ableiten lassen. 
 \begin{table}
@@ -117,6 +158,9 @@ wie ist die Genauigkeit? Besser, gleich, schlechter\\
 
 
 \section{Zusammenfassung}
+Was ist das Ergebnis \\
+Vergleich zu davor \\
+
 %Modellierung eroeffnet neue moeglichkeiten\\
 
 %\section{TIME}

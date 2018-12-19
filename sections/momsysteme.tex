@@ -159,6 +159,13 @@ Nachdem in der Messung davor die Laenge der Warteschlange betrachtet wurde, soll
 Sollte der verfuegbare Speicher des Broker ausgeschoepft sein, wird der MemoryAlarm aktiviert und der Broker blockiert ankommende Nachrichten, bis der Speicher wieder frei ist. Dies ist in (abb) zu sehen.
 TODO beobachtung und Ergebnis
 
+\subsubsection{Ansteigen der Queuelaenge}
+TODO: \\
+Sender 2 Nachrichten \\
+Empfaenger 1 Nachricht \\
+evtl. mehrere Verhaeltnisse \\
+Fuellstand der Queue steigt an \\
+
 \subsubsection{Lazy Queues}
 %https://www.rabbitmq.com/lazy-queues.html
 Seit RabbitMQ 3.6.0 erlaubt RMQ, dass Nachrichten einer Warteschlange direkt auf die Festplatte, anstatt in den Hauptspeicher, geschrieben werden. Diese Art von Warteschlange wird als Lazy-Queue bezeichnet. Das Ziel dabei ist, sehr lange Warteschlange zu unterstuetzen. Dies kann aus verschiedenen Gruenden noetig sein. 
@@ -191,6 +198,7 @@ Das Ergebnis ist in \autoref{img:msgsize} zu sehen. Die Abbildung zeigt, dass mi
 \end{figure}
 
 \subsubsection{Maximale zu sendende Datenmenge}
+\label{sec:maxthroughput}
 Zu pruefen war, die moegliche Datenmenge die gesendet und empfangen werden kann. Dazu wurden wieder Nachrichten unterschiedlicher Groesse gesendet. Die Nachrichten waren zwischen 100 Bytes und 200000 Bytes (2MB). Es wurden zwei Messungen durchgefuehrt. Die erste war mit einem Sender und keinem Empfaenger. Die zweite mit einem Sender und einem Empfaenger. 
 %B
 Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfaenger vorhande ist, mit zunehmender Nachrichtengroesse die insgesamt gesendete Datenmenge an einen Wert bei ca. 230 MByte/s annaehert. Wenn ein Empfaenger vorhanden ist, naehert sich die Datenmenge an 174 MByte/s an.
@@ -257,9 +265,18 @@ Das die 5 Sender jeweils nur 1/5 der moeglichen Senderate senden, kann dadurch e
 %ActiveMQ \cite{activeMQ} ist eine Open-Source-MOM, die seit 2004 kontinuierlich weiter entwickelt wird. ActiveMQ ist in Java geschrieben und implementiert den Java Message Service (JMS) \cite{jms}. Dabei handelt es sich um eine Programmierschnittstelle zur Ansteuerung einer MOM. Dabei soll eine lose gekoppelte, verlässliche und asynchrone Kommunikation zwischen den Komponenten einer verteilten Anwendung ermöglicht werden. ActiveMQ verfügt außerdem über mehrere Betriebsarten für hohe Verfügbarkeit und einen robusten horizontalen Skalierungsmechanismus. Darüber hinaus ist es sehr flexibel in der Konfiguration und unterstützt eine Vielzahl von Transportprotokollen, darunter auch AMQP.
 
 \subsection{Zusammenfassung}
-welche Einflussfaktoren konnnten identifiziert werden und werden weiter betrachtet? 
+welche Einflussfaktoren konnnten identifiziert werden und werden weiter betrachtet? \\
+Througput der Verbindung (linking Ressource)\\
+Msg rate des Senders und Empfaengers (ankunftsrate im Usage modell) \\
+Nachrichtengroesse und ihre Latenz (response time einer Nachricht) \\
+Netzwerklatenz \\
+Ob Nachrichten in HS oder HDD gespeichert werden (lazy queues) \\
 
-welche weiteren Einflussfaktoren gibt es, die aus bestimmten gruenden nicht betrachtet werden \\
+welche weiteren Einflussfaktoren gibt es, die aus bestimmten gruenden nicht betrachtet werden (koennen)\\
+wenn system mehr Nachrichten auf einmal sendet/empfaengt sinkt latenz wieder \\
+Latenz steigt an, wenn die queue gefuellt wird \\
+benoetigt tracken einer Nachricht durch das system \\
+
 \subsection{Kafka}
 
 \subsection{Zusammenfassung}
