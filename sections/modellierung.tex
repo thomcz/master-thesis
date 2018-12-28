@@ -14,53 +14,81 @@
 \label{ch:modellierung}
 Im Folgenden soll zunaechst untersucht werden ob und wie eine konkrete MOM in Palladio modelliert werden kann und an welchen Stellen die Modellierung an ihre Grenzen kommt. Im Anschluss werden Ansätze vorgestellt, mit denen diese Probleme versucht wurden zu beheben.
 
+%Warum sinnvoll eine MOM explizit zu modellieren? \\
+%- eroeffnet neue Moeglichkeiten \\
+%- bestimmte effekte mit bisheriger modellierung nicht moeglich\\
+\section{Anforderungserhebung}
+Aus Definition von MOMs (siehe Grundlagen) und den Messungen aus (siehe Benchmarks) wurden Anforderungen an eine Modellierung spezifiziert. \\
+Was soll eine MOm koenen?\\
+Asynchron Nachricht senden \\
+Asynchron Nachricht empfangen \\
+bestimmte Topics/Queues\\
+Eingaben durch benutzer: \\
+Groesse der Nachrichten angeben (siehe Benchmarks einfluss auf Latenz)\\
+Anzahl der Nachrichten angeben \\
+Angabe des Durchsatzes \\
+Ausgabe: \\
+Queue verhalten \\
+Antwortzeit/Latenz der Nachrichten \\
 
-%Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde im ersten Schritt versucht zu definieren wie eine MOM aussehen soll. 
-%wurde versucht die RMQ Architektur zu modellieren. (Abb beschreiebn). Queues wurden als Passive Ressource modelliert. Ein Aquire wurde als Consume und ein Release als Produce interpretiert. Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen. Außerdem ist dieser Ansatz der expliziten Modellierung einer jeden Queue nicht praktikabel (zu viel Aufwand jede Queue zu modellieren).
-%Modellierung mit bestehenden Elementen (1 Idee mit passive Ressouce)
-
-%Wiederverwendung von Events -> Beschreibung von Events
-
-%Beschreiben der neuen Queues?
-%- Ansatz mit und ohne Queues
-
-%Beschreibung der Modelle
-
-%Beschreibung der ResourceDemands
-
-%Beschreibung der Transformationen (evtl mit einweben von Effekten wie \#Queues = \#Cores)
-
-%Vergleich Analyse und Benchmarks
-\section{Integration Event Based Communication}
-- Beschreibung des Mechanismus (Modell, Transformation) \\
+Wie bereits in Grundlagen beschrieben gibt es fuer PCM die moeglichkeit eine MOM zu modellieren (Integration Event Based Communication)\\
 - Problem:  \\
 -- Kommunikation nur in eine Richtung \\
 -- kein abholen von Nachrichten moeglich \\
 -- kein Modellieren von Queues moeglich (aquire/release \\
-Im Folgenden soll beschrieben werden, wie ein Modell aussehen soll, das eine MOM abbildet \\
+-- nur RDs in verschiedenen Verarbeitungsschritten angeben auf dem Weg zum Ziel \\
+Im Folgenden soll beschrieben werden, wie ein Modell aussehen soll, das eine MOM abbildet und die Anforderungen erfüllt. \\
+
+Das Ziel ist es eine allgemeine MOM Modellierung zu erstellen, die das Verhalten einer MOM abbilden kann. Dabei soll nicht Wert auf ein spezielles Verhalten gelegt werden. Stattdessen soll es moeglich sein die Modellierung um Konfigurationen, wie zum Beispiel RMQs lazy Queues, erweitern zu koennen. 
+
 \section{Modell}
-Warum sinnvoll eine MOM explizit zu modellieren? \\
-- eroeffnet neue Moeglichkeiten \\
-- bestimmte effekte mit bisheriger modellierung nicht moeglich\\
-Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde im ersten Schritt versucht zu definieren wie eine MOM aussehen soll. Die untersuchten Architekturen hatten als Gemeinsamkeit einen Verteiler (Exchange) und eine Warteschlange. \\
-Modellierung von einem Exchange und einer Queue mit passiver Ressource \\
-Ziel ist es nicht ein spezielle Verhalten einer MOM zu modellieren, zum Beispiel lazy Queues, sondern das allgemeine Verhalten von MOMs in verschiedenen Szenarien modellieren zu koennen, bzw. das in spaeteren Arbeiten darauf aufgebaut werden kann.
+Ziel: Modellierung mit bestehenden Elementen.\\
+Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde versucht zu definieren wie eine MOM modelliert werden kann. Dabei wurden die Anforderungen versucht umzusetzen. \\
+- 2 Moeglichkeiten entweder mit oder ohne Exchange explizit zu modellieren.\\
+- Vorteil Explizit: RDs fuer verteilung (konnte aber nicht ausgemessen werden) \\
+- Nachrichten Typen mitschicken (fanout, direct) und in Branches auswerten
+
 \subsection{Repository}
-Exchange verteilt Msgs
+Die untersuchten Architekturen hatten als Gemeinsamkeit einen Verteiler (Exchange) und eine Warteschlange. \\
 
-Queue als Passive Ressource -> kein verfolgen einzelnern Nachrichten durch das system
+Modellierung von einem Exchange als BC und einer Queue als BC mit passiver Ressource \autoref{img:mom_repository} \\
 
-Aquire: empfangen
-release: senden
+Exchange verteilt Msgs\\
+
+Queues wurden als Passive Ressource modelliert. Ein Aquire wurde als Consume und ein Release als Produce interpretiert. Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen. \\
+
+Exchange required eine Queue. a ein exchange mehrere Queues haben kann muss ein Exchange auch mehrere Queues requiren. Ausserdem muss er entscheiden koennen an welche Queue er senden oder von welcher er nachrichten empfaengt. Dies soll mithilfe von guarded branches gemacht werden. Fuer jede angeschlossene Queue gibt es einen branch. Nachricht hat bytesize und nen Type anhand dessen sie in eine Queue kommt. Oder Empfaenger sagt, wie viel Byte er aus einer bestimmten Queue heraus nehmen moechte. \\
+
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/mom_repository.png}
+  \caption{Anwendungszenario des SpecJms}
+  \label{img:mom_repository}
+\end{figure}
 
 \subsection{System}
+Im System werden Queues mit dem Exchange \autoref{img:mom_system}\\
+Sender und Empfaenger werden jeweils an den Exchange angeschlossen. Fuer Senden und Empfangen jeweils eine Porivided Role.
+
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/mom_system.png}
+  \caption{Anwendungszenario des SpecJms}
+  \label{img:mom_system}
+\end{figure}
 
 \subsection{Usage}
-Ankunftsrate als Hebel um Sende-Empfangrate abzubilden
+Benutzer gibt an ob er empfangen oder senden will. \\
+Benutzer gibt an welche Queue/Topic er wie viel Byte senden/empfangen moechte. \\
+Ankunftsrate als Hebel um Sende-Empfangrate abzubilden \\
 \subsection{Ressource Environment und Allokation}
-Einen Server fuer MOM
+Einen Server fuer Exchange \\
+Jede Queue kann auf anderer Ressource deployed sein. die am Ende mit dem Exchange Server verbunden sein muss.\\
+Fuer LR kann RD angegeben werden.
 
 \section{Ressource Demands}
+Fuer RDs wurden die Messungen aus (Benchmarks) herangezogen. \\ 
+Das Ziel ist, dass der Benutzer keinen MOM spezifischen RD angeben muss. \\
 In \autoref{sec:maxthroughput} wurde gemessen, was die moegliche Datenmenge ist, die gesendet werden kann (Durchsatz). Dieser Wert wird im Ressource Environment in die jeweiligen Linking Ressources eingetragen. Dabei wird fuer den LR zwischen Sender und MOM der Wert fuer keine Empfaenger eingetragen und fuer die LR zwischen Empfaenger und MOM der Wert fuer mit Empfaenger. \\
 
 Latenz einer Nachricht mit verschiedener Bytegroesse wurde ausgemessen (siehe latenz verschiedenen Msg größen). Mithilfe einer Regressionsanalyse konnte ein RD der Form (7 * (msg.BYTESIZE + 110588)) / 489 identifiziert werden.\\
@@ -68,7 +96,6 @@ Latenz einer Nachricht mit verschiedener Bytegroesse wurde ausgemessen (siehe la
 Wo Nachrichten hingeschrieben wurden waren auch ein wichtiger Einflussfaktor. Deshalb wurde fuer RMQ fuer den Fall das Lazy Queues simuliert werden sollen ein RD der Form:... aus der Differenz der Messungen mit und ohne LazyQueues bestimmt. \\
 
 Falls die Netzwerklatenz betrachtet werden soll, kann diese in der jeweiligen LR eingetragen werden.\\
-- TODO: tabelle mit Werten fuer alle RDs
 
 Als Eingabe fuer das System soll im Usage Modell die zu sendende Nachrichtengroesse mithilfe einer UsageVariable und der Characteristic: Bytesize angegeben werden.\\
 
@@ -76,6 +103,9 @@ Die Anzahl an Nachrichten die gesendet oder empfangen werden koennen werden uebe
 ArrivalTime / Anzahl Msgs \\
 oder einfach BYTESIZE = Bytesize * Anazahl Nachrichten \\
 
+- TODO: tabelle mit Werten fuer alle RDs\\
+
+Somit sollte sich fuer die Response Time folgendes ergeben: Response Time: ByteSize / Throughput + RD / CPU + Latency + HddRD/HDD \\
 %RD an Aquire um Latenz abzubilden
 
 %Als erstes sollte die Sende und Empfangsrate abgebildet werden. Beobachtet man (ref zu Messung verschiedene Senderaten) bemerkt man fuer die ersten Messungen, solange Warteschlange nicht allzu voll wird, einen linearen Anstieg der Latenz. Daraus laesst sich zunaechst folgender RD ableiten:
@@ -94,7 +124,7 @@ Uerberpruefe ob die Simulation des Modells mit Benchmark Messung passen.\\
 
 Einfaches Szenario: Sender/Empfaenger, einer sendet, einer empfaengt.\\
 
-Response Time: ByteSize / Throughput + RD / CPU + Latency + HddRD/HDD \\
+
 
 Simulation 1: \\
 Ankunftszeiten gleich \\
