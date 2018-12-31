@@ -15,7 +15,7 @@
 \label{ch:Grundlagen}
 
 \section{Nachrichtenbasierte Middleware (MOM)}
-Ereignissbasierte Systeme bestehen aus Ereignissen, Sendern, Empfängern und einer Middleware \cite{Carzaniga1998}. In einem solchen System werden Ereignisse von einem Sender instanziiert und von einem Empfänger entgegengenommen. Ereignisse sind dabei Datenelemente, die ein bestimmtes Verhalten hervorrufen sollen oder Daten transportieren. Dieser Transport von Ereignissen zwischen Sender und Empfänger wird durch die Middleware ermöglicht. Eine solche Middleware nennt man eine nachrichtenbasierte Middleware (MOM) \cite{Curry05}. Diese bietet eine Infrastruktur zum asynchronen Senden und Empfangen von Nachrichten, in verteilten Systemen an. Teilnehmer einer MOM müssen nicht blockieren und warten, wenn sie eine Nachricht gesendet haben oder empfangen wollen. Dieser asynchroner Mechanismus ist ein großer Vorteil. Außerdem führen MOMs eine Vermittlerschicht zwischen Sender und Empfänger ein, die für den Nachrichtenaustausch genutzt wird. Diese Zwischenschicht führt zu einer losen Kopplung der einzelnen Komponenten.  \\
+Ereignissbasierte Systeme bestehen aus Ereignissen, Sendern, Empfängern und einer Middleware \cite{Carzaniga1998}. In einem solchen System werden Ereignisse von einem Sender instanziiert und von einem Empfänger entgegengenommen. Ereignisse sind dabei signifikante Änderungen eines Zustands (chandy06). Unter signifikant versteht man Änderungen, die das System beeinflussen. Dieser Transport von Ereignissen zwischen Sender und Empfänger wird durch die Middleware ermöglicht. Eine solche Middleware nennt man eine nachrichtenbasierte Middleware (MOM) \cite{Curry05}. Diese bietet eine Infrastruktur zum asynchronen Senden und Empfangen von Nachrichten, in verteilten Systemen an. Teilnehmer einer MOM müssen nicht blockieren und warten, wenn sie eine Nachricht gesendet haben oder empfangen wollen. Dieser asynchroner Mechanismus ist ein großer Vorteil. Außerdem führen MOMs eine Vermittlerschicht zwischen Sender und Empfänger ein, die für den Nachrichtenaustausch genutzt wird. Diese Zwischenschicht führt zu einer losen Kopplung der einzelnen Komponenten.  \\
 %- Vorteile \\
 %- Standards \\
 %-- wie jms and amqp \\
@@ -29,13 +29,34 @@ MOMs unterscheiden sich, neben ihrer Implementierung, in ihrer Architektur. Es g
 \end{itemize}  
 
 \subsection{Warteschlangen}
-Warteschlangen sind ein wichtiger Bestandteil von MOMs, vor allem für deren asynchronen Nachrichtenaustausch. Sender nutzen sie um Nachrichten hinzuschicken. Empfänger nutzen sie um Nachrichten abzuholen. Die Nachrichten in der Warteschlange sind nach einer festgelegten Ordnung geordnet, z.B. First-In-First-Out, also die Nachricht, die als erstes in die Warteschlange eingefügt wurde, wird auch als erste wieder herausgenommen. Eine Warteschlange kann i.d.R. von einem Nutzer konfiguriert werden. Je nach Warteschlange können Größe, Verweildauer, Sortierung, usw. konfiguriert werden.
+Warteschlangen sind ein wichtiger Bestandteil von MOMs, vor allem für deren asynchronen Nachrichtenaustausch. Sender nutzen sie um Nachrichten hinzuschicken. Empfänger nutzen sie um Nachrichten abzuholen. Die Nachrichten in der Warteschlange sind nach einer festgelegten Ordnung geordnet, z.B. First-In-First-Out, also die Nachricht, die als erstes in die Warteschlange eingefügt wurde, wird auch als erste wieder herausgenommen. Eine Warteschlange kann i.d.R. von einem Nutzer konfiguriert werden. Mögliche Konfigurationen für eine Warteschlange können Größe, Verweildauer oder Sortierung sein.
 
 \subsection{Nachrichtenmodelle}
 Wie eine MOM Nachrichten austauscht, wird in ihrem Nachrichtenmodell festgelegt. Man unterscheidet dabei zwischen dem Point-To-Point und dem Publish/Subscribe Modell. Eine MOM kann auch aus einer Kombination der beiden Modelle bestehen um auf bestimmte Szenarien reagieren zu können.
 \begin{itemize}
-\item Im \textbf{Point-To-Point} Modell gibt es beliebig viele Sender und Empfänger und eine Warteschlange. Die Sender senden ihre Nachrichten asynchron an die Warteschlange. Die Nachrichten werden dann von genau einem Empfänger aus der Warteschlange herausgenommen und verarbeitet.
-\item Beim \textbf{Publish/Subscriber} Modell haben der Sender (Publisher) und der Empfänger (Subscriber) keine Informationen über einander. Der Sender sendet seine Nachricht an eine Warteschlange und alle Empfänger die sich bei dieser angemeldet haben und auf Nachrichten warten, erhalten diese Nachricht.
+\item Im \textbf{Point-To-Point} Modell werden Nachrichten von einem Sender an eine bestimmte  Warteschlange gesendet. Normalerweise ist eine Warteschlange mit genau einem Empfänger verbunden. Es können aber auch mehrere Empfänger mit einer Warteschlange verbunden sein. Die Nachrichten werden in diesem Fall nach dem First-Come-First-Serve (FCFS) Prinzip entnommen und verarbeitet. 
+\item Beim \textbf{Publish/Subscriber} Modell verbindet sich der Empfänger (Subscriber) mit der MOM und legt, für die Nachrichten die er Empfangen möchte, Bedingungen fest (Eugster 03). Dabei wird zwischen drei Arten von Bedingungen unterschieden \cite{Rathfelder2013}:
+\begin{itemize}
+    \item Inhaltsbasiert: Dabei lassen sich Filterregeln definieren, die auf den Inhalt und die Payload der Nachrichten angewendet werden können.
+    \item Kanalbasiert: Die MOM bietet verschiedene Kanäle (Channel) an, an die Nachrichten gesendet werden können. Empfänger können sich an einem Kanal anmelden und erhalten alle Nachrichten, die an diesen Kanal gesendet werden.
+    \item Typbasiert: Die Nachrichten werden anhand ihres Typs identifiziert und an die Empfänger weitergeleitet.
+\end{itemize}
+\end{itemize}
+
+\subsection{Interaktionstypen}
+?
+\begin{itemize}
+    \item 1:1
+    \item 1:n
+    \item m:1
+    \item m:n
+\end{itemize}
+\subsection{Grad der Entkopplung}
+?
+\begin{itemize}
+    \item Synchronisation
+    \item Raum
+    \item Zeit
 \end{itemize}
 
 \section{Palladio Komponenten Modell}
@@ -43,7 +64,7 @@ Wie eine MOM Nachrichten austauscht, wird in ihrem Nachrichtenmodell festgelegt.
 In der modellgetriebener Softwareentwicklung (MDSD) \cite{MDSD} werden die Rolle von Modellen im Softwareentwicklungsprozess genutzt. Diese Modelle beschreiben die Software auf einer höheren Abstraktionsebene. Mithilfe von Modelltransformationen können die High-Level-Modelle auf Low-Level-Modelle abgebildet werden, die auch Quellcode enthalten können. Das Ziel der modellgetriebenen
 Softwareentwicklung ist die Verbesserung der Softwarequalität und der Wiederverwendbarkeit.
 Außerdem soll eine Erhöhung der Entwicklungseffizienz, zum Beispiel durch Quellcodeerzeugung aus den Modellen, erreicht werden. \par
-Diesen Ansatz verfolgt auch das Palladio Komponentenmodell (PCM) \cite{palladio17} und liefert die technische Grundlage für die Umsetzung und Evaluierung der in dieser Arbeit vorgestellten Konzepte. Das PCM ist eine Architecture-Description-Language (ADL) und unterstützt die Erstellung skalierbarer, zuverlässiger, wartbarer und wiederverwendbarer komponenentenbasierter Softwarearchitekturen. Neben der Beschreibung sind auch Qualitätsanalysen, wie etwa bezüglich der Performanz oder Zuverlässigkeit möglich. Im Folgenden werden Teile des PCM erklärt, die für die Masterarbeit wichtig sind.
+Diesen Ansatz verfolgt auch das Palladio Komponentenmodell (PCM) \cite{palladio17} und liefert die technische Grundlage für die Umsetzung und Evaluierung der in dieser Arbeit vorgestellten Konzepte. Das PCM ist eine Architecture-Description-Language (ADL) und unterstützt die Erstellung skalierbarer, zuverlässiger, wartbarer und wiederverwendbarer komponenentenbasierter Softwarearchitekturen. Neben der Beschreibung sind auch Qualitätsanalysen, wie etwa bezüglich der Performanz oder Zuverlässigkeit möglich. Im Folgenden werden Teile des PCM erklärt, die für die Masterarbeit benötigt werden.
 
 %\subsection{Viewpoints}
 %- structural (assembly) \\
