@@ -82,16 +82,18 @@ Für jede Nachricht wird die Größe anhand festgelegter Parameter berechnet. Di
 \end{figure}
 
 \section{Beschreibung des Modells}
-Modelle sind uebernommen worden aus diss. Nicht komplettes Modell beschreiben, sondern nur die Modelle der Interaktionen
-\subsection{Repository}
-\subsection{System}
+Modelle sind uebernommen worden aus diss. \\
+beschreibe Ist zustand inklussive MOM
+\subsection{Ist Zustand}
+\subsubsection{Repository}
+\subsubsection{System}
 Direkte Verbindung der Kommunikationen \\
 RD innerhalb von Kommunikation (Verarbeitung von Nachrichten, bevor weiter geleitet, etc.)\\
 Pub/sub ueber EventChannel \\
 Start einer Interaktion wird durch Trigger ausgeloesst \\
-\subsection{Ressource und Allocation}
-\subsection{Usage}
-\subsection{MOM}
+\subsubsection{Ressource und Allocation}
+\subsubsection{Usage}
+\subsubsection{MOM}
 RD fuer jede Moegliche Nachricht angegeben und davor ausgerechnet, siehe \autoref{img:specjmsMsgSizeRd} \\
 \begin{figure}
 \center
@@ -104,10 +106,14 @@ RD fuer jede Moegliche Nachricht angegeben und davor ausgerechnet, siehe \autore
 \subsection{Anpassung des Modells}
 Meine Transformation wird verwendet anstatt Event Transformation \\
 MOM Modell wird nicht verwendet\\
-msg size wird nicht mehr in MOM fuer jede Nachricht berechnet und eingepflegt, sonder werden im UsageModell oder beim EmitEvent (incl) Verteilung mitgegeben \\
+msg size wird nicht mehr in MOM fuer jede Nachricht berechnet und eingepflegt, sondern werden im UsageModell oder beim EmitEvent (incl) Verteilung mitgegeben \\
 
 evtl ankunftsraten anpassen
 
+\subsection{Modell nach Transformation}
+\subsubsection{Interaktion 1}
+
+\subsubsection{Interaktion 3}
 \section{Goal-Question-Metric}
 TODO aktualisieren \\
 Die GQM-Methode \cite{gqm} spezifiziert Ziele für das zu validierende Konzept. Daraufhin werden zu den Zielen Fragen spezifiziert, mit denen die Erfüllung des Ziels überprüft werden soll. Schließlich werden Metriken festgelegt, durch die die Fragen beantwortet werden sollen. In \autoref{tab:gqm} sind erste Überlegungen festgehalten. Diese Überlegungen sind nicht vollständig und werden im Rahmen der Masterarbeit weiter ausgebaut.\par
@@ -152,14 +158,24 @@ Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modelli
 \end{table}
 
 \section{Modell vs Implementierung}
-CPU Auslastung des Specjms vs. Modellierung\\
-Response Time der einzelnen UsageScenarien aufaddieren um auf Interaction Time zu kommen. Vergleich mit Interaction time des Specjms\\
-wie ist die Genauigkeit? Besser, gleich, schlechter\\
+%CPU Auslastung des Specjms vs. Modellierung\\
+Fehler \% = |modell - messung| / messung * 100 \\
+mehrer Messungen für Interaktion => Boxplot, der einen Median zeigt. Mit diesem wird dann das Modell verglichen.
+\subsection{Interaktion 1}
+evtl noch versch Groessen?
+\subsubsection{Msg Rate 1}
+\subsubsection{Msg Rate Standard}
+\subsubsection{Msg Rate Lastszenario}
+Queue fuellt sich im Modell und in echt
+\subsubsection{Lazy Konfiguration}
+
+\subsection{Interaktion 3}
 
 
 \section{Zusammenfassung}
 Was ist das Ergebnis \\
-Vergleich zu davor \\
+wie ist die Genauigkeit? Besser, gleich, schlechter\\
+Vergleich zu davor, auch mit Modellierungsaufwand \\
 
 %Modellierung eroeffnet neue moeglichkeiten\\
 

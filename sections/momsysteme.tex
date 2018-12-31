@@ -13,7 +13,7 @@
 
 
 \chapter{Untersuchung von nachrichtenbasierter Middleware}
-
+\label{sec:mom}
 Auswahl von MOMs
 
 Vorstellung der MOMs
@@ -92,6 +92,7 @@ In diesem Abschnitt sollen die benutzten Maschinen Dokumentiert werden, mit dene
 \end{itemize}
 
 \subsection{RMQ}
+\label{sec:rmqBenchmark}
 Im Folgenden soll besprochen werden, welche Eigenschaften in RMQ Auswirkungen auf die Performanz haben. Dazu wurde das Performanz Test Werkzeug von RMQ benutzt. Dieses erlaubt es die gesendeten und empfangenen Nachrichten und ihre Latenz zu messen. Dabei ist die Zeit gemeint, die eine Nachricht braucht bis sie vom Empfänger aus der Warteschlange herausgenommen wird, nachdem sie vom Sender dort abgelegt wurde. Das Werkzeug kann konfiguriert werden um bestimmte Szenarien zu simulieren. Unter anderem laesst sich die Anzahl zu sendenden und zu empfangenen Nachrichte pro Sekunde einstellen. Eine weitere Konfiguration ist das einstellen bestimmte Nachrichtengroessen. Im Folgenden sollen die Ergebnisse der Messungen vorgestellt werden. Dabei werden die einzelnen Ergebnisse und ihr Versuchsaufbau vorgestellt.
 %\subsection{Ergebnisse}
 %In diesem Abschnitt werden die Ergebnisse der Performanzmessungen von RMQ vorgestellt. 
@@ -100,13 +101,14 @@ Die benutzten Systeme sind in \autoref{sec:testmachine} beschrieben. Sollten sic
 
 
 \subsubsection{Latenz einer Nachricht}
+\label{sec:oneMsgLatency}
 Zunaechst soll geprueft werden wie die Latenz einer einzelnen Nachricht ist. Dabei wurde auch die groesse einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengroesse varriert zwischen 100 Byte und 100.000 Bytes.
 %B
 Die Ergebnisse sind in \autoref{img:senderate1-A} zu sehen. Dabei ist zu sehen, dass die Latenz mit Ansteigen der Groesse auch waechst. 
 %Im durchshnitt kann man eine Latenz von 2627 Mikrosekunden beobachten. In \autoref{img:senderate1-B} sind die Ergebnisse mit Testsystem B zu sehen. Hier wird im durchshnitt eine hoehere Latenz von 29237 Mikrosekunden beobachten. 
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/ratelimit1.png}
+  \includegraphics[width=0.5\textwidth]{images/measurement/rate-limit-1-A.png}
   \caption{Senderate 1/sec, Testsystem A}
   \label{img:senderate1-A}
 \end{figure}
@@ -116,7 +118,7 @@ Die laengere Latenz in der zweiten Messung laesst sich auf die Netzwerklatenz zu
 
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/ratelimit1.png}
+  \includegraphics[width=0.5\textwidth]{images/measurement/rate-limit-1-AvsB.png}
   \caption{Senderate 1/sec, Testsystem A}
   \label{img:senderate1-B}
 \end{figure}
@@ -142,7 +144,7 @@ Nachdem die Effekte der zueahmende Nachrichtengroesse grprueft wurden, soll nun 
 Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfaenger vorhanden ist, mit zunehmender Nachrichtengroesse die insgesamt gesendete Datenmenge an einen Wert bei ca. 230 MByte/s annaehert. Wenn ein Empfaenger vorhanden ist, naehert sich die Datenmenge an 174 MByte/s an.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/max-byte-throughput-A.png}
+  \includegraphics[width=1\textwidth]{images/measurement/rate-limit-unlimited-consumer-vs-no-consumer.png}
   \caption{Max Datenmenge ca. 230/174 (kein Empfaenger/mit Empfaenger), Testsystem A}
   \label{img:maxByteThroughputA}
 \end{figure}
@@ -156,22 +158,21 @@ Ein weiterer Effekt ist in \autoref{img:unlimitedLatency} zu sehen. Dabei ist zu
 \end{figure}
 Dieser Effekt laesst sich darauf zurueckfuehren, dass wenn mehrere Nachrichten auf einmal gesendet werden der Broker weniger routing overhead hat.
 
-Die selbe Messung wurde an dem enfernten Testsystem B ausgefuehrt. %Auf Testsystem B wurde die selbe Messung durchgefuehrt. 
-%Die Ergebnisse sind in \autoref{img:maxByteThroughputB} zu sehen. Die Datenmengen sind hier weniger gross. Bei dem Fall, dass kein Empfaenger vorhanden ist, naehert sich die  insgesamt gesendete Datenmenge an den Wert 1.1 MByte/s an. Wenn ein Empfaenger vorhanden ist, naehert sich die Datenmenge ebenfalls an 1.1 MByte/s an.
-%\begin{figure}
-%\center
- % \includegraphics[width=1\textwidth]{images/max-byte-throughput-B.png}
-%  \caption{Max Datenmenge ca. 1.1/1.1 (kein Empfaenger/mit Empfaenger), Testsystem B}
-%  \label{img:maxByteThroughputB}
-%\end{figure}
+Die selbe Messung wurde an dem enfernten Testsystem B ausgefuehrt. Die gegenueberstellung fuer den Fall ohne Empfaenger ist in \autoref{img:maxByteThroughputNoConsumerB} zu sehen. Die an das System B gesendete Datenmenge ist um den Faktor (ca 3) kleiner. Die Messung mit Empfaenger ist in \autoref{img:maxByteThroughputB} abgebildet. In diesem Fall ist die an das System B gesendete Datenmenge um den Faktor (ca 2) kleiner.
+\begin{figure}
+\center
+ \includegraphics[width=1\textwidth]{images/measurement/rate-limit-unlimited-no-consumer-AvsB.png}
+  \caption{Max Datenmenge ohne Empfaenger (Remote)}
+  \label{img:maxByteThroughputNoConsumerB}
+\end{figure}
+\begin{figure}
+\center
+ \includegraphics[width=1\textwidth]{images/measurement/rate-limit-unlimited-AvsB.png}
+  \caption{Max Datenmenge mit Empfaenger (Remote)}
+  \label{img:maxByteThroughputB}
+\end{figure}
 %E
-%Die Messung zeigt einen limitierenden Faktor bzgl. der moeglich zu sendenden Nachrichtenmege. Dieser wird vor allem bei Testsystem B bemerkbar. Dort ist die moegliche zu sendende Datenmenge 1.1 Mbyte, was mit einer Upload Messung uebereinstimmt. Somit koennen in bestimmten Situationen nicht genug Daten gesendet werden und der Durchsatz wird limitiert.
-
-
-%E
-%Diese Unterschiede lassen sich auf die Netzwerklatenz zuruckfuehren. Im Testsystem A befinden sich Sender, Empfaenger und Brooker auf einer Maschine. Deshalb gibt es keine Netzwerklatenz und die Durchnittslatenz ist dementspraechend niedrig. Bei Testsystem B befinden sich der Brooker und der Empfaenger auf einer anderen Maschine. Deshalb spielt die Netzwerklatenz hier eine Rolle und die Latenz einzelner Nachrichten ist dementsprechend hoeher. Somit konnte ein Einflussfaktor fuer die Performanz identifiziert werden. 
-
-
+Obwohl beide Testmaschinen vom selben Anbieter sind, unterscheiden sich die moeglichen Datenmengen zwischen einem lokalen und entfernten Broker. Diesen unterschied kann auf den moeglichen Durchsatz einer Netzwerkverbingung zuruckgefuehrt werden. Somit ist der moegliche Durchsatz einer Verbindung zwischen Sender, Empfaenger und dem Broker ein limitierender Faktor und hat somit auch einfluss auf die Performanz des Gesamtsystems.
 
 
 \subsubsection{MaxLength}
@@ -181,8 +182,8 @@ RMQ erlaubt es die Warteschlangen groesse zu limitieren. Ausserdem kann eine Str
 Die Ergebnisse sind in \autoref{img:maxlength} zu sehen. Zu sehen ist, dass die Latenz bei den begrenzten Warteschlangen ab einem bestimmte Zeitpunkt nicht weiter anwaechst. Die Latenz der unbegrenzten Warteschlange waechst dagegen immer weiter.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/max-length.png}
-  \caption{Senderate 1000/sec, Empfangsrate 100/sec, Warteschlangenlaenge (links nach rechts) 100/5000/50.000}
+  \includegraphics[width=1\textwidth]{images/measurement/max-length.png}
+  \caption{Senderate 1000/sec, Empfangsrate 100/sec}
   \label{img:maxlength}
 \end{figure}
 %E
@@ -198,6 +199,7 @@ Sollte der verfuegbare Speicher des Broker ausgeschoepft sein, wird der MemoryAl
 TODO beobachtung und Ergebnis
 
 \subsubsection{Ansteigen der Queuelaenge}
+\label{sec:queueGrowth}
 TODO: \\
 Sender 2 Nachrichten \\
 Empfaenger 1 Nachricht \\
@@ -205,6 +207,7 @@ evtl. mehrere Verhaeltnisse \\
 Fuellstand der Queue steigt an \\
 
 \subsubsection{Lazy Queues}
+\label{sec:rmqLazy}
 %https://www.rabbitmq.com/lazy-queues.html
 Seit RabbitMQ 3.6.0 erlaubt RMQ, dass Nachrichten einer Warteschlange direkt auf die Festplatte, anstatt in den Hauptspeicher, geschrieben werden. Diese Art von Warteschlange wird als Lazy-Queue bezeichnet. Das Ziel dabei ist, sehr lange Warteschlange zu unterstuetzen. Dies kann aus verschiedenen Gruenden noetig sein. 
 \begin{itemize}
@@ -214,10 +217,10 @@ Seit RabbitMQ 3.6.0 erlaubt RMQ, dass Nachrichten einer Warteschlange direkt auf
 \end{itemize}
 Das heisst die Hauptziele bei dieser Konfiguration sind vorallem Zuverlaessigkeit. In der naechsten Messung soll untersucht werden ob diese Konfiguration Auswirkungen auf die Performanz hat. Die Senderate wurde auf eine Nachricht pro Sekunde limitiert. Die groesse der gesendeten Nachrichten varriieren zwischen 100 Byte und 100.000 Bytes.
 %B
-In \autoref{img:lazy} sind die Ergebnisse der Messung zu sehen. Ausserdem sind in der Abbildung die Ergebniss aus der Messung aus \autoref{sec:rate1} eingetragen. Zu sehen ist, dass die Latenz mit Lazy Warteschlangen groesser ist, als ohne.
+In \autoref{img:lazy} ist ein Vergleich der Messung aus \autoref{sec:rate1} und den Messergebnissen mit Lazy Warteschlangen abgebildet. Zu sehen ist, dass die Latenz mit Lazy Warteschlangen groesser ist, als ohne.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/lazy.png}
+  \includegraphics[width=1\textwidth]{images/measurement/lazy-queues.png}
   \caption{Lazy Queue vs not Lazy Queue}
   \label{img:lazy}
 \end{figure}
@@ -232,7 +235,7 @@ In \autoref{subsub:maxlength} war bereits zu sehen, dass volle Warteschlangen ei
 In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. Darin ist zu sehen, dass ein Empfanger mit gedrosselter Empfangsrate nicht hinterherkommt die Warteschlange abzuarbeiten und somit die Latenz sehr schnell steigt. Bei zwei Empfaenger, mit einer gemeinsamen Empfangsrate von 400 Nachrichten die Sekunde, steigt die Latenz nicht ganz so schnell, aber auch hier kommen die Empfanger nicht hinterher die Warteschlange abzuarbeiten. Mit fuenf Empfaenger und einer gemeinsamen Empfangsraten von 1000 Nachrichten, schaffen sie es die Warteschlange abzuarbeiten. Im Vergleich zu der Referenzmessung mit einem Empfaenger, beinhaltet die Messung mit mehreren Empfaengern einige Schwankungen.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/varyingConsumer.jpg}
+  \includegraphics[width=1\textwidth]{images/measurement/varying-consumer.png}
   \caption{Verschiedene Empfaenger Anzahl}
   \label{img:varyingConsumer}
 \end{figure}
@@ -245,7 +248,7 @@ Diese Messung soll ueberpruefen ob es einen Unterschied macht ob mehrere Sender 
 In \autoref{img:varyingProducer} sind die Ergebnisse dieser Messung zu sehen. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/varyingProducer.jpg}
+  \includegraphics[width=1\textwidth]{images/measurement/varying-producer.png}
   \caption{Verschiedene Sender Anzahl}
   \label{img:varyingProducer}
 \end{figure}

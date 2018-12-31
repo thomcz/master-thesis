@@ -87,13 +87,15 @@ Jede Queue kann auf anderer Ressource deployed sein. die am Ende mit dem Exchang
 Fuer LR kann RD angegeben werden.
 
 \section{Ressource Demands}
+\subsection{RMQ}
+\label{sec:rmqRd}
 Fuer RDs wurden die Messungen aus (Benchmarks) herangezogen. \\ 
 Das Ziel ist, dass der Benutzer keinen MOM spezifischen RD angeben muss. \\
 In \autoref{sec:maxthroughput} wurde gemessen, was die moegliche Datenmenge ist, die gesendet werden kann (Durchsatz). Dieser Wert wird im Ressource Environment in die jeweiligen Linking Ressources eingetragen. Dabei wird fuer den LR zwischen Sender und MOM der Wert fuer keine Empfaenger eingetragen und fuer die LR zwischen Empfaenger und MOM der Wert fuer mit Empfaenger. \\
 
 Latenz einer Nachricht mit verschiedener Bytegroesse wurde ausgemessen (siehe latenz verschiedenen Msg größen). Mithilfe einer Regressionsanalyse konnte ein RD der Form (7 * (msg.BYTESIZE + 110588)) / 489 identifiziert werden.\\
 
-Wo Nachrichten hingeschrieben wurden waren auch ein wichtiger Einflussfaktor. Deshalb wurde fuer RMQ fuer den Fall das Lazy Queues simuliert werden sollen ein RD der Form:... aus der Differenz der Messungen mit und ohne LazyQueues bestimmt. \\
+Wo Nachrichten hingeschrieben wurden waren auch ein wichtiger Einflussfaktor. Fuer eine Nachricht der Groesse x konnte ein RD der Form e * x / 1000 identifiziert werden. Dieser wurde aus der Differenz der Messungen mit und ohne LazyQueues errechnet. \\
 
 Falls die Netzwerklatenz betrachtet werden soll, kann diese in der jeweiligen LR eingetragen werden.\\
 
@@ -118,49 +120,83 @@ Somit sollte sich fuer die Response Time folgendes ergeben: Response Time: ByteS
 %Latenz: Unter Latenz versteht man im MOM Kontext, die Zeit, die eine einzelne Nachricht braucht um beim Consumer anzukommen. Da jede Nachricht einen Zeitstempel bekommt kann die Zeit gemessen werden, wenn sie aus der Warteschlange entnommen wurde.
 
 %welche Effekte koennen wir so hoffentlich abbilden
+\subsection{Kafka}
 
-\section{Untersuchung des MOM Bausteins}
-Uerberpruefe ob die Simulation des Modells mit Benchmark Messung passen.\\
-
-Einfaches Szenario: Sender/Empfaenger, einer sendet, einer empfaengt.\\
-
-
-
-Simulation 1: \\
-Ankunftszeiten gleich \\
-Bytesize sind zwische 100 und 10000 \\
-Queue sollte immer leer sein, weil Nachricht gleich raus genommen \\
-Vergleich mit echten Messungen \\
-- RespnseTime \\
-- Queue verhalten \\
-
-Simulation 2: \\
-- Simulation 1, aber diesmal mit Latenz (bei Linking Ressouce)\\
-
-Simulation 3: \\
-- unterschiedliche Ankuftszeiten Sender 0.5 und Empfaenger 1 \\
--> Ansteigen der Queue \\
-
-Simulation 4: \\
-Wie simulation 3, aber jetzt weiterer Empfaenger mit gleicher Ankunftszeit \\
--> Queue wieder leer\\
-
-Simulation 5: \\
-- Max Durchsatz \\
-- eine Nachricht mit max Bytesize schicken \\
--> Response time sollte kontinuirlich ansteigen \\
-
-
-Simulation 6: \\
-- lazyqueues \\
-- HDD RD hinzufuegen \\
--> Response time sollte ansteigen \\
+\section{Untersuchung der MOM Bausteine}
+In diesem Abschnitt sollen die Bausteine in bestimmten Szenarien ueberprueft werden. Dabei sollen die Simulations- und Messergebnisse aus \autoref{sec:mom} verglichen werden.
+\subsection{RMQ}
+Im Folgenden betrachten wir das in (Abb) abgebildete Szenario. Darin befindet sich ein Sender und ein Empfaenger. Der Sender sendet pro Zeiteinheit und der Empfaenger empfaengt pro Zeiteinheit eine bestimmte Menge an Daten. Dieses Szenario soll den Benchmark widerspiegeln, der fuer das ausmessen von RMQ in \autoref{sec:rmqBenchmark} verwendet wurde.
 
 
 
-%Die Nachrichtenmenge sollen ueber die Ankunftsrate des Senders und Empfaengers geregelt werden. Die Idee ist, dass es keinen Unterschied macht ob ein sender pro Zeiteinheit 1000 Nachrichten verschickt oder pro Zeiteinheit 1000 mal Ankommt und jeweils eine Nachricht verschickt. Sommit erhalten wir fuer Sende- und Empfangsrate die Formel: 1 / Senderate.
+
+\subsubsection{Simulation 1} 
+\label{sec:rmqSimulation1}
+In der ersten Simulation betrachten wir den Fall, dass Sender und Empfaenger die gleichen Ankunftszeiten haben. Die gesendete Nachrichten haben die groessen 100, 200, 300, 400, 500 und 1000 Kbyte. Verglichen wurde mit den Messungen aus \autoref{sec:oneMsgLatency}. Der Sender, Empfaenger und der Broker befinden sich jeweils auf der selben Maschine. Betrachtet wurden der Fuellstand der Warteschlange und die Latenz der Nachrichten. 
+%B
+Da die Ankunftszeiten der beiden Akteure gleich sind, bleibt die Warteschlange die ganze Zeit ueber Leer. Die Ergebnisse der Latenz einer Nachricht sind in \autoref{img:simulation1} abgebildet. ...
+
+\begin{figure}
+\center
+  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation1.png}
+  \caption{Latenz einer Nachricht mit verschiedenen Groessen (Modell vs. Real System)}
+  \label{img:simulation1}
+\end{figure}
+
+\subsubsection{Simulation 2} 
+Diese Simulation betrachtet zusaetzlich zu dem Fall aus Simulation 1 die Netzwerklatenz mit. Dazu sind Sender, Empfaenger und Broker auf unterschiedlichen Maschinen. Die Nachrichten haben wieder die groessen 100, 200, 300, 400, 500 und 1000 Kbyte. Im Modell wurden fuer die LinkingRessources der Durchsatz und die Latenz, wie in \autoref{sec:rmqRd} beschrieben, angepasst. Die Messung mit der verglichen wurde ist in \autoref{sec:oneMsgLatency} beschrieben. Auch bei diesem Vergleich wurde der Fuellstand der Warteschlange und die Latenz der Nachrichten betrachtet. 
+%B
+Auch hier bleibt die Warteschlange leer, da die Ankuftszeiten der Sender und Empfaenger gleich sind. Die Latenz der Nachrichten ist in \autoref{img:simulation2} abgebildet. 
+\begin{figure}
+\center
+  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation2.png}
+  \caption{Latenz einer Nachricht mit verschiedenen Groessen mit Netzwerklatenz (Modell vs. Real System)}
+  \label{img:simulation2}
+\end{figure}
 
 
+\subsubsection{Simulation 3}
+In dieser Simulation soll geprueft werden ob sich Modell und Real System bei unterschiedlichen Ankuftszeiten gleich verhalten. Dabei ist die Ankuftszeit des Senders jede Sekunde und die des Empfangers alle zwei Sekunde. Der Fuellstand der Warteschlange wird ueber die Zeit betrachtet. Verglichen wurde mit der Messung aus \autoref{sec:queueGrowth}.
+%B
+Die Ergebnisse sind in \autoref{img:simulation3} abgebildet. Dabei ist zu sehen, dass sich Messung und Simulation gleich verhalten und ueber die Zeit ansteigen.
+\begin{figure}
+\center
+  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation3.png}
+  \caption{Anwachsen der Warteschlange (Modell vs. Real System)}
+  \label{img:simulation3}
+\end{figure}
+
+\subsubsection{Simulation 4}
+Bei der folgenden Simulation ist die Ankuftszeit des Senders jede Sekunde und die des Empfangers alle zwei Sekunden. Im Unterschied zur vorherigen Simulation gibt es einen weiterern Empfaenger, der auch jede zweite Sekunde ankommt. Ziel dieser Simulation soll sein, zu pruefen ob zwei Empfaenger die Warteschlange zusammen abarbeiten koennen, wie es auch im realen System ist, wie in \autoref{sec:varyingConsumer} beschriebenen.
+%B
+\autoref{img:simulation4} zeigt den Zustand der Warteschlange ueber die Zeit. Im Unterschied zu \autoref{img:simulation3}, bekommen die beiden Empfaenger die Warteschlange gemeinsam abgearbeitet.
+
+\begin{figure}
+\center
+  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation4.png}
+  \caption{Gemeinsames Abarbeiten einer Warteschlange durch zwei Empfaenger (Modell)}
+  \label{img:simulation4}
+\end{figure}
+
+%Simulation 5: \\
+%- Max Durchsatz \\
+%- eine Nachricht mit max Bytesize schicken \\
+%-> Response time sollte kontinuirlich ansteigen \\
+
+
+\subsubsection{Simulation 5}
+Die letzte Simulation betrachtet den Fall von Lazy Warteschlangen in RMQ. Sender und Empfaenger haben die gleiche Ankunftszeiten und die gesendete Nachrichten haben die Groessen 100, 200, 300, 400, 500 und 1000 Kbyte. Der RD fuer eine Nachricht wurde erweitert. Dieser ist in \autoref{sec:rmqRd} beschrieben. Erwartet wird, dass die Latenz im Vergleich zu \autoref{sec:rmqSimulation1} ansteigt. Verglichen wurde mit der Messung aus \autoref{sec:rmqLazy}.
+%B
+Die Ergebnisse sind in \autoref{img:simulation6} abgebildet. Wie zu erwarten steigt die Latenz an. Im Vergelich zur realen Messung liegt der Unterschied bei x Prozent.
+\begin{figure}
+\center
+  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation6.png}
+  \caption{Latenz einer Nachricht mit verschiedenen Groessen bei Lazy Warteschlangen (Modell vs. Real System)}
+  \label{img:simulation6}
+\end{figure}
+
+
+\subsection{Kafka}
 
 \section{Grenzen}
 Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen\\
