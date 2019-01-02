@@ -32,6 +32,7 @@ MOMs unterscheiden sich, neben ihrer Implementierung, in ihrer Architektur. Es g
 Warteschlangen sind ein wichtiger Bestandteil von MOMs, vor allem für deren asynchronen Nachrichtenaustausch. Sender nutzen sie um Nachrichten hinzuschicken. Empfänger nutzen sie um Nachrichten abzuholen. Die Nachrichten in der Warteschlange sind nach einer festgelegten Ordnung geordnet, z.B. First-In-First-Out, also die Nachricht, die als erstes in die Warteschlange eingefügt wurde, wird auch als erste wieder herausgenommen. Eine Warteschlange kann i.d.R. von einem Nutzer konfiguriert werden. Mögliche Konfigurationen für eine Warteschlange können Größe, Verweildauer oder Sortierung sein.
 
 \subsection{Nachrichtenmodelle}
+\label{sec:nachrichtenmodelle}
 Wie eine MOM Nachrichten austauscht, wird in ihrem Nachrichtenmodell festgelegt. Man unterscheidet dabei zwischen dem Point-To-Point und dem Publish/Subscribe Modell. Eine MOM kann auch aus einer Kombination der beiden Modelle bestehen um auf bestimmte Szenarien reagieren zu können.
 \begin{itemize}
 \item Im \textbf{Point-To-Point} Modell werden Nachrichten von einem Sender an eine bestimmte  Warteschlange gesendet. Normalerweise ist eine Warteschlange mit genau einem Empfänger verbunden. Es können aber auch mehrere Empfänger mit einer Warteschlange verbunden sein. Die Nachrichten werden in diesem Fall nach dem First-Come-First-Serve (FCFS) Prinzip entnommen und verarbeitet. 
@@ -58,13 +59,39 @@ Wie eine MOM Nachrichten austauscht, wird in ihrem Nachrichtenmodell festgelegt.
     \item Raum
     \item Zeit
 \end{itemize}
+\section{Java Message Service (JMS)}
+Der Java Message Service (JMS) ist eine standardisierte Programmierschnittstelle (API) (Hapner JMS Specification). Sie dient dazu Java Applikationen Zugriff auf nachrichtenbasierten Middlewares zu geben. Im JMS Umfeld wird die MOM als JMS Server und die Applikationen die die API verwenden, um Nachrichten auszutauschen, als JMS Klienten bezeichnet. JMS ist Teil der Java Platform Enterprise Edition, die Standards für Enterprise Applikationen definiert. JMS unterstützt verschiedene Nachrichtentypen, wie Text-, Byte- oder Objektnachrichten. Es werden die beiden oben vorgestellten Nachrichtenmodelle, Punkt-Zu-Punkt und Publish/Subscriber Modell unterstützt.
+Die API wird bei der Untersuchung der MOM und bei der Evaluierung benötigt.
 
+\section{Modellgetriebene Softwareentwicklung}
+In der modellgetriebenen Software-Entwicklung \cite{MDSD} werden Teile des Software-Systems innerhalb von Modellen unter Nutzung von Abstraktionen beschrieben. Modelle sind Entwicklungsartefakte und Systembestandteile oder erlauben das automatische Ableiten von Systemartefakten. Das Ziel der modellgetriebenen Softwareentwicklung ist, die Verbesserung der Softwarequalität und der Wiederverwendbarkeit. Außerdem soll eine Erhöhung der Entwicklungseffizienz, zum Beispiel durch Quellcodeerzeugung, aus den Modellen erreicht werden.
+
+\subsection{Modell}
+Nach Herbert Stachowiak \cite{Stachowiak1973} zeichnet sich ein Modell durch die folgenden drei Merkmale aus.
+\begin{itemize}
+\item \textbf{Abbildung} - Bei einem Modell handelt es sich um eine Abbildung oder Repräsentation von einem künstlichen oder natürlichen Original. Das Original kann selbst wieder ein Modell sein. 
+\item \textbf{Verkürzung} - Es werden nicht alle Attribute des Originals erfasst, sondern nur diejenigen, die relevant sind.
+\item \textbf{Pragmatismus} - Modelle erfüllen ihre Ersatzfunktion für bestimmte Subjekte, innerhalb einer bestimmten Zeit und unter Einschränkung bestimmter gedanklicher oder tätlicher Operationen. Beispielsweise benötigt eine Analyse je nach gewünschter Genauigkeit, unterschiedlich genaue Modelle. Der Pragmatismus schreibt vor, dass man hier nicht unnötig genau arbeitet.
+\end{itemize} 
+\subsection{Meta-Modell}
+Ein Meta-Modell beschreibt die Struktur eines Modells. Dabei muss ein Meta-Modell die folgenden Bereiche abdecken:
+\begin{itemize}
+\item \textbf{Abstrakte Syntax}: Sie beschreibt die Konstrukte, aus denen die Modelle bestehen, sowie deren Eigenschaften und Beziehungen.
+\item \textbf{Konkrete Syntax}: Diese beschreibt die Darstellung der Konstrukte, Eigenschaften und Beziehungen, die in der abstrakten Syntax spezifiziert sind.
+\item \textbf{Statische Semantik}: Mithilfe dieser werden Modellierungsregeln und Einschränkungen ausgedrückt, die mit der abstrakten Syntax nicht möglich sind.
+\item \textbf{Dynamische Semantik}: Sie drückt die Bedeutung der Konstrukte aus und wird oft nicht formal, sondern durch natürlich sprachlichen Text spezifiziert.
+\end{itemize}
+
+\subsection{Modeltransformation}
+Bei der Modelltransformation (Kleppe, Warmer und Bast 2003) wird ein Quellmodell in ein Zielmodell übersetzt. Dies geschieht mithilfe einer Transformationsdefinition. Die Transformationsdefinition besteht aus einer Menge von Transformationsregeln, die beschreiben wie ein Modell in ein anderes überführt wird. Dabei wird zwischen zwei Arten der Modelltransformation unterschieden:
+\begin{itemize}
+    \item Modell-Zu-Modell: Dabei wird ein Quellmodell, dass zu einem Quellmetamodell konform ist in ein Zielmodell, dass zu einem Zielmetamodell konform ist, transformiert.
+    \item Modell-Zu-Text: Dabei wird ein Modell in eine oder mehrere Textdateien übersetzt. Meistens beinhalten diese Quellcode einer gegebenen Programmiersprache. Eine Transformation kann aber auch Dokumentation oder Konfiguartionen generieren.
+\end{itemize}
+Für die Masterarbeit wurde eine Modell-Zu-Modell Transformation beschrieben/entwickelt.
 \section{Palladio Komponenten Modell}
 \label{sec:palladio}
-In der modellgetriebener Softwareentwicklung (MDSD) \cite{MDSD} werden die Rolle von Modellen im Softwareentwicklungsprozess genutzt. Diese Modelle beschreiben die Software auf einer höheren Abstraktionsebene. Mithilfe von Modelltransformationen können die High-Level-Modelle auf Low-Level-Modelle abgebildet werden, die auch Quellcode enthalten können. Das Ziel der modellgetriebenen
-Softwareentwicklung ist die Verbesserung der Softwarequalität und der Wiederverwendbarkeit.
-Außerdem soll eine Erhöhung der Entwicklungseffizienz, zum Beispiel durch Quellcodeerzeugung aus den Modellen, erreicht werden. \par
-Diesen Ansatz verfolgt auch das Palladio Komponentenmodell (PCM) \cite{palladio17} und liefert die technische Grundlage für die Umsetzung und Evaluierung der in dieser Arbeit vorgestellten Konzepte. Das PCM ist eine Architecture-Description-Language (ADL) und unterstützt die Erstellung skalierbarer, zuverlässiger, wartbarer und wiederverwendbarer komponenentenbasierter Softwarearchitekturen. Neben der Beschreibung sind auch Qualitätsanalysen, wie etwa bezüglich der Performanz oder Zuverlässigkeit möglich. Im Folgenden werden Teile des PCM erklärt, die für die Masterarbeit benötigt werden.
+Das Palladio Komponentenmodell (PCM) \cite{palladio17} ist eine Architecture-Description-Language (ADL) und unterstützt die Erstellung skalierbarer, zuverlässiger, wartbarer und wiederverwendbarer komponenentenbasierter Softwarearchitekturen. Neben der Beschreibung sind auch Qualitätsanalysen, wie etwa bezüglich der Performanz oder Zuverlässigkeit möglich. Im Folgenden werden Teile des PCM erklärt, die für die Masterarbeit benötigt werden.
 
 %\subsection{Viewpoints}
 %- structural (assembly) \\
@@ -83,8 +110,7 @@ und welche Parameter im Kontrollfluss verwendet werden, stammt vom \textbf{Domä
 Komponenten ist der \textbf{Komponentenentwickler} verantwortlich. Diese modelliert er im \textbf{Komponen-ten-Repository-Modell}. Es enthält die einzelnen Komponenten und Schnittstellen.
 \item Die Zusammenstellung der Systemumgebung der Software wird vom \textbf{Softwareverteilungsexperten} übernommen. Diese wird von ihm im \textbf{Ausführungsum-gebungs-Modell} festgehalten. Außerdem weist der Softwareverteilungsexperte den Komponenten Ressourcen zu. Dies hält er im \textbf{Komponenten-Allokations-Modell} fest.
 \end{itemize}
-
-Mithilfe der Modellierung der MOMs sollen die verschiedenen Rollen unterstützt werden. Im Rahmen der Masterarbeit wird nicht jede Rolle betrachtet werden. Die Hauptrollen, die mit diesem Ansatz unterstützt werden sollen, sind der Softwarearchitekt und der Softwareverteilungsexperte. 
+Die Modelle, die von den verschiedenen Rollen entwickelt und gewartet werden, bilden zusammen eine Palladio Modell Instanz. Mithilfe der Modellierung einer MOM sollen die verschiedenen Rollen unterstützt werden. 
 \subsection{Qualitätsattribute}
 \subsubsection{Performanz} 
 %(Buch S. 93/94)
@@ -109,39 +135,29 @@ In Palladio ist es möglich Fehlerwahrscheinlichkeiten an Komponenten und Ressou
 \subsubsection{Kosten}
 Hohe Anforderungen führen meist zu hohen Kosten. Deshalb muss i.d.R. zwischen Kosten und Performanz oder Verlässlichkeit abgewogen werden. Palladio ermöglicht Kosten an Komponenten und Ressourcen zu annotieren um Gesamtkosten abzuschätzen und eine Abwägung zwischen den Qualitätsattributen zu treffen. Im Rahmen der Masterarbeit wird dieses Qualitätsattribut nicht betrachtet.
 
-\subsection{Ereignisse (Events in Palladio)}
-Wird spaeter bei der Transformation benoetigt \\
-Elemente beschreiben? \\
-Mit Bildern?\\
+\subsection{Ereignisse im PCM}
+(Konzept erklären und nicht genaue Elemente des MM) \\
 %Disertation s.103
+In der Arbeit \cite{Rathfelder2013} wurden Events als Elemente erster Klasse in PCM eingeführt. Im Folgenden sollen Events in PCM vorgestellt werden, da diese im späteren Verlauf der Masterarbeit wiederverwendet werden sollen. \par
+In eventbasierten Systemen wird die Geschäftslogik in sogenannten Event-Handlern  Methoden implementiert und ausgeführt, wenn ein bestimmtes Event beim Empfänger ankommt. Der Sender und Empfänger müssen das jeweilige Event unterstützen, damit sie damit kommunizieren können. In Komponentenbasierten Systemen werden solche Anforderungen mithilfe von Schnittstelen, die einen Vertrag zwischen den kommunizierenden darstellt, umgesetzt. In eventbasierten System besteht ein solcher Vertrag nicht aus Funktionen, sondern aus Events, die gesendet und empfangen werden können. In PCM wurde dazu eine EventGroup eingeführt. Diese bietet wie ein Interface, eine Schnittstelle für zwei Komponenten an. Eine EventGroup beinhaltet anstatt einer Signatur, einen oder mehrere EventTypen. Ein EventType kann dabei einen Payload haben. Eine Komponente die Events aus einer EventGroup sendet, benötigt einen SourcePort. Die Komponente die Events einer EventGroup empfängt hat dagegen einen SourcePort. Diese beiden Elemente verhalten sich ähnlich zu einer RequiredRole und ProvidedRole. Bei einer RequiredRole wird angegeben, welche Schnittstelle benötigt wird, damit eine Komponenten ihren Dienst anbieten kann. Mit einer ProvidedRole, bietet eine Komponente ihren Dienst, über eine Schnittstelle an. 
 
-Source Port: Komponenten die Event triggert \\
-Sink port: Komponente die Event erhaehlt \\
-EventGroup: 
-\begin{itemize}
-    \item Vertrag zwischen Komponenten
-    \item Welche Events koennen empfangen/gesendet werden
-    \item enthaelt EventTypes
-\end{itemize}
+TODO Beispiel
 
-EventType: kann payload haben \\
-EventChanel:
-\begin{itemize}
-    \item Genau eine EventGroup
-    \item System Modell
-    \item Sink/Source Connector um damit verbinden
-\end{itemize}
-EventHandler: Signatur in Seff kann EventType sein \\
-EMitAction: 
-\begin{itemize}
-    \item Hat SourceRole
-    \item Hat EventType, die Emited werden
-\end{itemize}
+Damit Komponenten Events senden und empfangen können benötigt es Elemente, die das senden und empfangen ermöglichen. Der Sender kann mit einer EmitEventAction innerhalb eines SEFF einen EventTyp über den SourcePort senden. Auf Empfänger Seite benötigt es neben einem SourcePort, einen SEFF der als Eventhandler dient.
+
+TODO Beispiel
+
+Schließlich müssen die Komponenten im Systemmodell verbunden werden. Komponenten die Events senden und empfangen werden über ihren Sinkport und SourcePort verbunden. Das PCM bietet dazu zwei Möglichkeiten und deckt damit die Nachrichtenmodelle aus \autoref{sec:nachrichtenmodelle} ab. Wenn Events direkt an eine Komponente geschickt werden sollen, werden die beiden Komponenten mithilfe eines P2PConnectors verbunden. Sollen Komponenten in einem Publish/Subscribe Szenario miteinander komunizieren, benötigt es einen EventChanel. Ein EventChanel enthält genau eine EventGroup. Die sendende Komponente verbindet ihren SourcePort mit dem EventChannel. Die empfangende Komponente verbindet ihren SinkPort mit dem EventChannel. 
+
+TODO Beispiel
+
+
+
 \subsection{Integration Event Based Communication}
 - Beschreibung des Mechanismus (Modell, Transformation)
 
-\subsection{Analyse}
-\subsubsection{SimuCom}
+\subsection{Performanzanalyse}
+Die Palladio-Bench bietet eine Sammlung von Qualitätsanalysen mit Hauptfokus auf Performanz an. Daneben gibt es auch eine Zuverlässigkeits- und Kostenanalyse. Jedes Analysewerkzeug hat seine Vor- und Nachteile. Außerdem unterscheiden sie sich in ihrer Genauigkeit, Geschwindigkeit und ihrem Funktionsumfang. Im Palladio Kontext ist ein Analysewerkzeug eine Software, die eine Analysetechnik implementiert, die ein bestimmtes Analysemodell lösst. Mit lösen ist das Sammeln von Quallitätsmetriken aus dem Analysemodell gemeint. Diese Analysewerkzeuge können wie eine Blackbox verwendet werden, da ein Software-Architekt kein Spezialwissen benötigt um ein Analysewerkzeug zu verwenden. Nachdem ein Software-Architekt ein Modell erstellt hat, kann er ein Analysewerkzeug auswählen, das ihm Qualitätsmetriken vorhersagt. Mithilfe des Analysewerkzeugs \textbf{SimuCom} wurde im Rahmen der Masterarbeit die Performanz von MOMs vorhergesagt. SimuCom berechnet verschiedene Performanz Charakteristiken, darunter Antwortzeiten für Systeme und Komponenten. Außerdem wird die Auslastung der einzelnen Ressourcen berechnet. Für die Analyse transformiert SimuCom das Eingabemodell, mithilfe einer Modell-Zu-Text Transformation, in Java-Code. Der generierte Code wird im Anschluß an die Ausführungsumgebung von SimuCom angeschlossen und im nächsten Schritt ausgeführt. Nachdem die Simulation fertig ist, werden die Ergebnisse in der Palladio-Bench angezeigt. Dieser ganze Prozess ist vollautomatisch und benötigt keine Benutzerinteraktion. SimuCom wird im Rahmen der Masterarbeit bei der Modellierung und Evaluierung einer MOM verwendet.
 
 \section{Benchmark}
 Im Kontext der Informatik bezeichnet der Begriff Benchmark einen oder mehrere Tests, die ausgeführt werden, um die Leistungsfähigkeit von Computersystemen zu vergleichen. Hierfür wird zwischen verschiedenen Arten von Benchmarks unterschieden \cite{Lilja2004}. 
@@ -150,7 +166,7 @@ Im Kontext der Informatik bezeichnet der Begriff Benchmark einen oder mehrere Te
 \item \textbf{Synthetische Benchmarks} sind Tests künstlicher Instruktionsfolgen. Die getesteten Instruktionsfolgen können dabei in realen Anwendung vorkommen, müssen aber nicht.
 \item \textbf{Anwendungsbenchmarks} beschreiben vollständige Programme, welche repräsentativ für eine bestimmte Klasse von Anwendungen sind. 
 \end{itemize}
-Im Rahmen der Masterarbeit wird ein Anwendungsbenchmark verwendet um verschiedene MOMs zu untersuchen und zu bewerten.
+Im Rahmen der Masterarbeit wird ein Anwendungsbenchmark verwendet um eien MOM zu untersuchen und zu bewerten.
 
 %- warum sind benchmark sinnvoll? bestehendes und einheitliches system mit dem man sich und andere vergleichen kann!!
 
