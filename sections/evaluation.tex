@@ -71,13 +71,14 @@ Szenario 2 (DC muss Waren auffüllen)
 \subsection{Konfiguration}
 Das System erlaubt verschiedene konfigurationen durch den Benutzer, wie die Skalierungsart oder die Nachrichtenröße. Das Szenario kann vertikal (Anzahl Msg (Produkte die verkauft werden) wird erhoeht, Consumer bleiben gleich) oder
 hoizontal skalliert werden (Anzahl msg bleibt gleich, Consumer (SM) werden mehr)\\
+Interaktionen können ausgeschaltet werden \\
 
 Für jede Nachricht wird die Größe anhand festgelegter Parameter berechnet. Diese sind in \autoref{img:specjmsMsgSize} abgebildet. Die Größe wird mit folgender Formel berechnet: m1 + x * b, wobei x vom Benutzer des Benchmarks eingestellt werden kann.
 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/specjmsmsgsize.png}
-  \caption{Evtl. in Anhang}
+  \caption{Tabelle zum Berechnen der Nachrichtengröße}
   \label{img:specjmsMsgSize}
 \end{figure}
 
@@ -85,12 +86,28 @@ Für jede Nachricht wird die Größe anhand festgelegter Parameter berechnet. Di
 Modelle sind uebernommen worden aus diss. \\
 beschreibe Ist zustand inklussive MOM
 \subsection{Ist Zustand}
-\subsubsection{Repository}
 \subsubsection{System}
 Direkte Verbindung der Kommunikationen \\
 RD innerhalb von Kommunikation (Verarbeitung von Nachrichten, bevor weiter geleitet, etc.)\\
 Pub/sub ueber EventChannel \\
 Start einer Interaktion wird durch Trigger ausgeloesst \\
+Interaktion 1: \autoref{img:interaction1system}
+
+Interaktion 3: \autoref{img:interaction3system}
+
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/interaction1system_events.png}
+  \caption{Interaktion 1 mit Events}
+  \label{img:interaction1system}
+\end{figure}
+
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/interaction3system_events.png}
+  \caption{Interaktion 3 mit Events}
+  \label{img:interaction3system}
+\end{figure}
 \subsubsection{Ressource und Allocation}
 \subsubsection{Usage}
 \subsubsection{MOM}
@@ -98,7 +115,7 @@ RD fuer jede Moegliche Nachricht angegeben und davor ausgerechnet, siehe \autore
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/specjmsmsgsizerd.png}
-  \caption{Evtl. in Anhang}
+  \caption{Ausgerechnete RDs fuer jede Nachricht}
   \label{img:specjmsMsgSizeRd}
 \end{figure}
 
@@ -111,9 +128,23 @@ msg size wird nicht mehr in MOM fuer jede Nachricht berechnet und eingepflegt, s
 evtl ankunftsraten anpassen
 
 \subsection{Modell nach Transformation}
+Beschreibe Modelle nach Transformation \\
 \subsubsection{Interaktion 1}
-
+\autoref{img:interaction1systemAfterTransformation}
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/interaction1system.png}
+  \caption{Interaktion 1 nach Transformation}
+  \label{img:interaction1systemAfterTransformation}
+\end{figure}
 \subsubsection{Interaktion 3}
+\autoref{img:interaction3systemAfterTransformation}
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/interaction3system.png}
+  \caption{Interaktion 3 nach Transformation}
+  \label{img:interaction3systemAfterTransformation}
+\end{figure}
 \section{Goal-Question-Metric}
 TODO aktualisieren \\
 Die GQM-Methode \cite{gqm} spezifiziert Ziele für das zu validierende Konzept. Daraufhin werden zu den Zielen Fragen spezifiziert, mit denen die Erfüllung des Ziels überprüft werden soll. Schließlich werden Metriken festgelegt, durch die die Fragen beantwortet werden sollen. In \autoref{tab:gqm} sind erste Überlegungen festgehalten. Diese Überlegungen sind nicht vollständig und werden im Rahmen der Masterarbeit weiter ausgebaut.\par
@@ -164,6 +195,21 @@ mehrer Messungen für Interaktion => Boxplot, der einen Median zeigt. Mit diesem
 \subsection{Interaktion 1}
 evtl noch versch Groessen?
 \subsubsection{Msg Rate 1}
+Für diesen Vergleich wurde die Senderate der Bestellungen auf eine Bestellung die Sekunde limitiert. Im Anschluss wurde die Interaktion gestartet und nach 10 Minuten beendet. Diese Messung wurde 10 mal durchgeführt. Die durchschnittlichen Interaktionszeiten sind in \autoref{img:specjmsMsgRate1Impl} als Boxplot dargestellt. TODO Boxplot beschreiben. Die Simulation der Modellierung liefert eine Interaktionszeit von 9500 Mikrosekunden (Mit Bild?). Die Fehler sind in \autoref{tab:interaction1msgrate1error} abgebildet. Somit liegt der Fehler fuer diesen Vergleich zwischen 24.66\% und 31.21\%. 
+\begin{figure}
+\center
+  \includegraphics[width=0.6\textwidth]{images/evaluation/specjms/interaction1msgrate1.png}
+  \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 1}
+  \label{img:specjmsMsgRate1Impl}
+\end{figure}
+\begin{table}
+  \begin{tabular}{|l|l|l|l|l|}
+    Unterer Whisker & unteres Quartil & Median & Oberes Quartil & oberer Whisker \\
+    \hline
+    24.66 & 26.98 & 28.03 & 29.5 & 31.21
+  \end{tabular}
+	\caption{\label{tab:interaction1msgrate1error} Fehler für Interaktion 1 Msgrate 1}
+\end{table}
 \subsubsection{Msg Rate Standard}
 \subsubsection{Msg Rate Lastszenario}
 Queue fuellt sich im Modell und in echt

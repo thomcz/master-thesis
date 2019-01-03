@@ -13,21 +13,14 @@
 
 
 \chapter{Untersuchung von nachrichtenbasierter Middleware}
-\label{sec:mom}
-Auswahl von MOMs
+\label{ch:mom}
+Um die Performance einer MOM oder eines Software-Systems im Allgemeinen, vorhersagen zu können, benötigt es zunächst Informationen über die Struktur, sein Verhalten, seiner Ausführungsumgebung und der Benutzung. Dazu müssen die verschiedenen Palladio Rollen relevante Einflüsse bestimmen können. Der Komponenten-Entwickler muss RessourceDemands und Fehlerraten bestimmen. Der Systemdeployer muss verfügbare Rechenleistung und Hardware bestimmen. Der Domänenexperte muss das Verhalten der Nutzer bestimmen. Schließlich muss der Softwarearchitekt fehlende Werte bestimmen und das Modell damit kalibrieren. Diese Modellkalibrierung ist ein wichtiger Bestandteil des Modellierungsprozesses. In \cite{palladio17} wird beschrieben, wie und mit welchen Techniken die verschiedenen Rollen diese Daten erhalten und die jeweiligen Modelle kalibrieren können. Modellkalibrierung ist dabei die Anreicherung von Modellen mit quantitaitven Daten, wie Ressourcenbedarf. Die Daten können aus Messungen oder Vorhersagen stammen. Die Modellkalibrierung ist eine Vorbedingung der Performance-Analyse. Die Informationen die eine Rolle in den verschiedenen Phasen der Software-Entwicklung gewinnen kann sind unterschiedlich. Dieser Prozess lässt sich in drei Phasen strukturieren: Design, Entwicklung und Betrieb. In der Design Phase existiert die Applikation nur auf dem Papier und die Daten, die gesammelt werden können, grobe Schätzungen. Je weiter die Software-Entwicklung fortgeschritten ist, desto mehr quantitative Daten werden verfügbar um die Modelle kalibrieren zu können. Schließlich kann in der Betriebsphase das Gesamtsystem und auch der Benutzer quantitative Daten liefern. 
 
-Vorstellung der MOMs
+Im Rahmen der Masterarbeit soll eine MOM modelliert werden um in Performanzanalysen verwendet werden zu können. Dazu müssen, wie oben beschrieben, verschiedenen quantitative Daten gesammelt werden um das Modell kalibrieren zu können um eine Performanzanalyse zu ermöglichen. Dazu soll zunächst eine bereits existierende MOM ausgewählt werden. Da es sich dabei um eine bereits existierende MOM handelt, befindet sie sich im letzten Schritt der drei Software-Entwicklungsphasen. Somit lässt sich das Gesamtsystem betrachten und ausmessen um quantitative Daten zu sammeln. Zunächst werden in \autoref{sec:anforderungenMom} Anforderungen an die MOM Auswahl definiert um dann im nächsten Schritt die ausgewählte MOM in \autoref{sec:rmq} vorzustellen. Schließlich soll diese mit einem Werkzeug ausgemessen werden. Die Ergebnisse werden in \autoref{sec:rmqBenchmark} vorgestellt. Diese werden verwendet um die Modelle in \autoref{ch:modellierung} kalibrieren zu können.
 
-- best practices
 
-- Benchmarks vorstellen
-
-- interessante Ergebnisse der jeweiligen MQ zeigen die spaeter versucht werden sollen zu modellieren
-
-Vergleich der MOMs
-
-\label{ch:momsysteme}
 \section{Anforderungen an MOMs}
+\label{sec:anforderungenMom}
 Da es eine Vielzahl von MOMs gibt, muss zunächst eine Auswahl stattfinden. Dazu werden im ersten Schritt der Masterarbeit Anforderungen erarbeitet, die ein MOM erfüllen muss, damit sie in Betracht kommt. Im Rahmen des Proposals wurde sich bereits mit der Frage auseinander gesetzt und die folgenden Anforderungen erarbeitet:
 \begin{itemize}
 \item Die MOM sollte \textbf{Open Source} sein.
@@ -44,6 +37,7 @@ Die MOM sollte \textbf{Programmiersprachen unabhängig} sein.
 Im Folgenden sollen zwei Systeme untersucht werden, die diese Anforderungen erfuellen.
 
 \section{RabbitMQ}
+\label{sec:rmq}
 RabbitMQ ist, mit 35,000 aktiven Produktivumgebungen, eine der am weitesten verbreitete MOM. 
 RabbitMQ ist eine Open-Source-MOM, die seit 2007 entwickelt wird \cite{rabbitmq}. Das Ziel von RabbitMQ ist es allgemein einsetzbar zu sein. Deshalb wird eine Vielzahl an Protokollen unterstützt, unter anderem das AMQP (Advanced Message Queuing Protocol) Protokoll \cite{amqp}. AMQP ist unabhängig von einer Programmiersprache und definiert das Verhalten des Senders und Empfängers, um Interoperabilität zu erreichen, damit MOMs sich untereinander verständigen können. RabbitMQ kann in verteilten Systemen und in unterschiedlichen Konfigurationen eingesetzt werden, um hohe Anforderungen an Skalierbarkeit und Zuverlässigkeit zu erfüllen. In \autoref{img:rmq_architecture} ist die Architectur von RMQ abgebildet. Dabei faellt auf, dass in RabbitMQ Nachrichten nicht direkt an eine Warteschlange gesendet werden, sondern an einen Exchange. Dieser ist für das richtige weiterleiten an die passende Warteschlange verantwortlich. Warteschlangen werden mithilfe von Bindings an ein Exchange gebunden und mithilfe von Routing-Schlüsseln identifiziert. RabbitMQ unterscheidet zwischen vier verschiedenen Exchanges:
 \begin{itemize}
@@ -70,33 +64,25 @@ Da in dieser Arbeit der Fokus auf der Performanz verschiedener MOMs liegt, wurde
 \end{itemize}
 Diese Eigenschaften wurden im folgenden untersucht um zu prüfen ob sie einen messbaren einfluss auf die Performanz haben.
 
-\section{Kafka}
-Kafka wurde bei LinkedIn entwickelt und hauptsächlich für die Protokollierung eingesetzt \cite{kafka}. Die grundlegenden Merkmale hinter Kafka sind das Performanz über Zuverlässigkeit gestellt wird und dadurch hoher Durchsatz und niedrige Latenzzeiten ermöglicht werden. Kafka kann sowohl für Online- als auch für die Offline-Protokoll-ierung eingesetzt werden. In ihrer Arbeit zeigen die Entwickler, dass Kafka mindestens doppelt so viele Nachrichten senden und vier mal so viele Nachrichten empfangen kann, als ActiveMQ und RabbitMQ. In \autoref{img:kafka_architecture} ist die Kafka Architektur abgebildet. Dabei sendet ein Sender an ein Cluster. Dieses Cluster verteilt die Nachricht an die verschiedenen Empfaenger. 
-\begin{figure}
-\center
-  \includegraphics[width=1\textwidth]{images/kafka_architecture.png}
-  \caption{Maximaler Durchsatz}
-  \label{img:kafka_architecture}
-\end{figure}
-
-\subsection{Best Practice}
-
 \section{Benchmark}
-Im Folgenden sollen in erster Linie die Standard Konfigurationen betrachtet werden.
+Im Folgenden soll RMQ ausgemessen werden um quantitative Daten ableiten zu können. Dazu wird in \autoref{sec:testmachine} zunächst die Testmanschinen vorgestellt, mit denen die Messungen durchgeführt wurden. Im Anschluss werden in \autoref{sec:rmqBenchmark} die Ergebnisse der einzelnen Messungen vorgestellt und in \autoref{sec:rmqZusammenfassung} zusammengefasst.
+
 \subsection{Testmaschinen}
 \label{sec:testmachine}
-In diesem Abschnitt sollen die benutzten Maschinen Dokumentiert werden, mit denen die verschiedenen MOMs untersucht wurden:
+In diesem Abschnitt sollen die benutzten Maschinen Dokumentiert werden, mit denen RMQ ausgemessen wurde. Für die Messungen wurden zwei Testmaschinen benutzt. Die Systemspezifikation ist in ... abgebildet. Beide Systeme haben die gleiche Systemspezifikation. Beide Systeme haben RMQ Version 3.7.8 installiert. Im Folgenden werden die beiden Systeme verwendet um RMQ auszumesse.
 \begin{itemize}
-    \item Testmaschine A: Localhost
+    \item Testmaschine Lokal
     \item Testmaschine B: VM
 \end{itemize}
 
-\subsection{RMQ}
+\subsection{Ausmessung von RMQ}
 \label{sec:rmqBenchmark}
-Im Folgenden soll besprochen werden, welche Eigenschaften in RMQ Auswirkungen auf die Performanz haben. Dazu wurde das Performanz Test Werkzeug von RMQ benutzt. Dieses erlaubt es die gesendeten und empfangenen Nachrichten und ihre Latenz zu messen. Dabei ist die Zeit gemeint, die eine Nachricht braucht bis sie vom Empfänger aus der Warteschlange herausgenommen wird, nachdem sie vom Sender dort abgelegt wurde. Das Werkzeug kann konfiguriert werden um bestimmte Szenarien zu simulieren. Unter anderem laesst sich die Anzahl zu sendenden und zu empfangenen Nachrichte pro Sekunde einstellen. Eine weitere Konfiguration ist das einstellen bestimmte Nachrichtengroessen. Im Folgenden sollen die Ergebnisse der Messungen vorgestellt werden. Dabei werden die einzelnen Ergebnisse und ihr Versuchsaufbau vorgestellt.
-%\subsection{Ergebnisse}
-%In diesem Abschnitt werden die Ergebnisse der Performanzmessungen von RMQ vorgestellt. 
-Die benutzten Systeme sind in \autoref{sec:testmachine} beschrieben. Sollten sich bestimmte Szenarien auf verschiedenen Maschinen unterschiedlich verhalten, wird dies angemerkt. Falls keine Anmerkung erfolgt, heisst das, dass bei der Messungen kein Einfluss erkannt werden konnte. Jedes Ergebnis wird wie folgt vorgestellt: Zunaechst wird das jeweilige Szeanario vorgestellt. Im naechsten Schritt werden die Beobachtungen beschrieben und im Anschluss das daraus resultierende Ergebnis.
+Im Folgenden soll RMQ ausgemessen werden um mit den Ergebnissen die Modelle kalibrieren zu können. Um RMQ auszumessen wurde das Performance-Werkzeug von RMQ benutzt. Dieses erlaubt es die gesendeten und empfangenen Nachrichten und ihre Latenz zu messen. Dabei ist die Zeit gemeint, die eine Nachricht braucht bis sie vom Empfänger aus der Warteschlange herausgenommen wird, nachdem sie vom Sender dort abgelegt wurde. Das Werkzeug kann konfiguriert werden um bestimmte Szenarien zu simulieren. Unter anderem lässt sich die Anzahl der zu sendenden und zu empfangenen Nachrichten pro Sekunde einstellen. Eine weitere Konfiguration ist das einstellen bestimmte Nachrichtengrößen. Im Folgenden sollen die Ergebnisse der Messungen vorgestellt werden. Dabei werden die einzelnen Ergebnisse und ihr Versuchsaufbau vorgestellt. Jedes Ergebnis wird wie folgt beschrieben: 
+\begin{itemize}
+    \item Vorstellung des Szenarios
+    \item Beobachtungen des Systemverhaltens
+    \item Messergebnisse
+\end{itemize}
 
 
 
