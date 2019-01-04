@@ -12,52 +12,47 @@
 
 \chapter{Modellierung}
 \label{ch:modellierung}
-Im Folgenden soll zunaechst untersucht werden ob und wie eine konkrete MOM in Palladio modelliert werden kann und an welchen Stellen die Modellierung an ihre Grenzen kommt. Im Anschluss werden Ansätze vorgestellt, mit denen diese Probleme versucht wurden zu beheben.
+Wie bereits in \autoref{sec:eventbasetransformation} beschrieben bietet das PCM die Möglichkeit eventbasierte Kommunikation zu modellieren und auch eine konkrete MOM Architektur zu modellieren, die mithilfe einer Modelltransformation in die Systemarchitektur eingewoben wird. Diese Modellierung hat jedoch das Problem, dass die Kommunikation nur in eine Richtung funktioniert, wie in (ABB) zu sehen. Ein Sender sendet eine Nachricht an einen Empfänger und auf dem Weg dorthin durchläuft die Nachricht eine Komponentenkette und wird mit bestimmten Ressourcenanforderungen belegt. Der Empfänger erhält schließlich die Nachricht. In diesem Szenario fehlt jedoch die Warteschlange, die eine wichtige Komponente einer MOM ist. Eigentlich sollte die Komunikation wie in (ABB) abgebildet stattfinden. Der Sender sendet die Nachricht an die MOM, diese leitet die Nachricht an die entsprechende Warteschlange weiter und ein Empfänger holt sich die Nachricht ab, sobald er die Ressourcen dazu hat. Dieses Szenario ist mit der aktuellen eventbasierten Kommunikation in PCM nicht darstellbar, weil kein abholen einer Nachricht vorgesehen ist. Deshalb soll im Folgenden eine Modellierung präsentiert werden, die eine explizite Warteschlange und ein Verteilsystem, das Nachrichten an passenden Warteschlangen verteilt, modelliert.\par
+Dazu soll zunächst mithilfe einer Anforderungserhebung in \autoref{sec:anforderungserhebung} Anforderungen gesammelt werden, die eine solche Modellierung erfüllen soll. Im Anschluss wird in \autoref{sec:modell} die Modellierung einer MOM vorgestellt, die die Anforderungen erfüllen soll. In \autoref{sec:modellkalibrierung} soll das Modell mithilfe der in \autoref{sec:rmqBenchmark} ausgemessenen MOM RMQ kalibriert werden. Dabei soll ein kalibrierter MOM Baustein entstehen, der sich wie die ausgemessene MOM verhalten soll. Schließlich wird in \autoref{sec:momsimulation} das MOM Modell in mehreren Simulationen eingesetzt werden und mit den realem Messungen verglichen. 
 
-%Warum sinnvoll eine MOM explizit zu modellieren? \\
-%- eroeffnet neue Moeglichkeiten \\
-%- bestimmte effekte mit bisheriger modellierung nicht moeglich\\
 \section{Anforderungserhebung}
-Aus Definition von MOMs (siehe Grundlagen) und den Messungen aus (siehe Benchmarks) wurden Anforderungen an eine Modellierung spezifiziert. \\
-Was soll eine MOm koenen?\\
-Asynchron Nachricht senden \\
-Asynchron Nachricht empfangen \\
-bestimmte Topics/Queues\\
-Eingaben durch benutzer: \\
-Groesse der Nachrichten angeben (siehe Benchmarks einfluss auf Latenz)\\
-Anzahl der Nachrichten angeben \\
-Angabe des Durchsatzes \\
-Ausgabe: \\
-Queue verhalten \\
-Antwortzeit/Latenz der Nachrichten \\
+\label{sec:anforderungserhebung}
+Aus der Definition einer MOM (siehe Grundlagen) und den Messungen aus \autoref{ch:mom} wurden die folgenden Anforderungen an eine Modellierung abgeleitet. Dabei wurde unterschieden zwischen technischen Anforderungen, also was die Modellierung leisten muss und Anforderungen an die Nutzbarkeit unterschieden. 
+Zu den technischen Anforderungen gehören:
+\begin{itemize}
+    \item Die Modellierung soll das allgemeine Verhalten einer MOM abbilden können.
+    \item Asynchrones senden und empfangen von Nachrichten.
+    \item Es soll möglich sein eine Nachricht an eine bestimmte Warteschlange oder Topic senden zu können.
+    \item Der Füllstand der Warteschlange soll mithilfe der Performanzanalyse ermittelt werden können.
+    \item Die Latenz einer Nachricht soll mithilfe der Performanzanalyse ermittelt werden können.
+\end{itemize}
+Der Benutzer der Modellierung muss in der Lage sein die Folgenden Dinge angeben zu können:
+\begin{itemize}
+    \item Die Nachrichtengröße muss definierbar sein
+    \item Die Topic einer Nachricht muss definierbar sein
+    \item Die Anzahl der Nachrichten die pro Sekunde gesendet werden muss angegeben werde können
+\end{itemize}
 
-Wie bereits in Grundlagen beschrieben gibt es fuer PCM die moeglichkeit eine MOM zu modellieren (Integration Event Based Communication)\\
-- Problem:  \\
--- Kommunikation nur in eine Richtung \\
--- kein abholen von Nachrichten moeglich \\
--- kein Modellieren von Queues moeglich (aquire/release \\
--- nur RDs in verschiedenen Verarbeitungsschritten angeben auf dem Weg zum Ziel \\
-Im Folgenden soll beschrieben werden, wie ein Modell aussehen soll, das eine MOM abbildet und die Anforderungen erfüllt. \\
+%Angabe des Durchsatzes \\
 
-Das Ziel ist es eine allgemeine MOM Modellierung zu erstellen, die das Verhalten einer MOM abbilden kann. Dabei soll nicht Wert auf ein spezielles Verhalten gelegt werden. Stattdessen soll es moeglich sein die Modellierung um Konfigurationen, wie zum Beispiel RMQs lazy Queues, erweitern zu koennen. 
+
+%Das Ziel ist es eine allgemeine MOM Modellierung zu erstellen, die das Verhalten einer MOM abbilden kann. Dabei soll nicht Wert auf ein spezielles Verhalten gelegt werden. Stattdessen soll es moeglich sein die Modellierung um Konfigurationen, wie zum Beispiel RMQs lazy Queues, erweitern zu koennen. 
 
 \section{Modell}
-Ziel: Modellierung mit bestehenden Elementen.\\
-Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde versucht zu definieren wie eine MOM modelliert werden kann. Dabei wurden die Anforderungen versucht umzusetzen. \\
-- 2 Moeglichkeiten entweder mit oder ohne Exchange explizit zu modellieren.\\
-- Vorteil Explizit: RDs fuer verteilung (konnte aber nicht ausgemessen werden) \\
-- Nachrichten Typen mitschicken (fanout, direct) und in Branches auswerten
+Im Folgenden soll eine Modellierung einer MOM präsentiert werden die die zuvor definierten Anforderungen erfüllt. Dabei war nicht das Ziel eine Meta-Modell Erweiterung zu erstellen, sondern mit bereits existierenden PCM-Elementen zu arbeiten. 
+
+%Anhand der bekannten MOM Architekturen aus der Untersuchung verschiedener MOMs wurde versucht zu definieren wie eine MOM modelliert werden kann. Dabei wurden die Anforderungen versucht umzusetzen. \\
+%- 2 Moeglichkeiten entweder mit oder ohne Exchange explizit zu modellieren.\\
+%- Vorteil Explizit: RDs fuer verteilung (konnte aber nicht ausgemessen werden) \\
+%- Nachrichten Typen mitschicken (fanout, direct) und in Branches auswerten
 
 \subsection{Repository}
-Die untersuchten Architekturen hatten als Gemeinsamkeit einen Verteiler (Exchange) und eine Warteschlange. \\
+Das Repository wird vom Komponentenentwickler verwendet um neue Komponenten zu erstellen und vom Systemarchitekt um Komponenten zu entnehmen. ... \\
+Die untersuchte MOM Architektur besteht aus einem Verteiler und einer Warteschlange. Deshalb wurdem die in \autoref{img:mom_repository} abgebildeten Komponenten und Schnittstellen definiert. Die Schnittstelle nach ausen soll die IExchange Schnittstelle sein. Diese bietet zwei Signaturen an. Eine zum Empfange (receive) und eine zum Senden (distribute) einer Nachricht. Beide Methoden werden von der Komponente Exchange angeboten. IQueue ist die zweite Schnittstelle. Diese bietet auch zwei Signaturen an. Eine um eine Nachricht in eine Warteschlange abzulegen (put) und eine weitere die eine Nachricht aus der Warteschlange entnimmt (get). Diese Schnittstelle wird von der Komponente Queue angeboten. Diese Komponenten, die eine Warteschlange abbildeen soll, besitzt eine Passive Resource die das Verhalten einer Warteschlange simulieren soll. Eine Passive Ressouce ist... (TODO). Dabei wird das ablegen in die Warteschlange als release auf die passive Ressource und das entnehmen aus der Warteschlange als aquire auf die passive Ressource modelliert. Die Exchange Komponente benötigt eine Komponente die die IQueue Schnittstelle anbietet. Die Idee ist, dass alle Warteschlangen die benötigt werden von der Exchange Komponente required werden. In \autoref{img:mom_repository} sind das aktuell zwei Warteschlange. Mithilfe des RDSEFFs kann die Exchange Komponente zwischen den Warteschlangen wechseln. Dies ist in (Abb) dargestellt. Dabei wird mithilfe eines GuardedBranch geprüft an welche Warteschlange die ankommenden Nachricht gehen soll. Der Fall, dass eine Nachricht aus der Warteschlange entnommen wird funktioniert genauso. 
 
-Modellierung von einem Exchange als BC und einer Queue als BC mit passiver Ressource \autoref{img:mom_repository} \\
 
-Exchange verteilt Msgs\\
+%Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen. \\
 
-Queues wurden als Passive Ressource modelliert. Ein Aquire wurde als Consume und ein Release als Produce interpretiert. Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen. \\
-
-Exchange required eine Queue. a ein exchange mehrere Queues haben kann muss ein Exchange auch mehrere Queues requiren. Ausserdem muss er entscheiden koennen an welche Queue er senden oder von welcher er nachrichten empfaengt. Dies soll mithilfe von guarded branches gemacht werden. Fuer jede angeschlossene Queue gibt es einen branch. Nachricht hat bytesize und nen Type anhand dessen sie in eine Queue kommt. Oder Empfaenger sagt, wie viel Byte er aus einer bestimmten Queue heraus nehmen moechte. \\
 
 \begin{figure}
 \center
