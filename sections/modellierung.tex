@@ -107,22 +107,33 @@ Im Nutzungsmodell wird die Benutzung des Systems durch den Domänenexperten mode
 In \cite{palladio17} wird Modellkalibrierung als Anreicherung von Modellen mit quantitaitven Daten, wie Ressourcenbedarf. Je nachdem wie weit entwickelt das System ist, können diese Daten mithilfe von verschiedenen Techniken gewonnen werden. Mithilfe von Application-Performance-Monitoring wurde in \autoref{sec:rmqBenchmark} RMQ ausgemessen und die Ergbnisse dort beschrieben. Im Folgenden sollen die Ergebnisse interpretiert und benutzt werden um die Modelle zu kalibrieren.
 %Das Ziel ist, dass der Benutzer keinen MOM spezifischen RD angeben muss. \\
 
-In \autoref{oneMsgLatency} wurde die Latenz einer Nachricht mit verschiedenen Größen ausgemessen. Darin ist ein lineares Wachstum der Latenz mit ansteigen der Nachrichtengröße zu beobachten. Dies liegt die Vermutung nahe, dass diese beiden Variablen voneinander abhängen. Um diese Vermutung zu bestätigen wurde für die Variablen Latenz und Nachrichtengröße ihre Korellation berechnet. Dabei ist die Korrelation ein statistisches Maß, das den Grad der linearen Abhängigkeit zwischen zwei Variablen anzeigt, die im Paar auftreten. Ist diese Abhängigkeit hoch, liegt der Wert nahe eins. Liegt der Wert dagegen bei minus eins, ist die Abhängigkeit sehr gering. Die Korrelation der Variablen Latenz und Nachrichtengröße ist 0.9850627. Somit ist eine hohe lineare Abhängigkeit der Variablen gezeigt. Als nächstes soll mithilfe einer linearen Regressionsanalyse einen Ressourcenbedarf für das Modell definiert werden. Das Ziel einer linearen Regressionsanalyse ist es, eine lineare Beziehung zwischen einer Prädiktorvariable Y und der Reaktionsvariable X herzustellen, so dass der Wert von Y getschätzt werden kann, wenn nur der Wert des Prädiktoren X bekannt ist. Die Ergebnisse sind in (abb) und die dabei entstandene Regressionsgerade in (abb) abgebildet. TODO was soll alles rein?
-Daraus folgt ein Term der Form: Latenz= 1256.2782902 +(0.003299*Nachrichtengröße). Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird. \par
+In \autoref{oneMsgLatency} wurde die Latenz einer Nachricht mit verschiedenen Größen ausgemessen. Darin ist ein lineares Wachstum der Latenz mit ansteigen der Nachrichtengröße zu beobachten. Dies liegt die Vermutung nahe, dass diese beiden Variablen voneinander abhängen. Um diese Vermutung zu bestätigen wurde für die Variablen Latenz und Nachrichtengröße ihre Korellation berechnet. Dabei ist die Korrelation ein statistisches Maß, das den Grad der linearen Abhängigkeit zwischen zwei Variablen anzeigt, die im Paar auftreten. Ist diese Abhängigkeit hoch, liegt der Wert nahe eins. Liegt der Wert dagegen bei minus eins, ist die Abhängigkeit sehr gering. Die Korrelation der Variablen Latenz und Nachrichtengröße ist 0.9850627. Somit ist eine hohe lineare Abhängigkeit der Variablen gezeigt. Als nächstes soll mithilfe einer linearen Regressionsanalyse einen Ressourcenbedarf für das Modell definiert werden. Das Ziel einer linearen Regressionsanalyse ist es, eine lineare Beziehung zwischen einer Prädiktorvariable Y und der Reaktionsvariable X herzustellen, so dass der Wert von Y getschätzt werden kann, wenn nur der Wert des Prädiktoren X bekannt ist. Die Ergebnisse sind in \autoref{img:reganalysesummary} und die dabei entstandene Regressionsgerade in (abb) abgebildet. TODO was soll alles rein?
+Daraus folgt ein Term der Form: Latenz = 1256.2782902 + (0.003299 * Nachrichtengröße). Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird. 
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/modelling/reganalyse.png}
+  \caption{Ergebniss der Regressionsanalyse}
+  \label{img:reganalysesummary}
+\end{figure}
 
-Wo Nachrichten hingeschrieben wurden waren auch ein wichtiger Einflussfaktor. Fuer eine Nachricht der Groesse x konnte ein RD der Form e * x / 1000 identifiziert werden. Dieser wurde aus der Differenz der Messungen mit und ohne LazyQueues errechnet. \\
+\par
 
-Falls die Netzwerklatenz betrachtet werden soll, kann diese in der jeweiligen LR eingetragen werden.\\
+In \autoref{sec:maxthroughput} wurde gemessen, was die möglichen Datenmengen sind, die in dem System gesendet werden können. Dabei wurde eine Messung mit und ohne Empfänger durchgeführt. Der Maximalwert aus der Messung ohne Empfänger wird in die LinkingRessources zwischen dem MOM-RessourceContainer und dem Sender und der Maximalwert aus der Messung mit Empfänger wird in die LinkingRessources zwischen dem MOM-RessourceContainer und dem Empfänger jeweils als Throughput eingetragen. Sobald eine Nachricht über diese Verbindung gesendet wird, wird die Nachrichtengröße durch den Throughput geteilt und auf die Gesamtlatenz addiert. \par
 
-Als Eingabe fuer das System soll im Usage Modell die zu sendende Nachrichtengroesse mithilfe einer UsageVariable und der Characteristic: Bytesize angegeben werden.\\
+Auch die Netzwerklatenz, die in \autoref{oneMsgLatency} ausgemessen wurde, hat einen Einfluss auf die Latenz einer Nachricht gehabt. Wenn diese in der Modellierung betrachtet werden soll, kann diese in die jeweiligen LinkingRessource als Netzwerklatenz eingetragen werden. Diese wird auf die Gesamtlatenz einer Nachricht addiert. \par
 
-Die Anzahl an Nachrichten die gesendet oder empfangen werden koennen werden ueber die Ankuftzeit gesteuert.\\
-ArrivalTime / Anzahl Msgs \\
-oder einfach BYTESIZE = Bytesize * Anazahl Nachrichten \\
+Neben der Standardkonfiguration wurde auch die Konfiguration für Lazy-Warteschlangen in \autoref{sec:rmqLazy} ausgemessen. Auch hier wurde wie oben beschrieben zunächst die Korrelation der beiden Variablen berechnet. Mit 0.9951195 ist diese ebenfalls sehr hoch. Die Ergebnisse der im Anschluss durchgeführten Regeressionsanalyse sind in  \autoref{img:reganalysesummarylazy} abgebildet. TODO was soll alles rein?
+Daraus folgt ein Term der Form: Latenz = 1602.5021193 + (0.0049697 * Nachrichtengröße). Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird, wenn Lazy-Warteschlangen betrachtet werden sollen.
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/modelling/reganalyse.png}
+  \caption{Ergebniss der Regressionsanalyse}
+  \label{img:reganalysesummarylazy}
+\end{figure}
 
-- TODO: tabelle mit Werten fuer alle RDs\\
+Die zuvor beschriebenen Modelle können nun mithilfe der hier vorgestellten quantitativen Daten angereichert werden um eine Performanzanalyse zu ermöglichen. Im nächsten Schritt soll eine konkrete Modellierung vorgestellt werden, die mit den hier vorgestellten Daten angereichert wird. 
 
-Somit sollte sich fuer die Response Time folgendes ergeben: Response Time: ByteSize / Throughput + RD / CPU + Latency + HddRD/HDD \\
+%Somit ergibt sich f die Response Time folgendes ergeben: Response Time: ByteSize / Throughput + RD / CPU + Latency + HddRD/HDD \\
 %RD an Aquire um Latenz abzubilden
 
 %Als erstes sollte die Sende und Empfangsrate abgebildet werden. Beobachtet man (ref zu Messung verschiedene Senderaten) bemerkt man fuer die ersten Messungen, solange Warteschlange nicht allzu voll wird, einen linearen Anstieg der Latenz. Daraus laesst sich zunaechst folgender RD ableiten:
@@ -135,16 +146,17 @@ Somit sollte sich fuer die Response Time folgendes ergeben: Response Time: ByteS
 %Latenz: Unter Latenz versteht man im MOM Kontext, die Zeit, die eine einzelne Nachricht braucht um beim Consumer anzukommen. Da jede Nachricht einen Zeitstempel bekommt kann die Zeit gemessen werden, wenn sie aus der Warteschlange entnommen wurde.
 
 %welche Effekte koennen wir so hoffentlich abbilden
-\subsection{Kafka}
 
-\section{Untersuchung der MOM Bausteine}
-In diesem Abschnitt sollen die Bausteine in bestimmten Szenarien ueberprueft werden. Dabei sollen die Simulations- und Messergebnisse aus \autoref{sec:mom} verglichen werden.
-\subsection{RMQ}
-Im Folgenden betrachten wir das in (Abb) abgebildete Szenario. Darin befindet sich ein Sender und ein Empfaenger. Der Sender sendet pro Zeiteinheit und der Empfaenger empfaengt pro Zeiteinheit eine bestimmte Menge an Daten. Dieses Szenario soll den Benchmark widerspiegeln, der fuer das ausmessen von RMQ in \autoref{sec:rmqBenchmark} verwendet wurde.
+\section{Untersuchung der MOM Modellierung}
+In den Abschnitten zuvor wurde vorgestellt wie die Modellierung eines Systems aussehen soll, die eine MOM zum Nachrichtenaustausch verwendet. Im Folgenden wird eine konkrete Modellierung vorgestellt, die mit den quantitativen Daten aus \autoref{} angereichert wird. Anschließend wird eine Performanzanalyse auf der Modellierung ausgeführt. Die Ergebnisse werden anschließend mit den Messungen aus \autoref{sec:rmqBenchmark} verglichen.
+
+\subsection{Anwendungszenario}
+Im Folgenden betrachten wir das in (Abb) abgebildete Szenario. Darin befindet sich eine Sender und eine Empfänger Komponente. Beide sind mit der Exchange Komponente verbunden. Der Exchange ist genau mit einer Warteschlange verbunden. Diese ist entweder mit dem RD für eine Nachricht ohne oder mit Lazy-Warteschlangen angereichert. Die Exchange und die Warteschlangen Komponente sind auf einem gemeinsamen ResourceContainer MOM bereitgestellt. Die Sender und Empfänger Komponente sind jeweils auf einem eigenen ResourceContainer bereitgestellt. Der MOM-RC ist jeweils mit dem Sender- und der Empfänger-RC mithilfe einer LinkingResource verbunden. Diese haben jeweils einen Wert für den Durchsatz und Latenz eingetragen, je nachdem welches Szenario betrachtet wird. Schließlich sind für den Sender und Empfänger jeweils ein UsageScenario spezifiziert. Darin sind die jeweiligen Ankunftszeiten und Nachrichtengrößen modelliert.
+% Der Sender sendet pro Zeiteinheit und der Empfaenger empfaengt pro Zeiteinheit eine bestimmte Menge an verschieden Großen Nachrichten. 
+Im Folgenden wird diese Modellierung in einer Performanzanalyse eingesetzt.
 
 
-
-
+\subsection{Performanzanalyse}
 \subsubsection{Simulation 1} 
 \label{sec:rmqSimulation1}
 In der ersten Simulation betrachten wir den Fall, dass Sender und Empfaenger die gleichen Ankunftszeiten haben. Die gesendete Nachrichten haben die groessen 100, 200, 300, 400, 500 und 1000 Kbyte. Verglichen wurde mit den Messungen aus \autoref{sec:oneMsgLatency}. Der Sender, Empfaenger und der Broker befinden sich jeweils auf der selben Maschine. Betrachtet wurden der Fuellstand der Warteschlange und die Latenz der Nachrichten. 
@@ -211,7 +223,6 @@ Die Ergebnisse sind in \autoref{img:simulation6} abgebildet. Wie zu erwarten ste
 \end{figure}
 
 
-\subsection{Kafka}
 
 \section{Grenzen}
 Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen\\
