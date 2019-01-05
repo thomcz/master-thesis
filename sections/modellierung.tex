@@ -12,8 +12,15 @@
 
 \chapter{Modellierung}
 \label{ch:modellierung}
-Wie bereits in \autoref{sec:eventbasetransformation} beschrieben bietet das PCM die Möglichkeit eventbasierte Kommunikation zu modellieren und auch eine konkrete MOM Architektur zu modellieren, die mithilfe einer Modelltransformation in die Systemarchitektur eingewoben wird. Diese Modellierung hat jedoch das Problem, dass die Kommunikation nur in eine Richtung funktioniert, wie in (ABB) zu sehen. Ein Sender sendet eine Nachricht an einen Empfänger und auf dem Weg dorthin durchläuft die Nachricht eine Komponentenkette und wird mit bestimmten Ressourcenanforderungen belegt. Der Empfänger erhält schließlich die Nachricht. In diesem Szenario fehlt jedoch die Warteschlange, die eine wichtige Komponente einer MOM ist. Eigentlich sollte die Komunikation wie in (ABB) abgebildet stattfinden. Der Sender sendet die Nachricht an die MOM, diese leitet die Nachricht an die entsprechende Warteschlange weiter und ein Empfänger holt sich die Nachricht ab, sobald er die Ressourcen dazu hat. Dieses Szenario ist mit der aktuellen eventbasierten Kommunikation in PCM nicht darstellbar, weil kein abholen einer Nachricht vorgesehen ist. Deshalb soll im Folgenden eine Modellierung präsentiert werden, die eine explizite Warteschlange und ein Verteilsystem, das Nachrichten an passenden Warteschlangen verteilt, modelliert.\par
+Wie bereits in \autoref{sec:eventbasetransformation} beschrieben bietet das PCM die Möglichkeit eventbasierte Kommunikation zu modellieren und auch eine konkrete MOM Architektur zu modellieren, die mithilfe einer Modelltransformation in die Systemarchitektur eingewoben wird. Diese Modellierung hat jedoch das Problem, dass die Kommunikation nur in eine Richtung funktioniert, wie in \autoref{img:oldEventBased}a zu sehen. Ein Sender sendet eine Nachricht an einen Empfänger und auf dem Weg dorthin durchläuft die Nachricht eine Komponentenkette und wird mit bestimmten Ressourcenanforderungen belegt. Der Empfänger erhält schließlich die Nachricht. In diesem Szenario fehlt jedoch die Warteschlange, die eine wichtige Komponente einer MOM ist. Eigentlich sollte die Komunikation wie in \autoref{img:oldEventBased}b abgebildet stattfinden. Der Sender sendet die Nachricht an die MOM, diese leitet die Nachricht an die entsprechende Warteschlange weiter und ein Empfänger holt sich die Nachricht ab, sobald er die Ressourcen dazu hat. Dieses Szenario ist mit der aktuellen eventbasierten Kommunikation in PCM nicht darstellbar, weil kein abholen einer Nachricht vorgesehen ist. Deshalb soll im Folgenden eine Modellierung präsentiert werden, die eine explizite Warteschlange und ein Verteilsystem, das Nachrichten an passenden Warteschlangen verteilt, modelliert.\par
 Dazu soll zunächst mithilfe einer Anforderungserhebung in \autoref{sec:anforderungserhebung} Anforderungen gesammelt werden, die eine solche Modellierung erfüllen soll. Im Anschluss wird in \autoref{sec:modell} die Modellierung einer MOM vorgestellt, die die Anforderungen erfüllen soll. In \autoref{sec:modellkalibrierung} soll das Modell mithilfe der in \autoref{sec:rmqBenchmark} ausgemessenen MOM RMQ kalibriert werden. Dabei soll ein kalibrierter MOM Baustein entstehen, der sich wie die ausgemessene MOM verhalten soll. Schließlich wird in \autoref{sec:momsimulation} das MOM Modell in mehreren Simulationen eingesetzt werden und mit den realem Messungen verglichen. 
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/modelling/oldEventBased.png}
+  \caption{Aktuelle eventbasierte Kommunikation}
+  \label{img:oldEventBased}
+\end{figure}
+
 
 \section{Anforderungserhebung}
 \label{sec:anforderungserhebung}
@@ -48,7 +55,7 @@ Im Folgenden soll eine Modellierung einer MOM präsentiert werden die die zuvor 
 
 \subsection{Repository}
 Das Repository wird vom Komponentenentwickler verwendet um neue Komponenten zu erstellen und vom Systemarchitekt um Komponenten zu entnehmen. ... \\
-Die untersuchte MOM Architektur besteht aus einem Verteiler und einer Warteschlange. Deshalb wurdem die in \autoref{img:mom_repository} abgebildeten Komponenten und Schnittstellen definiert. Die Schnittstelle nach ausen soll die IExchange Schnittstelle sein. Diese bietet zwei Signaturen an. Eine zum Empfange (receive) und eine zum Senden (distribute) einer Nachricht. Beide Methoden werden von der Komponente Exchange angeboten. IQueue ist die zweite Schnittstelle. Diese bietet auch zwei Signaturen an. Eine um eine Nachricht in eine Warteschlange abzulegen (put) und eine weitere die eine Nachricht aus der Warteschlange entnimmt (get). Diese Schnittstelle wird von der Komponente Queue angeboten. Diese Komponenten, die eine Warteschlange abbildeen soll, besitzt eine Passive Resource die das Verhalten einer Warteschlange simulieren soll. Eine Passive Ressouce ist... (TODO). Dabei wird das ablegen in die Warteschlange als release auf die passive Ressource und das entnehmen aus der Warteschlange als aquire auf die passive Ressource modelliert. Die Exchange Komponente benötigt eine Komponente die die IQueue Schnittstelle anbietet. Die Idee ist, dass alle Warteschlangen die benötigt werden von der Exchange Komponente required werden. In \autoref{img:mom_repository} sind das aktuell zwei Warteschlange. Mithilfe des RDSEFFs kann die Exchange Komponente zwischen den Warteschlangen wechseln. Dies ist in (Abb) dargestellt. Dabei wird mithilfe eines GuardedBranch geprüft an welche Warteschlange die ankommenden Nachricht gehen soll. Der Fall, dass eine Nachricht aus der Warteschlange entnommen wird funktioniert genauso. 
+Die untersuchte MOM Architektur besteht aus einem Verteiler und einer Warteschlange. Deshalb wurdem die in \autoref{img:mom_repository} abgebildeten Komponenten und Schnittstellen definiert. Die Schnittstelle nach ausen soll die IExchange Schnittstelle sein. Diese bietet zwei Signaturen an. Eine zum Empfange (receive) und eine zum Senden (distribute) einer Nachricht. Beide Methoden werden von der Komponente Exchange angeboten. IQueue ist die zweite Schnittstelle. Diese bietet auch zwei Signaturen an. Eine um eine Nachricht in eine Warteschlange abzulegen (put) und eine weitere die eine Nachricht aus der Warteschlange entnimmt (get). Diese Schnittstelle wird von der Komponente Queue angeboten. Diese Komponenten, die eine Warteschlange abbildeen soll, besitzt eine Passive Resource die das Verhalten einer Warteschlange simulieren soll. Eine Passive Ressouce ist... (TODO). Dabei wird das ablegen in die Warteschlange als release auf die passive Ressource und das entnehmen aus der Warteschlange als aquire auf die passive Ressource modelliert. Die Exchange Komponente benötigt eine Komponente die die IQueue Schnittstelle anbietet. Die Idee ist, dass alle Warteschlangen die benötigt werden von der Exchange Komponente required werden. In \autoref{img:mom_repository} sind das aktuell zwei Warteschlange. Mithilfe des RDSEFFs kann die Exchange Komponente zwischen den Warteschlangen wechseln. Dies ist in \autoref{img:queueBranch} dargestellt. Dabei wird mithilfe eines GuardedBranch geprüft an welche Warteschlange die ankommenden Nachricht gehen soll. Der Fall, dass eine Nachricht aus der Warteschlange entnommen wird funktioniert genauso. 
 
 
 %Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen. \\
@@ -61,34 +68,47 @@ Die untersuchte MOM Architektur besteht aus einem Verteiler und einer Warteschla
   \label{img:mom_repository}
 \end{figure}
 
+\begin{figure}
+\center
+  \includegraphics[width=0.7\textwidth]{images/modelling/branchSeff.png}
+  \caption{Repository einer MOM mit Exchange und Warteschlange}
+  \label{img:queueBranch}
+\end{figure}
+
 \subsection{System}
-Im System werden Queues mit dem Exchange \autoref{img:mom_system}\\
-Sender und Empfaenger werden jeweils an den Exchange angeschlossen. Fuer Senden und Empfangen jeweils eine Porivided Role.
+Im Systemmodell werden die einzelnen Komponenten aus dem Repository vom Softwarearchitekten zu einem System zusammengesetzt. Der Software-Architekt kann nun die Komponenten aus dem zuvor definierten Repository zusammensetzen. Dabei kann er zunächst entscheiden, wie viele Exchange Komponenten im System exisitieren sollen. Wie auch in RMQ kann eine MOM aus mehreren Exchanges bestehen, die sich auf unterschiedlichen Maschinen befinden können. An einen Exchange werden dann die dazugehörigen Warteschlangen angeschlossen. Da ein Exchange eine Schnittstell zum Senden und Empfangen von Nachrichten anbietet, können beliebig viele Sender und Empfänger Komponenten an einen Exchange angeschlossen werden. In \autoref{img:mom_system} ist ein Systemmodell mit zwei Exchange Komponenten abgebildet. Dabei hat Exchange1 zwei Warteschlangen Komponenten und Exchange2 nur eine Warteschlange angeschlossen. Außerdem sind an Exchange1 je ein Sender und Empfänger angeschlossen. An Exchange2 sind zwei Sender und ein Empfänger angeschlossen. 
 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/mom_system.png}
-  \caption{Systemmodell mit einer MOM und einem Sender und Empfänger}
+  \caption{Systemmodell einer MOM}
   \label{img:mom_system}
 \end{figure}
+\subsection{Ausführungsumgebung und Allokation}
+Im Ausführungs-Umgebungs-Modell kann der Software-Verteilungs-Experte die Hardware Knoten und Netzwerkverbindungen darstellen. Für jeden Exchange und jede Warteschlange kann eine eigene Ressource definiert werden. Außerdem müssen die einzelnen Verbindungen zwischen einem Exchange und den Sendern und Empfängern modelliert werden. Falls Exchange und Warteschlange sich auf unterschiedlichen Ressourcen befinden, müssen die Verbindungen auch modelliert werden. In \autoref{img:mom_ressorceEnv} ist eine mögliche Ausführungsumgebung für das oben beschriebene System dargestellt. Die Ausführungsumgebung besteht aus je einer MOM Ressource für den jeweiligen Exchange und die an ihn angeschlossenen Warteschlangen. Die einzelnen Sender und Empfänger sind jeweils auf eigenen Ressourcen verteilt und sind über Netzwerkverbindungen mit der jeweiligen MOM Ressource verbungen. 
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/mom_system.png}
+  \caption{Ausführungsumgebung und Allokation einer MOM}
+  \label{img:mom_ressorceEnv}
+\end{figure}
 
-\subsection{Usage}
-Benutzer gibt an ob er empfangen oder senden will. \\
-Benutzer gibt an welche Queue/Topic er wie viel Byte senden/empfangen moechte. \\
-Ankunftsrate als Hebel um Sende-Empfangrate abzubilden \\
-\subsection{Ressource Environment und Allokation}
-Einen Server fuer Exchange \\
-Jede Queue kann auf anderer Ressource deployed sein. die am Ende mit dem Exchange Server verbunden sein muss.\\
-Fuer LR kann RD angegeben werden.
+\subsection{Nutzungsmodell}
+Im Nutzungsmodell wird die Benutzung des Systems durch den Domänenexperten modelliert. Für jeden Sender und Empfänger wird dazu je ein UsageScenario angelegt. Dieses beinhaltet das Verhalten eines Benutzers und seine Ankunftszeit. Der Domänenexperte kann somit festlegen wie oft ein Sender oder Empfänger pro Zeiteinheit ankommt um Nachrichten zu senden oder zu empfangen. Außerdem kann dadurch die Anzahl der Nachrichten die pro Zeiteinheit gesendet werden abgebildet werden. Wenn ein Sender zum Beispiel 0.1 mal pro Zeiteinheit ankommt, heißt das, dass er 10 mal pro Zeiteinheit ankommt und somit 10 Nachrichten versendet. Neben der Ankunftzeit wird im UsageScenario auch das Verhalten modelliert. Mithilfe eines EntryLevelSystemCalls kann die passende Funktion im passenden Exchange aufgerufen werden. Möchte ein Sender ein Nachricht an einen Exchange senden, muss er mithilfe des ELSC den passenden Exchange auswählen. Mithilfe von UsageVariablen, könnne dem Aufruf außderdem Parameter mitgegeben werden. Mithilfe dieses Mechanismuses kann für jeden Aufruf spezifiziert werden wie groß die Nachricht die gesendet oder empfangen werden soll ist und zu welcher Warteschlange oder Topic sie gehört. In \autoref{img:mom_usage} ist ein mögliches Nutzungsmodell für das oben beschriebene System. Dabei wird nur der Teil mit Exchange1 betrachtet. Das Nutzungsmodell besteht aus zwei UsageScenarios. Das erste stellt den Sender des Systems dar. Seine Interaktion mit dem System besteht darin, die distribute Funktion im Exchange1 aufzurufen und dabei eine Nachricht mit 5000 Bytes zu versende. Da seine Ankuftszeit 0.1 Beträgt, tut er die zehn mal pro Zeiteinheit. Das zweite UsageScenario stellt den Empfänger des Systems dar. Seine Interaktion mit dem System besteht darin, die receive Funktion im Exchange1 aufzurufen und dabei eine Nachricht mit 5000 Bytes zu empfangen. Da seine Ankuftszeit 0.5 beträgt, tut er die fünf mal pro Zeiteinheit. Da der Empfänger somit pro Zeiteinheit fünf der zehn Nachrichten nicht empfängt sollten diese in der Warteschlange landen und in einer Simulation sichtbar.
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/mom_system.png}
+  \caption{Nutzungsmodell einer MOM mit einem Sender und Empfänger}
+  \label{img:mom_usage}
+\end{figure}
 
-\section{Ressource Demands}
-\subsection{RMQ}
+\section{Modellkalibrierung}
 \label{sec:rmqRd}
-Fuer RDs wurden die Messungen aus (Benchmarks) herangezogen. \\ 
-Das Ziel ist, dass der Benutzer keinen MOM spezifischen RD angeben muss. \\
-In \autoref{sec:maxthroughput} wurde gemessen, was die moegliche Datenmenge ist, die gesendet werden kann (Durchsatz). Dieser Wert wird im Ressource Environment in die jeweiligen Linking Ressources eingetragen. Dabei wird fuer den LR zwischen Sender und MOM der Wert fuer keine Empfaenger eingetragen und fuer die LR zwischen Empfaenger und MOM der Wert fuer mit Empfaenger. \\
+In \cite{palladio17} wird Modellkalibrierung als Anreicherung von Modellen mit quantitaitven Daten, wie Ressourcenbedarf. Je nachdem wie weit entwickelt das System ist, können diese Daten mithilfe von verschiedenen Techniken gewonnen werden. Mithilfe von Application-Performance-Monitoring wurde in \autoref{sec:rmqBenchmark} RMQ ausgemessen und die Ergbnisse dort beschrieben. Im Folgenden sollen die Ergebnisse interpretiert und benutzt werden um die Modelle zu kalibrieren.
+%Das Ziel ist, dass der Benutzer keinen MOM spezifischen RD angeben muss. \\
 
-Latenz einer Nachricht mit verschiedener Bytegroesse wurde ausgemessen (siehe latenz verschiedenen Msg größen). Mithilfe einer Regressionsanalyse konnte ein RD der Form (7 * (msg.BYTESIZE + 110588)) / 489 identifiziert werden.\\
+In \autoref{oneMsgLatency} wurde die Latenz einer Nachricht mit verschiedenen Größen ausgemessen. Darin ist ein lineares Wachstum der Latenz mit ansteigen der Nachrichtengröße zu beobachten. Dies liegt die Vermutung nahe, dass diese beiden Variablen voneinander abhängen. Um diese Vermutung zu bestätigen wurde für die Variablen Latenz und Nachrichtengröße ihre Korellation berechnet. Dabei ist die Korrelation ein statistisches Maß, das den Grad der linearen Abhängigkeit zwischen zwei Variablen anzeigt, die im Paar auftreten. Ist diese Abhängigkeit hoch, liegt der Wert nahe eins. Liegt der Wert dagegen bei minus eins, ist die Abhängigkeit sehr gering. Die Korrelation der Variablen Latenz und Nachrichtengröße ist 0.9850627. Somit ist eine hohe lineare Abhängigkeit der Variablen gezeigt. Als nächstes soll mithilfe einer linearen Regressionsanalyse einen Ressourcenbedarf für das Modell definiert werden. Das Ziel einer linearen Regressionsanalyse ist es, eine lineare Beziehung zwischen einer Prädiktorvariable Y und der Reaktionsvariable X herzustellen, so dass der Wert von Y getschätzt werden kann, wenn nur der Wert des Prädiktoren X bekannt ist. Die Ergebnisse sind in (abb) und die dabei entstandene Regressionsgerade in (abb) abgebildet. TODO was soll alles rein?
+Daraus folgt ein Term der Form: Latenz= 1256.2782902 +(0.003299*Nachrichtengröße). Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird. \par
 
 Wo Nachrichten hingeschrieben wurden waren auch ein wichtiger Einflussfaktor. Fuer eine Nachricht der Groesse x konnte ein RD der Form e * x / 1000 identifiziert werden. Dieser wurde aus der Differenz der Messungen mit und ohne LazyQueues errechnet. \\
 
