@@ -63,7 +63,7 @@ Die untersuchte MOM Architektur besteht aus einem Verteiler und einer Warteschla
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/mom_repository.png}
+  \includegraphics[width=1\textwidth]{images/modelling/repository.pdf}
   \caption{Repository einer MOM mit Exchange und Warteschlange}
   \label{img:mom_repository}
 \end{figure}
@@ -151,8 +151,14 @@ Die zuvor beschriebenen Modelle können nun mithilfe der hier vorgestellten quan
 In den Abschnitten zuvor wurde vorgestellt wie die Modellierung eines Systems aussehen soll, die eine MOM zum Nachrichtenaustausch verwendet. Im Folgenden wird eine konkrete Modellierung vorgestellt, die mit den quantitativen Daten aus \autoref{} angereichert wird. Anschließend wird eine Performanzanalyse auf der Modellierung ausgeführt. Die Ergebnisse werden anschließend mit den Messungen aus \autoref{sec:rmqBenchmark} verglichen.
 
 \subsection{Anwendungszenario}
-Im Folgenden betrachten wir das in (Abb) abgebildete Szenario. Darin befindet sich eine Sender und eine Empfänger Komponente. Beide sind mit der Exchange Komponente verbunden. Der Exchange ist genau mit einer Warteschlange verbunden. Diese ist entweder mit dem RD für eine Nachricht ohne oder mit Lazy-Warteschlangen angereichert. Die Exchange und die Warteschlangen Komponente sind auf einem gemeinsamen ResourceContainer MOM bereitgestellt. Die Sender und Empfänger Komponente sind jeweils auf einem eigenen ResourceContainer bereitgestellt. Der MOM-RC ist jeweils mit dem Sender- und der Empfänger-RC mithilfe einer LinkingResource verbunden. Diese haben jeweils einen Wert für den Durchsatz und Latenz eingetragen, je nachdem welches Szenario betrachtet wird. Schließlich sind für den Sender und Empfänger jeweils ein UsageScenario spezifiziert. Darin sind die jeweiligen Ankunftszeiten und Nachrichtengrößen modelliert.
+Im Folgenden betrachten wir das in \autoref{img:simulationscenario} abgebildete Szenario. Darin befindet sich eine Sender und eine Empfänger Komponente. Beide sind mit der Exchange Komponente verbunden. Der Exchange ist genau mit einer Warteschlange verbunden. Diese ist entweder mit dem RD für eine Nachricht ohne oder mit Lazy-Warteschlangen angereichert. Die Exchange und die Warteschlangen Komponente sind auf einem gemeinsamen ResourceContainer MOM bereitgestellt. Die Sender und Empfänger Komponente sind jeweils auf einem eigenen ResourceContainer bereitgestellt. Der MOM-RC ist jeweils mit dem Sender- und der Empfänger-RC mithilfe einer LinkingResource verbunden. Diese haben jeweils einen Wert für den Durchsatz und Latenz eingetragen, je nachdem welches Szenario betrachtet wird. Schließlich sind für den Sender und Empfänger jeweils ein UsageScenario spezifiziert. Darin sind die jeweiligen Ankunftszeiten und Nachrichtengrößen modelliert.
 % Der Sender sendet pro Zeiteinheit und der Empfaenger empfaengt pro Zeiteinheit eine bestimmte Menge an verschieden Großen Nachrichten. 
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/modelSimulationResults/simulationScenario.pdf}
+  \caption{Simulationsszenario }
+  \label{img:simulationscenario}
+\end{figure}
 Im Folgenden wird diese Modellierung in einer Performanzanalyse eingesetzt.
 
 
