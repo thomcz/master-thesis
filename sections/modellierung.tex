@@ -162,12 +162,13 @@ Im Folgenden betrachten wir das in \autoref{img:simulationscenario} abgebildete 
 Im Folgenden wird diese Modellierung in einer Performanzanalyse eingesetzt.
 
 
-\subsection{Performanzanalyse}
+\subsection{Performance-Analyse}
+Die Palladio-Bench bietet eine Sammlung von Qualitätsanalysen mit Hauptfokus auf Performance an. Nachdem in den vergangen Abschnitten eine MOM Modellierung und ihre Kalibrierung beschrieben wurde, kann im nächsten Schritt eine Performance-Analyse ausgeführt werden. Dazu wird das Analysewerkzeug \textbf{SimuCom} verwendet, das verschiedene Performance Charakteristiken, darunter Antwortzeiten für Systeme und Komponenten, sowie die Auslastung einzelner Ressourcen berechnet. Im Folgenden werden die Ergebnisse der Performance-Analyse präsentiert und mit den Messungen aus \autoref{sec:rmqBenchmark} verglichen. 
 \subsubsection{Simulation 1} 
 \label{sec:rmqSimulation1}
-In der ersten Simulation betrachten wir den Fall, dass Sender und Empfaenger die gleichen Ankunftszeiten haben. Die gesendete Nachrichten haben die groessen 100, 200, 300, 400, 500 und 1000 Kbyte. Verglichen wurde mit den Messungen aus \autoref{sec:oneMsgLatency}. Der Sender, Empfaenger und der Broker befinden sich jeweils auf der selben Maschine. Betrachtet wurden der Fuellstand der Warteschlange und die Latenz der Nachrichten. 
+In der ersten Simulation wird der Fall betrachtet, dass Sender und Empfänger die gleichen Ankunftszeiten haben. Die gesendete Nachrichten haben die Größen 100, 200, 300, 400, 500 und 1000 Kbyte. Verglichen wurde mit den Messungen aus \autoref{sec:oneMsgLatency}. Der Sender, Empfänger und der Broker befinden sich jeweils auf der selben Maschine. Betrachtet wurden der Füllstand der Warteschlange und die Latenz der Nachrichten. 
 %B
-Da die Ankunftszeiten der beiden Akteure gleich sind, bleibt die Warteschlange die ganze Zeit ueber Leer. Die Ergebnisse der Latenz einer Nachricht sind in \autoref{img:simulation1} abgebildet. ...
+Da die Ankunftszeiten der beiden Akteure gleich sind, bleibt die Warteschlange die ganze Zeit über Leer. Die Ergebnisse der Latenz einer Nachricht sind in \autoref{img:simulation1} abgebildet. Eingezeichnet sind dabei die Messpunkte der Messungen und die Ergebnisse der Simulation. In (tabelle) ist der Fehler für jede Größe angegeben. Dabei ist zu sehen, dass dieser zwischen X und Y liegt.
 
 \begin{figure}
 \center
@@ -177,9 +178,9 @@ Da die Ankunftszeiten der beiden Akteure gleich sind, bleibt die Warteschlange d
 \end{figure}
 
 \subsubsection{Simulation 2} 
-Diese Simulation betrachtet zusaetzlich zu dem Fall aus Simulation 1 die Netzwerklatenz mit. Dazu sind Sender, Empfaenger und Broker auf unterschiedlichen Maschinen. Die Nachrichten haben wieder die groessen 100, 200, 300, 400, 500 und 1000 Kbyte. Im Modell wurden fuer die LinkingRessources der Durchsatz und die Latenz, wie in \autoref{sec:rmqRd} beschrieben, angepasst. Die Messung mit der verglichen wurde ist in \autoref{sec:oneMsgLatency} beschrieben. Auch bei diesem Vergleich wurde der Fuellstand der Warteschlange und die Latenz der Nachrichten betrachtet. 
+Diese Simulation betrachtet zusätzlich zu dem Fall aus Simulation 1 die Netzwerklatenz mit. Dazu sind Sender, Empfänger und Broker auf unterschiedlichen Maschinen. Die Nachrichten haben die größen 100, 200, 300, 400, 500 und 1000 Kbyte. Im Modell wurden für die LinkingRessources der Durchsatz und die Latenz, wie in \autoref{sec:rmqRd} beschrieben, für entfernte Broker angepasst. Die Messung mit der verglichen wurde ist in \autoref{sec:oneMsgLatency} beschrieben. Es wurden der Füllstand der Warteschlange und die Latenz der Nachrichten betrachtet. 
 %B
-Auch hier bleibt die Warteschlange leer, da die Ankuftszeiten der Sender und Empfaenger gleich sind. Die Latenz der Nachrichten ist in \autoref{img:simulation2} abgebildet. 
+Die Warteschlange bleibt über die Simulationsdauer leer, da die Ankunftszeiten der Sender und Empfänger gleich sind. Die Latenz der Nachrichten ist in \autoref{img:simulation2} abgebildet. Außerdem sind die Messpunkte aus der Messung eingetragen. In (tabelle) ist der Fehler für jede Größe angegeben. Dabei ist zu sehen, dass dieser weniger gut ist, als bei der vorherigen Simulation. Der Fehler liegt zwischen X und Y.
 \begin{figure}
 \center
   \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation2.png}
@@ -189,9 +190,9 @@ Auch hier bleibt die Warteschlange leer, da die Ankuftszeiten der Sender und Emp
 
 
 \subsubsection{Simulation 3}
-In dieser Simulation soll geprueft werden ob sich Modell und Real System bei unterschiedlichen Ankuftszeiten gleich verhalten. Dabei ist die Ankuftszeit des Senders jede Sekunde und die des Empfangers alle zwei Sekunde. Der Fuellstand der Warteschlange wird ueber die Zeit betrachtet. Verglichen wurde mit der Messung aus \autoref{sec:queueGrowth}.
+In dieser Simulation wird die Auswirkung der Ankunftszeiten auf das System geprüft. Verglichen wird mit der Messung aus \autoref{sec:queueGrowth}. Dabei ist die Ankunftszeit des Senders einmal pro Sekunde und die des Empfängers einmal alle zwei Sekunde. Der Füllstand der Warteschlange, sowie die Latenz der Nachrichten wird über die Zeit betrachtet.
 %B
-Die Ergebnisse sind in \autoref{img:simulation3} abgebildet. Dabei ist zu sehen, dass sich Messung und Simulation gleich verhalten und ueber die Zeit ansteigen.
+Die Ergebnisse sind in \autoref{img:simulation3} abgebildet. In \autoref{img:simulation3}a ist zu sehen, dass sich der Füllstand der Warteschlange bei Messung und Simulation gleich verhält und über die Zeit ansteigen, da jede Sekunde eine Nachricht in der Warteschlange unbearbeitet bleibt. In \autoref{img:simulation3}b sieht man außerdem die Auswirkungen auf die Latenz der einzelnen Nachrichten. ... 
 \begin{figure}
 \center
   \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation3.png}
@@ -200,9 +201,9 @@ Die Ergebnisse sind in \autoref{img:simulation3} abgebildet. Dabei ist zu sehen,
 \end{figure}
 
 \subsubsection{Simulation 4}
-Bei der folgenden Simulation ist die Ankuftszeit des Senders jede Sekunde und die des Empfangers alle zwei Sekunden. Im Unterschied zur vorherigen Simulation gibt es einen weiterern Empfaenger, der auch jede zweite Sekunde ankommt. Ziel dieser Simulation soll sein, zu pruefen ob zwei Empfaenger die Warteschlange zusammen abarbeiten koennen, wie es auch im realen System ist, wie in \autoref{sec:varyingConsumer} beschriebenen.
+Mit dieser Simulation soll die Auswirkung mehrerer Empfänger auf das System überpüft werden. Die Frage dabei ist, ob mehrere Empfänger eine Warteschlange gemeinsam abarbeiten können, wie in \autoref{sec:varyingConsumer} beschrieben. Obwohl in der Messung mit mehreren Empfängern, die Latenz nicht ganz an die Latenz eines Empfängers, der die Warteschlange alleine abarbeiten kann, herankommt, kann dieser Effekt aufgrund der minimalen Abweichung vernachlässigt werden. Im der folgenden Simulation ist die Ankunftszeit des Senders einmal pro Sekunde und die der beiden Empfänger jeweils einmal alle zwei Sekunden. Die Nachrichtengröße beträgt dabei, wie auch in der Messung, X Bytes. Betrachtet werden der Füllstand der Warteschlange und die Latenz der einzelnen Nachrichten. 
 %B
-\autoref{img:simulation4} zeigt den Zustand der Warteschlange ueber die Zeit. Im Unterschied zu \autoref{img:simulation3}, bekommen die beiden Empfaenger die Warteschlange gemeinsam abgearbeitet.
+\autoref{img:simulation4} zeigt die Ergebnisse der Simulation. In \autoref{img:simulation4}a ist der Zustand der Warteschlange abgebildet. Dabei ist zu sehen, dass die beiden Empfänger die Warteschlange gemeinsam abarbeiten können. Gleichzeitig ist in \autoref{img:simulation4}b zu sehen, dass sich die Latenz der Nachrichten normalisiert hat und konstant bleibt. Der Fehler liegt dabei bei X\%. 
 
 \begin{figure}
 \center
@@ -218,9 +219,9 @@ Bei der folgenden Simulation ist die Ankuftszeit des Senders jede Sekunde und di
 
 
 \subsubsection{Simulation 5}
-Die letzte Simulation betrachtet den Fall von Lazy Warteschlangen in RMQ. Sender und Empfaenger haben die gleiche Ankunftszeiten und die gesendete Nachrichten haben die Groessen 100, 200, 300, 400, 500 und 1000 Kbyte. Der RD fuer eine Nachricht wurde erweitert. Dieser ist in \autoref{sec:rmqRd} beschrieben. Erwartet wird, dass die Latenz im Vergleich zu \autoref{sec:rmqSimulation1} ansteigt. Verglichen wurde mit der Messung aus \autoref{sec:rmqLazy}.
+Schließlich betrachtet diese Simulation Lazy-Warteschlangen aus RMQ. Sender und Empfänger haben die gleiche Ankunftszeiten und kommen einmal pro Sekunde an. Die gesendete Nachrichten haben die Größe 100, 200, 300, 400, 500 und 1000 Kbyte. Der RD für eine Nachricht wurde im Modell angepasst. Dieser ist in \autoref{sec:rmqRd} beschrieben. Verglichen wurde mit der Messung aus \autoref{sec:rmqLazy}. Betrachtet wurde die Latenz der Nachrichten und der Füllstand der Warteschlange.
 %B
-Die Ergebnisse sind in \autoref{img:simulation6} abgebildet. Wie zu erwarten steigt die Latenz an. Im Vergelich zur realen Messung liegt der Unterschied bei x Prozent.
+Die Warteschlange bleibt aufgrunde der gleichen Ankuftszeiten gleich. In \autoref{img:simulation6} sind die Ergebnisse bezüglich der Latenz abgebildet. Neben den Vorhersagepunkten aus dieser Simulation und den Messpunkte aus der Messung mit Lazy-Warteschlangen, sind die Vorhersagepunkte aus \autoref{sec:rmqSimulation1} eingetragen. In (tabelle) sind die Fehler abgebildet. Dabei wird neben dem Fehler zur Messung mit Lazy-Warteschlangen und der Vorhersage mit Lazy-Warteschlangen auch der Fehler zwischen der Messung mit Lazy-Warteschlangen und der Vorhersage aus \autoref{sec:rmqSimulation1} berechnet. Dabei ist zunächst zu sehen, dass der Fehler zwischen der Messung und der Vorhersage mit Lazy-Warteschlangen zwischen X und Y liegt. Der Fehler zwischen der Messung mit Lazy-Warteschlangen und der Vorhersage aus \autoref{sec:rmqSimulation1} liegt zwischen A und B und ist somit höher. Somit ist zu sehen, dass die Anpassung des RD einen Einfluss auf die Genauigkeit der Vorhersage hat.
 \begin{figure}
 \center
   \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation6.png}
