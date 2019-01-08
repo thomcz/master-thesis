@@ -193,13 +193,17 @@ Nachdem in der Messung davor die Laenge der Warteschlange betrachtet wurde, soll
 Sollte der verfuegbare Speicher des Broker ausgeschoepft sein, wird der MemoryAlarm aktiviert und der Broker blockiert ankommende Nachrichten, bis der Speicher wieder frei ist. Dies ist in (abb) zu sehen.
 TODO beobachtung und Ergebnis
 
-\subsubsection{Ansteigen der Queuelaenge}
+\subsubsection{Ansteigen der Queuelänge}
 \label{sec:queueGrowth}
-TODO: \\
-Sender 2 Nachrichten \\
-Empfaenger 1 Nachricht \\
-evtl. mehrere Verhaeltnisse \\
-Fuellstand der Queue steigt an \\
+Diese Messung untersucht die Auswirkung des Warteschlangen-Füllstands auf die Latenz der einzelnen Nachrichten. Die Messung besteht aus einem Sender und einem Empfänger. Die Senderate beträgt zwei Nachrichten pro Sekunde der Empfänger empfängt jedoch nur eine Nachricht pro Sekunde. Die Nachrichten sind dabei 1 Kb Groß. Erwartet wird, dass die Latenz der Nachrichten mit ansteigen des Warteschlangen Füllstandes wächst, da die Nachrichten länger in der Warteschlange warten, bis sie abgeholt werden.
+%B
+In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \autoref{img:queuegrowth}b der Füllstand der Warteschlange zu sehen. Diese wächst pro Sekunde um eine Nachricht die nicht abgeholt wird an. In \autoref{img:queuegrowth}a ist die Latenz der Nachrichten abgebildet. Wie erwartet steigt diese mit ansteigen des Füllstandes.
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/measurement/queuegrowth.pdf}
+  \caption{Senderate 1000/sec, Empfangsrate 100/sec}
+  \label{img:queuegrowth}
+\end{figure}
 
 \subsubsection{Lazy Queues}
 \label{sec:rmqLazy}
