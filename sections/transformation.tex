@@ -12,10 +12,8 @@
 
 \chapter{Transformation}
 \label{ch:transformation}
-Idee des Event Mechanismus: man moechte konkret ueber nachrichten/events reden und nicht abstrakt ueber interfaces. Event Transformation liefert am Ende Modell mit Interfaces usw. \\
-Deshalb: Event Mechanismus wiederverwenden \\
-
-aber: alternative Transformation die events in meine Modellierung transformiert
+Da Palladio bereits einen Modellelemente bereitstellt um eventbasierte Komunikation abzubilden, ist die Idee, diese Elemente wiederzuverwenden. Das Problem ist, dass beim Verwenden von Events die Modeltransformation eine Komponentenkette einwebt die den Anforderungen einer MOM, wie sie in dieser Masterarbeit beschrieben wurde, nicht genügt. Deshalb soll diese Modelltransformation ersetzt werden. Der Vorteil dabei ist, dass die Event-Elemente wiederverwendet werden können und dem Benutzer Modellierungsaufwand erspart bleibt. Wie im vorherigen Kapitel besprochen, kann eine große MOM-Architektur viele Warteschlangen und Exchange-Komponenten, die miteinander agieren, hervorbringen. Im Folgenden wird beschrieben, wie eine solche Modelltransformation aussehen kann.
+%Idee des Event Mechanismus: man moechte konkret ueber nachrichten/events reden und nicht abstrakt ueber interfaces. Event Transformation liefert am Ende Modell mit Interfaces usw. \\
 
 \section{Beschreibung}
 Sender Komponente hat:\\
