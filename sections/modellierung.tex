@@ -107,13 +107,12 @@ Im Nutzungsmodell wird die Benutzung des Systems durch den Domänenexperten mode
 In \cite{palladio17} wird Modellkalibrierung als Anreicherung von Modellen mit quantitaitven Daten, wie Ressourcenbedarf. Je nachdem wie weit entwickelt das System ist, können diese Daten mithilfe von verschiedenen Techniken gewonnen werden. Mithilfe von Application-Performance-Monitoring wurde in \autoref{sec:rmqBenchmark} RMQ ausgemessen und die Ergbnisse dort beschrieben. Im Folgenden sollen die Ergebnisse interpretiert und benutzt werden um die Modelle zu kalibrieren.
 %Das Ziel ist, dass der Benutzer keinen MOM spezifischen RD angeben muss. \\
 
-In \autoref{oneMsgLatency} wurde die Latenz einer Nachricht mit verschiedenen Größen ausgemessen. Darin ist ein lineares Wachstum der Latenz mit ansteigen der Nachrichtengröße zu beobachten. Dies liegt die Vermutung nahe, dass diese beiden Variablen voneinander abhängen. Um diese Vermutung zu bestätigen wurde für die Variablen Latenz und Nachrichtengröße ihre Korellation berechnet. Dabei ist die Korrelation ein statistisches Maß, das den Grad der linearen Abhängigkeit zwischen zwei Variablen anzeigt, die im Paar auftreten. Ist diese Abhängigkeit hoch, liegt der Wert nahe eins. Liegt der Wert dagegen bei minus eins, ist die Abhängigkeit sehr gering. Die Korrelation der Variablen Latenz und Nachrichtengröße ist 0.9850627. Somit ist eine hohe lineare Abhängigkeit der Variablen gezeigt. Als nächstes soll mithilfe einer linearen Regressionsanalyse einen Ressourcenbedarf für das Modell definiert werden. Das Ziel einer linearen Regressionsanalyse ist es, eine lineare Beziehung zwischen einer Prädiktorvariable Y und der Reaktionsvariable X herzustellen, so dass der Wert von Y getschätzt werden kann, wenn nur der Wert des Prädiktoren X bekannt ist. Die Ergebnisse sind in \autoref{img:reganalysesummary} und die dabei entstandene Regressionsgerade in (abb) abgebildet. TODO was soll alles rein?
-Daraus folgt ein Term der Form: Latenz = 1256.2782902 + (0.003299 * Nachrichtengröße). Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird. 
+In \autoref{oneMsgLatency} wurde die Latenz einer Nachricht mit verschiedenen Größen ausgemessen. Darin ist ein lineares Wachstum der Latenz mit ansteigen der Nachrichtengröße zu beobachten. Dies liegt die Vermutung nahe, dass diese beiden Variablen voneinander abhängen. Um diese Vermutung zu bestätigen wurde für die Variablen Latenz und Nachrichtengröße ihre Korellation berechnet. Dabei ist die Korrelation ein statistisches Maß, das den Grad der linearen Abhängigkeit zwischen zwei Variablen anzeigt, die im Paar auftreten. Ist diese Abhängigkeit hoch, liegt der Wert nahe eins. Liegt der Wert dagegen bei minus eins, ist die Abhängigkeit sehr gering. Die Korrelation der Variablen Latenz und Nachrichtengröße ist 0.9850627. Somit ist eine hohe lineare Abhängigkeit der Variablen gezeigt. Als nächstes soll mithilfe einer linearen Regressionsanalyse einen Ressourcenbedarf für das Modell definiert werden. Das Ziel einer linearen Regressionsanalyse ist es, eine lineare Beziehung zwischen einer Prädiktorvariable Y und der Reaktionsvariable X herzustellen, so dass der Wert von Y getschätzt werden kann, wenn nur der Wert des Prädiktoren X bekannt ist. Die dabei entstandene Regressionsgerade hat die Form: \[latency = 1256.2782902 + (0.003299 * msgSize)\] und ist in \autoref{img:regplot} eingezeichnet. Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/reganalyse.png}
-  \caption{Ergebniss der Regressionsanalyse}
-  \label{img:reganalysesummary}
+  \includegraphics[width=1\textwidth]{images/modelling/oneMsgRegression.pdf}
+  \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse}
+  \label{img:regplot}
 \end{figure}
 
 \par
@@ -122,16 +121,15 @@ In \autoref{sec:maxthroughput} wurde gemessen, was die möglichen Datenmengen si
 
 Auch die Netzwerklatenz, die in \autoref{oneMsgLatency} ausgemessen wurde, hat einen Einfluss auf die Latenz einer Nachricht gehabt. Wenn diese in der Modellierung betrachtet werden soll, kann diese in die jeweiligen LinkingRessource als Netzwerklatenz eingetragen werden. Diese wird auf die Gesamtlatenz einer Nachricht addiert. \par
 
-Neben der Standardkonfiguration wurde auch die Konfiguration für Lazy-Warteschlangen in \autoref{sec:rmqLazy} ausgemessen. Auch hier wurde wie oben beschrieben zunächst die Korrelation der beiden Variablen berechnet. Mit 0.9951195 ist diese ebenfalls sehr hoch. Die Ergebnisse der im Anschluss durchgeführten Regeressionsanalyse sind in  \autoref{img:reganalysesummarylazy} abgebildet. TODO was soll alles rein?
-Daraus folgt ein Term der Form: Latenz = 1602.5021193 + (0.0049697 * Nachrichtengröße). Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird, wenn Lazy-Warteschlangen betrachtet werden sollen.
+Neben der Standardkonfiguration wurde auch die Konfiguration für Lazy-Warteschlangen in \autoref{sec:rmqLazy} ausgemessen. Auch hier wurde wie oben beschrieben zunächst die Korrelation der beiden Variablen berechnet. Mit 0.9951195 ist diese ebenfalls sehr hoch. Die entstandene Regressionsgerade hat die Form: \[latency = 1602.5021193 + (0.0049697 * msgSize)\] und ist in \autoref{img:regplotlazy} eingezeichnet. Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird, wenn Lazy-Warteschlangen betrachtet werden sollen.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/reganalyse.png}
-  \caption{Ergebniss der Regressionsanalyse}
-  \label{img:reganalysesummarylazy}
+  \includegraphics[width=1\textwidth]{images/modelling/oneMsgLazyRegression.pdf}
+  \caption{Regressionsgerade aus der Regressionsanalyse mit Lazy-Warteschlangen}
+  \label{img:regplotlazy}
 \end{figure}
 
-Die zuvor beschriebenen Modelle können nun mithilfe der hier vorgestellten quantitativen Daten angereichert werden um eine Performanzanalyse zu ermöglichen. Im nächsten Schritt soll eine konkrete Modellierung vorgestellt werden, die mit den hier vorgestellten Daten angereichert wird. 
+Die zuvor beschriebenen Modelle können nun mithilfe der hier vorgestellten quantitativen Daten angereichert werden um eine Performance-Analyse zu ermöglichen. Im nächsten Schritt soll eine konkrete Modellierung vorgestellt werden, die mit den hier vorgestellten Daten angereichert wird. 
 
 %Somit ergibt sich f die Response Time folgendes ergeben: Response Time: ByteSize / Throughput + RD / CPU + Latency + HddRD/HDD \\
 %RD an Aquire um Latenz abzubilden

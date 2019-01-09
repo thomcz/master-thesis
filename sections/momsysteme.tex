@@ -14,40 +14,41 @@
 
 \chapter{Untersuchung von nachrichtenbasierter Middleware}
 \label{ch:mom}
-Um die Performance einer MOM oder eines Software-Systems im Allgemeinen, vorhersagen zu können, benötigt es zunächst Informationen über die Struktur, sein Verhalten, seiner Ausführungsumgebung und der Benutzung. Dazu müssen die verschiedenen Palladio Rollen relevante Einflüsse bestimmen können. Der Komponenten-Entwickler muss RessourceDemands und Fehlerraten bestimmen. Der Systemdeployer muss verfügbare Rechenleistung und Hardware bestimmen. Der Domänenexperte muss das Verhalten der Nutzer bestimmen. Schließlich muss der Softwarearchitekt fehlende Werte bestimmen und das Modell damit kalibrieren. Diese Modellkalibrierung ist ein wichtiger Bestandteil des Modellierungsprozesses. In \cite{palladio17} wird beschrieben, wie und mit welchen Techniken die verschiedenen Rollen diese Daten erhalten und die jeweiligen Modelle kalibrieren können. Modellkalibrierung ist dabei die Anreicherung von Modellen mit quantitaitven Daten, wie Ressourcenbedarf. Die Daten können aus Messungen oder Vorhersagen stammen. Die Modellkalibrierung ist eine Vorbedingung der Performance-Analyse. Die Informationen die eine Rolle in den verschiedenen Phasen der Software-Entwicklung gewinnen kann sind unterschiedlich. Dieser Prozess lässt sich in drei Phasen strukturieren: Design, Entwicklung und Betrieb. In der Design Phase existiert die Applikation nur auf dem Papier und die Daten, die gesammelt werden können, grobe Schätzungen. Je weiter die Software-Entwicklung fortgeschritten ist, desto mehr quantitative Daten werden verfügbar um die Modelle kalibrieren zu können. Schließlich kann in der Betriebsphase das Gesamtsystem und auch der Benutzer quantitative Daten liefern. 
+Um die Performance einer MOM oder eines Software-Systems im Allgemeinen, vorhersagen zu können, benötigt es zunächst Informationen über die Struktur, sein Verhalten, seiner Ausführungsumgebung und der Benutzung. Dazu müssen die verschiedenen Palladio Rollen relevante Einflüsse bestimmen können. Der Komponenten-Entwickler muss Resourcen Anforderungen und Fehlerraten bestimmen. Der Software-Verteilungs-Experte muss verfügbare Rechenleistung und Hardware bestimmen. Der Domänenexperte muss das Verhalten der Nutzer bestimmen. Schließlich muss der Softwarearchitekt fehlende Werte bestimmen und das Modell damit kalibrieren. Diese Modellkalibrierung ist ein wichtiger Bestandteil des Modellierungsprozesses. In \cite{palladio17} wird beschrieben, wie und mit welchen Techniken die verschiedenen Rollen diese Daten erhalten und die jeweiligen Modelle kalibrieren können. Modellkalibrierung ist dabei die Anreicherung von Modellen mit quantitaitven Daten, wie Ressourcenbedarf. Die Daten können aus Messungen oder Vorhersagen stammen. Die Modellkalibrierung ist eine Vorbedingung der Performance-Analyse. Die Informationen die eine Rolle in den verschiedenen Phasen der Software-Entwicklung gewinnen kann sind unterschiedlich. Dieser Prozess lässt sich in drei Phasen strukturieren: Design, Entwicklung und Betrieb. In der Design Phase existiert die Applikation nur auf dem Papier und die Daten, die gesammelt werden können nur grobe Schätzungen. Je weiter die Software-Entwicklung fortgeschritten ist, desto mehr quantitative Daten werden verfügbar um die Modelle kalibrieren zu können. Schließlich kann in der Betriebsphase das Gesamtsystem und auch der Benutzer quantitative Daten liefern. 
 
-Im Rahmen der Masterarbeit soll eine MOM modelliert werden um in Performanzanalysen verwendet werden zu können. Dazu müssen, wie oben beschrieben, verschiedenen quantitative Daten gesammelt werden um das Modell kalibrieren zu können um eine Performanzanalyse zu ermöglichen. Dazu soll zunächst eine bereits existierende MOM ausgewählt werden. Da es sich dabei um eine bereits existierende MOM handelt, befindet sie sich im letzten Schritt der drei Software-Entwicklungsphasen. Somit lässt sich das Gesamtsystem betrachten und ausmessen um quantitative Daten zu sammeln. Zunächst werden in \autoref{sec:anforderungenMom} Anforderungen an die MOM Auswahl definiert um dann im nächsten Schritt die ausgewählte MOM in \autoref{sec:rmq} vorzustellen. Schließlich soll diese mit einem Werkzeug ausgemessen werden. Die Ergebnisse werden in \autoref{sec:rmqBenchmark} vorgestellt. Diese werden verwendet um die Modelle in \autoref{ch:modellierung} kalibrieren zu können.
+Im Rahmen der Masterarbeit soll eine MOM modelliert werden um in Performance-Analysen verwendet werden zu können. Dazu müssen, wie oben beschrieben, verschiedenen quantitative Daten gesammelt werden um das Modell kalibrieren zu können, damit eine Performance-Analyse ermöglicht wird. Dazu soll zunächst eine bereits existierende MOM ausgewählt werden. Da es sich dabei um eine bereits existierende MOM handelt, befindet sie sich im letzten Schritt der drei Software-Entwicklungsphasen. Somit lässt sich das Gesamtsystem betrachten und ausmessen um quantitative Daten zu sammeln. Für die Auswahl werden zunächst in \autoref{sec:anforderungenMom} Anforderungen an die MOM definiert. Diese MOM wird im Anschluss in \autoref{sec:rmq} vorgestellt. Schließlich soll diese mit einem Werkzeug ausgemessen werden. Die Ergebnisse werden in \autoref{sec:rmqBenchmark} vorgestellt. Mithilfe der Ergebnisse, werden die Modelle in \autoref{ch:modellierung} anschließende kalibriert.
 
 
 \section{Anforderungen an MOMs}
 \label{sec:anforderungenMom}
-Da es eine Vielzahl von MOMs gibt, muss zunächst eine Auswahl stattfinden. Dazu werden im ersten Schritt der Masterarbeit Anforderungen erarbeitet, die ein MOM erfüllen muss, damit sie in Betracht kommt. Im Rahmen des Proposals wurde sich bereits mit der Frage auseinander gesetzt und die folgenden Anforderungen erarbeitet:
+Da es eine Vielzahl von MOMs gibt, muss zunächst eine Auswahl stattfinden. Dazu werden im ersten Schritt der Masterarbeit Anforderungen erarbeitet, die ein MOM erfüllen muss, damit sie in Betracht kommt. Die folgenden Anforderungen sollen erfüllt werden:
 \begin{itemize}
-\item Die MOM sollte \textbf{Open Source} sein.
-\item Sie sollte eine \textbf{weite Verbreitung} haben. Um dies einzuschätzen zu können sollen verschiedene Entwicklerforen wie Stackoverflow und Stachshare untersucht werden, sowie die Literatur in diesem Bereich.
-\item %Da sowohl das Experimentsystem eine Java und das Evaluierungssystem eine C++ Implementierung besitzen sollte 
-Die MOM sollte \textbf{Programmiersprachen unabhängig} sein.
-\item Sich in \textbf{aktiver Entwicklung} befinden.
-\item Bereits gesammelte \textbf{Erfahrung} mit MOMs.
+\item Die MOM soll \textbf{Open Source} sein.
+\item Sie soll eine \textbf{weite Verbreitung} haben.
+\item Die Verwendung soll \textbf{Programmiersprachen unabhängig} sein.
+\item Es soll eine MOM betrachtet werden, die sich in \textbf{aktiver Entwicklung} befindet.
+\item Die verschiendenen \textbf{Interaktionstypen} (1:1, 1:n, n:1 und n:m) sollen unterstützt werden
+\item Sie soll einen \textbf{hohen Grad der Entkopplung}, bzgl. Raum, Zeit und Synchronisation haben
+\item Die MOM soll sowohl das Punkt-Zu-Punkt als auch Publish/Subscriber \textbf{Nachrichtenmodell} unterstüzen
 \end{itemize}
 %- bestimmte Protokolle unterstuetzen \\ %(https://www.predic8.de/activemq-hornetq-rabbitmq-apollo-qpid-vergleich.htm)
 
 %\section{Auswahl der MOMs}
 %In diesem Schritt sollen zwei bis drei MOMs ausgewählt werden. Dabei sollen die zuvor erarbeiteten Anforderungen einbezogen werden. Da sich bereits im Rahmen des Proposals mit dem Thema auseinander gesetzt wurde, wurden bereits drei starke Kandidaten identifiziert, die die bereits erarbeiteten Anforderungen erfüllen.
-Im Folgenden soll ein System untersucht werden, das diese Anforderungen erfüllt.
+Im Folgenden soll eine MOM untersucht werden, das diese Anforderungen erfüllt.
 
 \section{RabbitMQ}
 \label{sec:rmq}
-RabbitMQ ist, mit 35,000 aktiven Produktivumgebungen, eine der am weitesten verbreitete MOM. 
-RabbitMQ ist eine Open-Source-MOM, die seit 2007 entwickelt wird \cite{rabbitmq}. Das Ziel von RabbitMQ ist es allgemein einsetzbar zu sein. Deshalb wird eine Vielzahl an Protokollen unterstützt, unter anderem das JMS Protokoll. RabbitMQ kann auf einem zentralen Konten oder auf mehreren verteilten Knoten eingesetzt werden. Für den Nachrichtenaustausch verwendet RabbitMQ Warteschlangen. Diese lassen sich unterschiedlich konfigurieren, zum Beispiel die Warteschlangenlänge. Das kommunizieren zwischen Sender und Empfänger geschiet dabei nicht direkt über die Warteschlange. Nachrichten werden zunächst an einen Exchange gesendet. Dieser ist für das richtige weiterleiten an die passende Warteschlange verantwortlich. Dies geschieht mit Hilfe von Bindungen und Routing-Schlüßeln. In RMQ ist eine Bindung ist eine Verbindung zwischen einer Warteschlange und einem Exchange. RabbitMQ unterscheidet zwischen vier verschiedenen Exchanges:
+RabbitMQ (RMQ) ist, mit 35,000 aktiven Produktivumgebungen, eine der am weitesten verbreitete MOM. 
+RMQ ist Open-Source und seit 2007 immer weiter entwickelt wird \cite{rabbitmq}. Das Ziel von RMQ ist es allgemein einsetzbar zu sein. Deshalb wird eine Vielzahl an Protokollen unterstützt, unter anderem das JMS-Protokoll. RMQ kann auf einem zentralen Konten oder auf mehreren verteilten Knoten eingesetzt werden. Für den Nachrichtenaustausch verwendet RMQ Warteschlangen. Diese lassen sich unterschiedlich konfigurieren, zum Beispiel die Warteschlangenlänge. Das kommunizieren zwischen Sender und Empfänger geschieht dabei nicht direkt über die Warteschlange. Nachrichten werden zunächst an einen Exchange gesendet. Dieser ist für das richtige weiterleiten an die passende Warteschlange verantwortlich. Dies geschieht mit Hilfe von Bindungen und Routing-Schlüsseln. In RMQ ist eine Bindung eine Verbindung zwischen einer Warteschlange und einem Exchange. RMQ unterscheidet zwischen vier verschiedenen Exchange-Typen:
 \begin{itemize}
-    \item Direkt: Hierbei meldet sich eine Warteschlange mit einem bestimmten Routing-Schlüssel (RK) X beim Exchange an. Wenn eine Nachricht mit einem RK Y ankommt, wird sie nur an die Warteschlange gesendet, wenn die RKs X und Y übereinstimmen.
-    \item Topik: Die Warteschlange ist mit einem Binding an den Exchange gebunden. Nachrichten werden wieder anhand des RK weitergeleitet. Der RK muss nicht mehr genau passen, sondern muss auf ein bestimmtes Muster aufweisen.
-    \item Fanout: Die ankommende Nachricht wird an alle am Exchange angemeldeten Warteschlangen gesendet. Der RK wird dabei ignoriert.
+    \item Direct: Hierbei meldet sich eine Warteschlange mit einem bestimmten Routing-Schlüssel X beim Exchange an. Wenn eine Nachricht mit einem Routing-Schlüssel Y ankommt, wird sie nur an die Warteschlange gesendet, wenn die Routing-Schlüssel X und Y übereinstimmen.
+    \item Topic: Die Warteschlange ist mithilfe einer Bindung mit einem Exchange verbunden. Nachrichten werden wieder anhand des Routing-Schlüssels weitergeleitet. Der Routing-Schlüssel muss nicht mehr genau passen, sondern muss ein bestimmtes Muster aufweisen.
+    \item Fanout: Die ankommende Nachricht wird an alle mit dem Exchange verbundenen Warteschlangen gesendet. Der Routing-Schlüssel wird dabei ignoriert.
     \item Header: Dabei werden die Attribute des Nachrichtenkopfes verwendet, um die Nachricht weiterzuleiten.
 \end{itemize}
-Diese Architektur erlaubt verschiedene Interaktionstypen. Sowohl eins-zu-eins als auch viele-zu-viele Interaktionen sind möglich. Dabei können nicht nur mehrere Warteschlangen existieren, sondern auch mehrere Exchange und jede Komponente auf einem anderen Knoten verteilt. Aufgrund dieser Architektur hat RMQ auch einen hohen Grad der Entkopplung. Den Sender und Empfänger müssen sich nicht kennen, sie kommunizieren lediglich über den Exchange miteinander (Raum). Weder der Sender noch der Empfänger müssen zur gleichen Zeit aktiv sein. Der Sender sendet Nachrichten an die Warteschlange und der Empfänger holt sie raus, wenn er dazu die Ressourcen hat (Zeit). Schließlich müssen Sender und Empfänger nicht aufeinander warten, da sie über eine Warteschlange kommunizieren (Synchronisation).
-In \autoref{img:rmq_architecture} ist ein Beispiel für eine mögliche RMQ-Architektur und Kommunikation zwischen Sendern und Empfängern dargestellt. Dabei ist ExhangeA vom Typ Direkt. Dieser ist mit WarteschlangeA verbunden. ExchangeB ist ein Topic-Exchange und mit WarteschlangeB und WarteschlangeC verbunden. Dabei unterscheiden sich die beinden Bindungen in ihrem Routing-Muster. EmpfängerA empfängt Nachrichten aus WarteschlagenA und EmpfängerB Nachrichten aus WarteschlangeB und WarteschlangeC. Wenn ein Sender eine Nachricht an ExchangeA sendet, wird diese in WarteschlangeA abgelegt, wenn der Routing-Schlüssel der Nachricht mit dem Routing-Schlüßel der Warteschlange übereinstimmt, da diese über eine direkte Bindung mit dem Exchange verbunden ist. Wenn eine Nachricht an ExchangeB gesendet wird, wird anhand des Routing-Musters entschieden, ob die Nachricht an WarteschlangeB oder WarteschlangeC gesendet wird. 
+Diese Architektur erlaubt verschiedene Interaktionstypen. Sowohl eins-zu-eins als auch viele-zu-viele Interaktionen sind möglich. Dabei können nicht nur mehrere Warteschlangen existieren, sondern auch mehrere Exchanges und jede Komponente auf einem anderen Knoten verteilt sein. Aufgrund dieser Architektur hat RMQ auch einen hohen Grad der Entkopplung. Den Sender und Empfänger müssen sich nicht kennen, sie kommunizieren lediglich über den Exchange miteinander (Raum). Weder der Sender noch der Empfänger müssen zur gleichen Zeit aktiv sein. Der Sender sendet Nachrichten an die Warteschlange und der Empfänger holt sie raus, wenn er dazu die Ressourcen hat (Zeit). Schließlich müssen Sender und Empfänger nicht aufeinander warten, da sie über eine Warteschlange kommunizieren (Synchronisation).
+In \autoref{img:rmq_architecture} ist ein Beispiel für eine mögliche RMQ-Architektur und Kommunikation zwischen Sendern und Empfängern dargestellt. Dabei ist ExhangeA vom Typ Direkt. Dieser ist mit WarteschlangeA verbunden. ExchangeB ist ein Topic-Exchange und mit WarteschlangeB und WarteschlangeC verbunden. Dabei unterscheiden sich die beiden Bindungen in ihrem Routing-Muster. EmpfängerA empfängt Nachrichten aus WarteschlagenA und EmpfängerB Nachrichten aus WarteschlangeB und WarteschlangeC. Wenn ein Sender eine Nachricht an ExchangeA sendet, wird diese in WarteschlangeA abgelegt, wenn der Routing-Schlüssel der Nachricht mit dem Routing-Schlüssel der Warteschlange übereinstimmt, da diese über eine direkte Bindung mit dem Exchange verbunden ist. Wenn eine Nachricht an ExchangeB gesendet wird, wird anhand des Routing-Musters entschieden, ob die Nachricht an WarteschlangeB oder WarteschlangeC gesendet wird. 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/rmqexample.png}
@@ -57,35 +58,36 @@ In \autoref{img:rmq_architecture} ist ein Beispiel für eine mögliche RMQ-Archi
 %https://www.cloudamqp.com/blog/2015-05-18-part1-rabbitmq-for-beginners-what-is-rabbitmq.html
 
 %https://www.cloudamqp.com/blog/2018-01-08-part2-rabbitmq-best-practice-for-high-performance.html
-Da in dieser Arbeit der Fokus auf der Performance einer MOM liegt, wurden in Literatur Möglichkeiten untersucht, mit denen eine hohe Performance in RMQ erreicht werden kann. Dazu konnten in (Rmqbuchh) die folgenden Vorgehensweise identifiziert werden. RMQ funktioniert am besten, wenn der Füllstand einer Warteschlange klein gehalten wird. Ein Nachricht die in eine leere Warteschlange abgelegt wird, geht direkt an einen Empfänger. Je mehr Nachrichten sich in der Warteschlange befinden, desto länger dauert es diese zu bearbeiten. Wenn der Durchsatz eine wichtige Rolle spielt und die Warteschlangen nicht voll laufen sollen, ist das setzen einer maximal Länge der Warteschlange oder das setzen einer Lebensdauer für Nachrichten empfohlen. Dabei bleibt die Warteschlange kurz und neue Nachrichten werden vom Kopf der Warteschlange verworfen, falls sie länger als festgelegt wird. Ein weiterer Performance-Einfluss haben Lazy-Warteschlangen. Dabei werden die Nachrichten einer Warteschlange direkt auf die Festplatte, anstatt in den Hauptspeicher, geschrieben. Das Ziel dabei ist, sehr lange Warteschlange unterstützen zu können. Dies kann aus verschiedenen Gründen nötig sein. 
+Da in dieser Arbeit der Fokus auf der Performance einer MOM liegt, wurden in Literatur Möglichkeiten untersucht, mit denen eine hohe Performance in RMQ erreicht werden kann. Dazu konnten in (Rmqbuch) die folgenden Eigenschaften und Konfogurationsmöglichkeiten identifiziert werden. RMQ funktioniert am besten, wenn der Füllstand einer Warteschlange klein gehalten wird. Ein Nachricht die in eine leere Warteschlange abgelegt wird, geht direkt an einen Empfänger. Je mehr Nachrichten sich in der Warteschlange befinden, desto länger dauert es diese zu bearbeiten. Wenn der Durchsatz eine wichtige Rolle spielt und die Warteschlangen nicht voll laufen sollen, ist das setzen einer maximal Länge der Warteschlange oder das setzen der Lebensdauer für Nachrichten empfohlen. Dabei bleibt die Warteschlange kurz und neue Nachrichten werden vom Kopf der Warteschlange verworfen, falls sie länger als festgelegt wird. Ein weiterer Performance-Einfluss haben Lazy-Warteschlangen. Dabei werden die Nachrichten einer Warteschlange direkt auf die Festplatte, anstatt in den Hauptspeicher, geschrieben. Das Ziel dabei ist, sehr lange Warteschlange unterstützen zu können. Dies kann aus verschiedenen Gründen nötig sein. 
 \begin{itemize}
     \item Empfänger können aus verschiedenen Gründen ausfallen
     \item Plötzlicher anstieg ankommender Nachrichten
     \item Empfänger sind langsamer als normal
 \end{itemize}
-Das heißt die Hauptziele dieser Konfiguration sind vor allem Zuverlässigkeit. Im Fall das Performance bevorzugt wird, sollte also auf Lazy-Warteschlangen verzichtet werden. Schließlich kann der Durchsatz dadurch erhöht werden, wenn mehrere Warteschlangen verwendet werden. Zum Einen kann eine einzelne Warteschlange nicht mehr als ca. 50.000 Nachrichten bearbeiten. Zum anderen sind Warteschlangen einfädig. Das heißt, dass der beste Durchsatz auf einem System möglich ist, bei dem es genau so viele Warteschlangen wie Kerne hat. 
+Das heißt die Hauptziele dieser Konfiguration sind vor allem Zuverlässigkeit. Da aber die Festplatte anstatt der Hauptspeicher verwendet wird um die Nachrichten zu verwalten, ist diese Konfiguration langsamer. Im Fall das Performance bevorzugt wird, sollte also auf Lazy-Warteschlangen verzichtet werden. Schließlich kann der Durchsatz dadurch erhöht werden, wenn mehrere Warteschlangen verwendet werden. Zum Einen kann eine einzelne Warteschlange nicht mehr als ca. 50.000 Nachrichten bearbeiten. Zum anderen sind Warteschlangen einfädig. Das heißt, dass der beste Durchsatz auf einem System möglich ist, bei dem es genau so viele Warteschlangen wie Kerne hat. 
 
 In der Folgenden Ausmessung von RMQ wurden diese und weitere Konfiguration untersucht um zu prüfen ob sie einen messbaren Einfluss auf die Performance haben.
 
 \section{Benchmark}
-Im Folgenden soll RMQ ausgemessen werden um quantitative Daten ableiten zu können. Dazu wird in \autoref{sec:testmachine} zunächst die Testmanschinen vorgestellt, mit denen die Messungen durchgeführt wurden. Im Anschluss werden in \autoref{sec:rmqBenchmark} die Ergebnisse der einzelnen Messungen vorgestellt und in \autoref{sec:rmqZusammenfassung} zusammengefasst.
+Im Folgenden soll RMQ ausgemessen werden um quantitative Daten ableiten zu können. Dazu werden in \autoref{sec:testmachine} zunächst die Testmanschinen vorgestellt, mit denen die Messungen durchgeführt wurden. Im Anschluss werden in \autoref{sec:rmqBenchmark} die Ergebnisse der einzelnen Messungen vorgestellt und in \autoref{sec:rmqZusammenfassung} zusammengefasst.
 
 \subsection{Testmaschinen}
 \label{sec:testmachine}
-In diesem Abschnitt sollen die benutzten Maschinen Dokumentiert werden, mit denen RMQ ausgemessen wurde. Für die Messungen wurden zwei Testmaschinen benutzt. Die Systemspezifikation sind in \autoref{tab:systespec} aufgelistet. Beide Systeme haben die gleiche Systemspezifikation und haben RMQ Version 3.7.8 installiert. Im Folgenden werden die beiden Systeme verwendet um RMQ auszumesse.
+Die Ausmessung wurde auf virtuellen Servern ausgeführt, die von bwCloud \footnote{https://www.bw-cloud.org/} zur Verfügung gestellt wurden. Die Systemspezifikation der beiden Server ist in \autoref{tab:systespec} aufgelistet. Für die Messungen wurden dabei zwei Testmaschinen benutzt. Beide Systeme haben die gleiche Systemspezifikation und haben RMQ Version 3.7.8 installiert. Auf der ersten Testmaschine befinden sich Sender, Empfänger und der RMQ Broker auf der selben Maschine. Damit soll RMQ unter den bestmöglichen Umständen ausgemessen werden. Deshalb wird diese Maschine im Folgenden als \textit{lokal} bezeichnet. Auf der anderen Testmaschine befindet sich nur der RMQ-Broker. Sender und Empfänger sind dabei weiterhin auf Testmaschine \textit{lokal}. Mit dieser Maschine sollen Netzwerkeffekt ausgemessen werden. Im Folgenden wird diese Testmaschine \textit{remote} bezeichnet. Die Netzwerklatenz zwischen beiden Systemen wurde durch eine zwei Minütige Messung ausgemessen. Die durchschnittliche Netzwerklatenz beträgt dabei 0.556 ms. 
 
 \begin{table}
-  \begin{tabular}{|l|l|l|l|l|l|}
-    RAM & Speicher & VCPUs & GHZ & Netzwerk & OS \\
+  \centering
+  \begin{tabular}{|l|l|l|l|l|}
+    Hauptspeicher & Festplatte & vCPU & GHZ & Betriebssystem \\
     \hline
-     4 & 15 & 2 & 2.4 GHZ & Netzwerk & Ubuntu 18.04
+     4 Gb & 15 Gb & 2 & 2.4 GHZ & Ubuntu 18.04
   \end{tabular}
-	\caption{\label{tab:systespec} BWCloud VMs}
+	\caption{\label{tab:systespec} bwCloud VM Spezifikation}
 \end{table}
 
 \subsection{Ausmessung von RMQ}
 \label{sec:rmqBenchmark}
-Im Folgenden soll RMQ ausgemessen werden um mit den Ergebnissen die Modelle kalibrieren zu können. Um RMQ auszumessen wurde das Performance-Werkzeug von RMQ benutzt. Dieses erlaubt es die gesendeten und empfangenen Nachrichten und ihre Latenz zu messen. Dabei ist die Zeit gemeint, die eine Nachricht braucht bis sie vom Empfänger aus der Warteschlange herausgenommen wird, nachdem sie vom Sender dort abgelegt wurde. Das Werkzeug kann konfiguriert werden um bestimmte Szenarien zu simulieren. Unter anderem lässt sich die Anzahl der zu sendenden und zu empfangenen Nachrichten pro Sekunde einstellen. Eine weitere Konfiguration ist das einstellen bestimmte Nachrichtengrößen. Im Folgenden sollen die Ergebnisse der Messungen vorgestellt werden. Dabei werden die einzelnen Ergebnisse und ihr Versuchsaufbau vorgestellt. Jedes Ergebnis wird wie folgt beschrieben: 
+Im Folgenden soll RMQ ausgemessen werden um mit den Ergebnissen die Modelle kalibrieren zu können. Um RMQ auszumessen wurde das Performance-Werkzeug von RMQ benutzt \footnote{https://github.com/rabbitmq/rabbitmq-perf-test}. Dieses erlaubt es die gesendeten und empfangenen Nachrichten und ihre Latenz zu messen. Dabei ist die Zeit gemeint, die eine Nachricht braucht bis sie vom Empfänger aus der Warteschlange herausgenommen wird, nachdem sie vom Sender dort abgelegt wurde. Das Werkzeug kann konfiguriert werden um bestimmte Szenarien zu simulieren. Unter anderem lässt sich die Anzahl der zu sendenden und zu empfangenen Nachrichten pro Sekunde einstellen. Eine weitere Konfiguration ist das einstellen bestimmte Nachrichtengrößen oder die Anzahl der Sender und Empfänger. Im Folgenden sollen die Ergebnisse der Messungen vorgestellt werden. Dabei werden die einzelnen Ergebnisse und ihr Versuchsaufbau vorgestellt. Jedes Ergebnis wird wie folgt beschrieben: 
 \begin{itemize}
     \item Vorstellung des Szenarios
     \item Beobachtungen des Systemverhaltens
@@ -97,46 +99,48 @@ Jede Messung wurde zehn mal durchgeführt. Die einzelnen Konfiguration wurde jew
 
 \subsubsection{Latenz einer Nachricht}
 \label{sec:oneMsgLatency}
-Zunaechst soll geprueft werden wie die Latenz einer einzelnen Nachricht ist. Dabei wurde auch die groesse einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengroesse varriert zwischen 100 Byte und 100.000 Bytes.
+Zunächst soll geprüft werden wie die Latenz einer einzelnen Nachricht ist. Dabei wurde auch die Größe einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße variiert zwischen 1 KByte und 1 MByte. Für diese Messung wurde die Testmaschine \textit{lokal} verwendet. Erwartet wird, dass die Latenz einer Nachricht mit ihrer Nachrichtengröße steigt.
 %B
-Die Ergebnisse sind in \autoref{img:senderate1-A} zu sehen. Dabei ist zu sehen, dass die Latenz mit Ansteigen der Groesse auch waechst. 
-%Im durchshnitt kann man eine Latenz von 2627 Mikrosekunden beobachten. In \autoref{img:senderate1-B} sind die Ergebnisse mit Testsystem B zu sehen. Hier wird im durchshnitt eine hoehere Latenz von 29237 Mikrosekunden beobachten. 
+Die Ergebnisse sind in \autoref{img:senderate1-A} abgebildet. Neben den Messergebnissen ist eine Linie durch die Mediane der einzelnen Messungen gezogen. Dabei ist zu sehen, dass die Latenz einer Nachricht mit Ansteigen der Nachrichtengröße auch ansteigt. Somit verhält sich das System wie erwartet.
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/measurement/rate-limit-1-A.pdf}
-  \caption{Senderate 1/sec, Testsystem A}
+  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-A.pdf}
+  \caption{Nachrichten werden an Testmaschine \textit{lokal} gesendet}
   \label{img:senderate1-A}
 \end{figure}
-Als naechstes wurde die Latenz zu einem entfernten RMQ Broker gemessen. Das System auf dem der entfernte Broker laeuft hat die selben spezifikationen wie das in \autoref{sec:testmachine} beschriebene. Die ausgemssenene Netzwerklatenz betrug 1ms. Die Senderate und Nachrichtengroesse sind wie oben beschrieben. Die Ergebnisse sind in \autoref{img:senderate1-B} zu sehen. Auch hier waechst die Latenz mit Ansteigen der Groesse. Im Unterschied zu ersten Messung ist die Latenz einer Nachricht groesser. 
+Als nächstes wurde die Latenz einer Nachricht zu einem entfernten RMQ-Broker gemessen. Dazu wurden Nachrichten von einem Sender von Testmaschine \textit{lokal} an Testmaschine \textit{remote} gesendet. Ein Empfänger auf Testmaschine \textit{lokal} hat diese dann abgeholt. Die Nachrichtengröße variiert zwischen 1 KByte und 1 MByte. Erwartet wird, dass zu der bereits gemessenen Latenz einer Nachricht die Netzwerklatenz dazugerechnet wird.
+
+%B
+Die Ergebnisse sind in \autoref{img:senderate1-B} zu sehen. Dabei ist durch die Mediane der einzelnen Messergebnisse eine Linie gezogen. Zu sehen ist, dass auch hier die Latenz mit Ansteigen der Nachrichtengröße wächst. Wie zu erwarten kommt zu der bereits ausgemessenen Latenz die Netzwerklatenz hinzu. 
 %E
-Die laengere Latenz in der zweiten Messung laesst sich auf die Netzwerklatenz zurueckfuehren. Somit ist neben der Nachrichtengroesse auch die Netzwerklatenz ein Faktor, der die Latenz einer Nachricht beeinflusst.
+Somit ist neben der Nachrichtengröße auch die Netzwerklatenz ein Faktor, der die Latenz einer Nachricht beeinflusst.
 
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/measurement/rate-limit-1-AvsB.pdf}
-  \caption{Senderate 1/sec, Testsystem A}
+  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-AvsB.pdf}
+  \caption{Nachrichten werden an Testmaschine \textit{remote} gesendet}
   \label{img:senderate1-B}
 \end{figure}
 
-\subsubsection{Nachrichtengroesse}
-Im Folgenden sollen weitere Effekte im zusammenhang mit der Nachrichtengroesse untersuch werden. Dazu wurde die Limitierung der Senderate aufgehoben. Die Nachrichtengroessen variieren zwischen 100 Byte bis 1.000.000 Bytes.
+\subsubsection{Nachrichtengröße}
+Da in den vorherigen Messung die Nachrichtengröße als Einflussfaktor auf die Latenz und somit die Performance identifiziert wurde, sollen im Folgenden weitere Effekte im Zusammenhang mit der Nachrichtengröße untersucht werden. Dazu wurde ein Sender und ein Empfänger eingerichtet. Beide senden und empfangen Nachrichten so schnell sie können. die Limitierung der Senderate aufgehoben. Die Nachrichtengröße variiert zwischen 1 KByte und 200 KByte. Es wurde auf Testmaschine \textit{lokal} ausgemessen. Erwartet wird, dass mit zunehmen der Nachrichtengröße die insgesamt pro Sekunde gesendete Nachrichtenmenge verringert. Gleichzeitig sollte die insgesamt gesendete Datenmenge zunehmen, da die Nachrichten weniger Routing-Overhead beim RMQ-Broker verursachen.
 %B
-In \autoref{img:msgsize} sind die Auswirkung der Nachrichtengroesse auf die Senderate und die insgesamt gesendete Datenmenge zu sehen. dabei ist zu sehen, dass mit zunehmender groesse die Nachrichtenmenge die pro Sekunde gesendet werden kann, abnimmt. Gleichzeitig nimmt aber die insgesammt gesendete Datenmenge, in Bytes, zu. 
+In \autoref{img:msgsize} sind die Ergebnisse dieser Messung abgebildet. Durch die jeweiligen Mediane wurde eine Linie gezogen. Die Auswirkung der Nachrichtengröße auf die Senderate ist dabei in \autoref{img:msgsize}a zu sehen. Diese nimmt, wie erwartet, mit zunehmender Größe ab. In \autoref{img:msgsize}b ist die insgesamt gesendete Datenmenge zu sehen. Auch hier verhällt sich das System wie erwartet und die insgesamt gesendete Datenmenge nimmt zu.
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/msg-size.png}
-  \caption{Senderate 1/sec, Testsystem B}
+  \caption{TODO besseres Bild}
   \label{img:msgsize}
 \end{figure}
 %E
-Dieser Effekt laesst sich darauf zurueckfuehren, dass bei groesseren Nachrichten der Broker weniger routing overhead hat.
+Wie bereits erwähnt lässt sich dieser Effekt darauf zurückführen, dass bei größeren Nachrichten der Broker weniger Routing-Overhead hat, als bei kleineren.
 %https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
 
 \subsubsection{Maximale zu sendende Datenmenge}
 \label{sec:maxthroughput}
-Nachdem die Effekte der zueahmende Nachrichtengroesse grprueft wurden, soll nun geprueft werden wie gross die insgesammt moegliche Datenmenge die gesendet und empfangen werden kann ist. Dazu wurden Nachrichten unterschiedlicher Groesse gesendet. Die Nachrichten waren zwischen 100 Bytes und 200000 Bytes (2MB) gross. Es wurden zwei Messungen durchgefuehrt. Die erste war mit einem Sender und keinem Empfaenger. Die zweite mit einem Sender und einem Empfaenger. 
+Nachdem die Effekte der zunehmende Nachrichtengröße geprüft wurden, soll nun geprüft werden wie groß die insgesamt mögliche Datenmenge ist, die gesendet und empfangen werden kann. Dazu wurden Nachrichten der Größe 1 KByte bis 200 KByte gesendet. Es wurden zwei Messungen durchgeführt. Die erste war mit einem Sender und keinem Empfänger. Die zweite mit einem Sender und einem Empfänger. Die Messung wurde mit Testmaschine \textit{lokal} druchgeführt. Erwartet wurde, dass die Messung ohne Empfänger einen höheren Durchsatz ermöglicht, da diese direkt verworfen werden. 
 %B
-Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfaenger vorhanden ist, mit zunehmender Nachrichtengroesse die insgesamt gesendete Datenmenge an einen Wert bei ca. 230 MByte/s annaehert. Wenn ein Empfaenger vorhanden ist, naehert sich die Datenmenge an 174 MByte/s an.
+Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfänger vorhanden ist, mit zunehmender Nachrichtengröße die insgesamt gesendete Datenmenge an einen Wert bei ca. 1.5 GByte pro Sekunde annähert. Wenn ein Empfänger vorhanden ist, nähert sich die Datenmenge an 700 MByte pro Sekunde an. Dieser unterschied lässt sich auf den fehlenden Empfänger bzw. die fehlende Warteschlange zurückführen. Es gibt somit keinen Schreib-Overhead, da die Nachricht nirgends hingeschrieben wird.
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/rate-limit-unlimited-consumer-vs-no-consumer.pdf}
@@ -144,16 +148,18 @@ Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung 
   \label{img:maxByteThroughputA}
 \end{figure}
 
-Ein weiterer Effekt ist in \autoref{img:unlimitedLatency} zu sehen. Dabei ist zu sehen, dass die Latenz sinkt wenn mehr Nachrichten auf einmal gesendet werden.
-\begin{figure}
-\center
-  \includegraphics[width=1\textwidth]{images/max-byte-throughput-A.pdf}
-  \caption{Max Datenmenge, Latenz, Testsystem A}
-  \label{img:unlimitedLatency}
-\end{figure}
-Dieser Effekt laesst sich darauf zurueckfuehren, dass wenn mehrere Nachrichten auf einmal gesendet werden der Broker weniger routing overhead hat.
+%Ein weiterer Effekt ist in \autoref{img:unlimitedLatency} zu sehen. Dabei ist zu sehen, dass die Latenz sinkt wenn mehr Nachrichten auf einmal gesendet werden.
+%\begin{figure}
+%\center
+%  \includegraphics[width=1\textwidth]{images/max-byte-throughput-A.pdf}
+%  \caption{Max Datenmenge, Latenz, Testsystem A}
+%  \label{img:unlimitedLatency}
+%\end{figure}
+%Dieser Effekt laesst sich darauf zurueckfuehren, dass wenn mehrere Nachrichten auf einmal gesendet werden der Broker weniger routing overhead hat.
 
-Die selbe Messung wurde an dem enfernten Testsystem B ausgefuehrt. Die gegenueberstellung fuer den Fall ohne Empfaenger ist in \autoref{img:maxByteThroughputNoConsumerB} zu sehen. Die an das System B gesendete Datenmenge ist um den Faktor (ca 3) kleiner. Die Messung mit Empfaenger ist in \autoref{img:maxByteThroughputB} abgebildet. In diesem Fall ist die an das System B gesendete Datenmenge um den Faktor (ca 2) kleiner.
+Die selbe Messung wurde mit Testsystem \textit{remote} durchgeführt. Erwartet wird, dass die Datenmenge kleiner ist, da die Netzwerkverbindung beachtete werden muss. 
+%B
+Die Gegenüberstellung für den Fall, dass es einen Sender, aber keine Empfänger gibt ist in \autoref{img:maxByteThroughputNoConsumerB} zu sehen. Die an das \textit{remote}-System gesendete Datenmenge ist dabei deutlich kleiner als zuvor. Diese nähert sich dem Wert von ca. 700 Mbyte anstatt 1.5 Gbyte an. Die Messung mit Empfänger ist in \autoref{img:maxByteThroughputB} abgebildet. Auch hier ist die gesendete Datenmenge deutlich kleiner und nähert sich nur einem Wert von ca. 400 Mbyte anstatt 700 Mbyte an.
 \begin{figure}
 \center
  \includegraphics[width=1\textwidth]{images/measurement/rate-limit-unlimited-no-consumer-AvsB.pdf}
@@ -167,37 +173,13 @@ Die selbe Messung wurde an dem enfernten Testsystem B ausgefuehrt. Die gegenuebe
   \label{img:maxByteThroughputB}
 \end{figure}
 %E
-Obwohl beide Testmaschinen vom selben Anbieter sind, unterscheiden sich die moeglichen Datenmengen zwischen einem lokalen und entfernten Broker. Diesen unterschied kann auf den moeglichen Durchsatz einer Netzwerkverbingung zuruckgefuehrt werden. Somit ist der moegliche Durchsatz einer Verbindung zwischen Sender, Empfaenger und dem Broker ein limitierender Faktor und hat somit auch einfluss auf die Performanz des Gesamtsystems.
+Obwohl beide Testmaschinen vom selben Anbieter sind, unterscheiden sich die möglichen Datenmengen zwischen einem lokalen und entfernten Broker. Diesen unterschied kann auf den möglichen Durchsatz einer Netzwerkverbingung zuruckgeführt werden. Somit ist der mögliche Durchsatz einer Verbindung zwischen Sender, Empfänger und dem Broker ein limitierender Faktor und hat somit auch Einfluss auf die Performance des Gesamtsystems.
 
-
-\subsubsection{MaxLength}
-\label{subsub:maxlength}
-RMQ erlaubt es die Warteschlangen groesse zu limitieren. Ausserdem kann eine Strategie festgelegt werden, was mit ankommenden Nachrichten passieren soll. Im Standardfall wird der Kopf der Warteschlange verworfen. Dies sollte mit der folgenden Messung untersucht werden. Dazu wurde mehrere Warteschlange angelegt. Diese hatten eine Maximallaenge von 100, 5000 und 50.000. Die Groesse von 50.000 ist die RMQ standard groesse fuer Warteschlangen. Damit man die Auswirkung auf volle Warteschlangen sehen kann wurde die Sende- und Empfangsrate entsprechend angepasst. Die Senderate wurde auf 1000 und die Empfangsrate auf 100 Nachrichten die Sekunde eingestellt. Die Nachrichten groesse betraegt 100 Bytes.
-%B
-Die Ergebnisse sind in \autoref{img:maxlength} zu sehen. Zu sehen ist, dass die Latenz bei den begrenzten Warteschlangen ab einem bestimmte Zeitpunkt nicht weiter anwaechst. Die Latenz der unbegrenzten Warteschlange waechst dagegen immer weiter.
-\begin{figure}
-\center
-  \includegraphics[width=1\textwidth]{images/measurement/max-length.pdf}
-  \caption{Senderate 1000/sec, Empfangsrate 100/sec}
-  \label{img:maxlength}
-\end{figure}
-%E
-Diese Konfiguration zeigt, dass die Warteschlangenbegrenzung einen Einfluss auf die Latenz hat und man diese gering halten kann, wenn man die Warteschlangengroesse begrenzt. Der Nachteil dabei ist, dass Nachrichten verworfen werden, sobald die Warteschlange voll ist. Somit hat auch die Warteschlangengroesse einen Einfluss auf die Performanz. 
-
-%wenn Queue voll, dann wird Msgrate angepasst
-
-%Flow alarm ab RabbitMQ 2.8.0+ bei Versionen davor verhlaehlt sich RMQ wie in (sec: Speicher ausgeschoepft)
-
-\subsubsection{Speicher von RMQ ausgeschoepft}
-Nachdem in der Messung davor die Laenge der Warteschlange betrachtet wurde, soll nun untersucht werden ob der Verfuegbare Speicher des Broker einfluss auf die Performanz hat. Dazu wurde auf der Testmaschine B die Hauptspeicher fuer RMQ auf 10 MB gesetzt.  
-Sollte der verfuegbare Speicher des Broker ausgeschoepft sein, wird der MemoryAlarm aktiviert und der Broker blockiert ankommende Nachrichten, bis der Speicher wieder frei ist. Dies ist in (abb) zu sehen.
-TODO beobachtung und Ergebnis
-
-\subsubsection{Ansteigen der Queuelänge}
+\subsubsection{Ansteigen des Füllstands der Warteschlange}
 \label{sec:queueGrowth}
-Diese Messung untersucht die Auswirkung des Warteschlangen-Füllstands auf die Latenz der einzelnen Nachrichten. Die Messung besteht aus einem Sender und einem Empfänger. Die Senderate beträgt zwei Nachrichten pro Sekunde der Empfänger empfängt jedoch nur eine Nachricht pro Sekunde. Die Nachrichten sind dabei 1 Kb Groß. Erwartet wird, dass die Latenz der Nachrichten mit ansteigen des Warteschlangen Füllstandes wächst, da die Nachrichten länger in der Warteschlange warten, bis sie abgeholt werden.
+Diese Messung untersucht die Auswirkung des Warteschlangen-Füllstands auf die Latenz der einzelnen Nachrichten. Die Messung besteht aus einem Sender und einem Empfänger. Die Senderate beträgt zwei Nachrichten pro Sekunde der Empfänger empfängt jedoch nur eine Nachricht pro Sekunde. Die Nachrichten sind dabei 1 Kb Groß. Die Messung wurde auf der Testmaschine \textit{lokal} durchgeführt. Erwartet wird, dass die Latenz der Nachrichten mit ansteigen des Warteschlangen Füllstandes wächst, da die Nachrichten länger in der Warteschlange warten, bis sie abgeholt werden.
 %B
-In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \autoref{img:queuegrowth}b der Füllstand der Warteschlange zu sehen. Diese wächst pro Sekunde um eine Nachricht die nicht abgeholt wird an. In \autoref{img:queuegrowth}a ist die Latenz der Nachrichten abgebildet. Wie erwartet steigt diese mit ansteigen des Füllstandes.
+In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \autoref{img:queuegrowth}a der Füllstand der Warteschlange zu sehen. Diese wächst pro Sekunde um eine Nachricht die nicht abgeholt wird an. In \autoref{img:queuegrowth}b ist die Latenz der Nachrichten abgebildet. Wie erwartet steigt diese mit ansteigen des Füllstandes, da diese länger in der Warteschlange warten müssen, bis sie abgeholt werden.
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/queuegrowth.pdf}
@@ -205,11 +187,36 @@ In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \a
   \label{img:queuegrowth}
 \end{figure}
 
-\subsubsection{Lazy Queues}
-\label{sec:rmqLazy}
-In der naechsten Messung soll untersucht werden ob die Konfiguration von Lazy-Warteschlangen Auswirkungen auf die Performance hat. Die Senderate wurde auf eine Nachricht pro Sekunde limitiert. Die groesse der gesendeten Nachrichten varriieren zwischen 100 Byte und 100.000 Bytes.
+\subsubsection{Konfiguration: Warteschlangenlänge begrenzen}
+\label{sec:maxlength}
+Die vorherige Messung hat gezeigt, das sich das anwachsen der Warteschlange negativ auf die Latenz der Nachrichten auswirkt. Wie bereits erwähnt erlaubt RMQ einige Konfigurationen. Eine davon ist das setzen einer maximal Länge für Warteschlangen. Damit soll die Warteschlange kurz gehalten werden und die Latenz der Nachrichten klein. Damit wird der Effekt der in der vorherigen Messung untersucht wurde, entgegen zu wirken. Standardmäßig wird der Kopf der Warteschlange verworfen. Mit der folgenden Messung soll diese Konfiguration untersucht werden. Dazu wurden drei Warteschlange angelegt. Diese hatten eine maximal Länge von 100, 5000 und 50.000 Nachrichten. Die Größe von 50.000 ist die RMQ Standard Größe für Warteschlangen. Damit man die Auswirkung auf volle Warteschlangen sehen kann wurde die Sende- und Empfangsrate entsprechend angepasst. Die Senderate wurde auf 1000 und die Empfangsrate auf 100 Nachrichten pro Sekunde eingestellt. Die Nachrichten Größe war 100 Bytes. Die Messung wurde auf Testmaschine \textit{lokal} durchgeführt. Erwartet wird, dass sobald die Warteschlange voll wird, die Latenz nicht mehr zu nimmt. Dieser Moment sollte schneller erreicht werden, je kleiner die Warteschlange ist.
 %B
-In \autoref{img:lazy} ist ein Vergleich der Messung aus \autoref{sec:rate1} und den Messergebnissen mit Lazy Warteschlangen abgebildet. Zu sehen ist, dass die Latenz mit Lazy Warteschlangen groesser ist, als ohne.
+Die Ergebnisse sind in \autoref{img:maxlength} abgebildet. Wie erwartete wachsen die Latenzen der Nachrichten bei den begrenzten Warteschlangen ab einem bestimmten Moment nicht weiter an. Wie in \autoref{img:maxlength}a und \autoref{img:maxlength}b zu sehen ist, tritt dieser Moment für die kürzere Warteschlange früher ein. In \autoref{img:maxlength}c wächst die Latenz immer weiter.
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/measurement/max-length.pdf}
+  \caption{Senderate 1000/sec, Empfangsrate 100/sec}
+  \label{img:maxlength}
+\end{figure}
+%E
+Diese Konfiguration zeigt, dass die Warteschlangenbegrenzung einen Einfluss auf die Latenz hat und man diese begrenzen kann, wenn man die Warteschlangengröße begrenzt. Der Nachteil dabei ist, dass Nachrichten verworfen werden, sobald die Warteschlange voll ist. Somit hat auch die Warteschlangengröße einen Einfluss auf die Performance. 
+
+%wenn Queue voll, dann wird Msgrate angepasst
+
+%Flow alarm ab RabbitMQ 2.8.0+ bei Versionen davor verhlaehlt sich RMQ wie in (sec: Speicher ausgeschoepft)
+
+%\subsubsection{Speicher von RMQ ausgeschoepft}
+%Nachdem in der Messung davor die Laenge der Warteschlange betrachtet wurde, soll nun untersucht werden ob der Verfuegbare Speicher des Broker einfluss auf die Performanz hat. Dazu wurde auf der Testmaschine B die Hauptspeicher fuer RMQ auf 10 MB gesetzt.  
+%Sollte der verfuegbare Speicher des Broker ausgeschoepft sein, wird der MemoryAlarm aktiviert und der Broker blockiert ankommende Nachrichten, bis der Speicher wieder frei ist. Dies ist in (abb) zu sehen.
+%TODO beobachtung und Ergebnis
+
+
+
+\subsubsection{Konfiguration: Lazy-Warteschlangen}
+\label{sec:rmqLazy}
+Eine weiter Konfiguration die RMQ ermöglicht sind Lazy-Warteschlangen. Wie bereits erwähnt, werden dabei Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben. In der nächsten Messung soll untersucht werden ob die Konfiguration von Lazy-Warteschlangen Auswirkungen auf die Performance hat. Dabei wurde auch die Größe einer Nachricht betrachtet. Für die Messung wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde die Testmaschine \textit{lokal} verwendet. Erwartet wird, dass die Latenz einer Nachricht im Vergleich zur Konfiguration ohne Lazy-Warteschlangen (\autoref{sec:oneMsgLatency}) größer ist.
+%B
+In \autoref{img:lazy} ist ein Vergleich der Messung aus \autoref{sec:oneMsgLatency} und den Messergebnissen mit Lazy-Warteschlangen abgebildet. Zu sehen ist, dass die Latenz mit Lazy Warteschlangen größer ist, als in der Standardkonfiguration.
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/lazy-queues.pdf}
@@ -217,14 +224,14 @@ In \autoref{img:lazy} ist ein Vergleich der Messung aus \autoref{sec:rate1} und 
   \label{img:lazy}
 \end{figure}
 %E
-Grund hierfuer ist das die Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben werden. Somit hat der Ort an den Nachrichten gespeichert werden einen Einfluss auf die Performanz.
+Grund hierfür ist das die Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben werden. Somit hat diese Konfiguration einen Einfluss auf die Performance.
 
 
 
-\subsubsection{Mehrere Empfaenger}
-In \autoref{subsub:maxlength} war bereits zu sehen, dass volle Warteschlangen einen Einfluss auf die Latenz haben. In dieser Messung soll geprueft werden ob mehrere Empfaenger eine Warteschlange genauso schnell abarbeiten koennnen wie ein einzelner und somit die Latenz gemeinsam in den Griff bekommen koennen. Dazu wurde die Senderate eines Senders auf 1000 Nachrichten und die Empfangsrate auf 200 Nachrichten pro Sekunde limitiert. Alle Empfaenger greifen auf die selbe Warteschlange zu. Ausserdem wurde eine Referenzmessung mit einem Sender und einem Empfaenger mit einer Empfangsrate von 1000 durchgefuehrt.
+\subsubsection{Mehrere Empfänger}
+In \autoref{sec:queueGrowth} und \autoref{sec:maxlength} war bereits zu sehen, dass volle Warteschlangen einen Einfluss auf die Latenz haben. In dieser Messung soll geprüft werden ob mehrere Empfänger eine Warteschlange gemeinsam abarbeiten können und ob es dabei Unterschiede gibt, wenn ein einzelner die Warteschlange abarbeitet. Dazu wurde die Senderate eines Senders auf 1000 Nachrichten und die Empfangsrate auf 200 Nachrichten pro Sekunde limitiert. Alle Empfänger greifen auf die selbe Warteschlange zu. Außerdem wurde eine Referenzmessung mit einem Sender und einem Empfänger mit einer Sende- und Empfangsrate von 1000 durchgeführt. Die Mussung wurde auf der Testmaschine \textit{lokal} durchgeführt. Erwartete wird, dass die Empfänger gemeinsam an die Leistung eines einzelnen Empfängers herankommen.
 %B
-In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. Darin ist zu sehen, dass ein Empfanger mit gedrosselter Empfangsrate nicht hinterherkommt die Warteschlange abzuarbeiten und somit die Latenz sehr schnell steigt. Bei zwei Empfaenger, mit einer gemeinsamen Empfangsrate von 400 Nachrichten die Sekunde, steigt die Latenz nicht ganz so schnell, aber auch hier kommen die Empfanger nicht hinterher die Warteschlange abzuarbeiten. Mit fuenf Empfaenger und einer gemeinsamen Empfangsraten von 1000 Nachrichten, schaffen sie es die Warteschlange abzuarbeiten. Im Vergleich zu der Referenzmessung mit einem Empfaenger, beinhaltet die Messung mit mehreren Empfaengern einige Schwankungen.
+In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. \autoref{img:varyingConsumer}a zeigt dabei einen Empfänger der alleine die Nachrichten empfängt. Da der Empfänger die Nachrichten nicht schnell genug empfängt steigt die Latenz. In \autoref{img:varyingConsumer}b kommt ein weiterer Empfänger hinzu. Die Latenz wächst nicht ganz so schnell. \autoref{img:varyingConsumer}c zeigt fünf Empfänger die gemeinsam die Warteschlange abarbeiten. Im Vergleich zu der Referenzmessung in\autoref{img:varyingConsumer}d mit einem Empfänger, streut die Messung mit mehreren Empfängern stärker.
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/varying-consumer.pdf}
@@ -232,12 +239,12 @@ In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. Darin
   \label{img:varyingConsumer}
 \end{figure}
 %E
-Diese Messung zeigt, dass mehrer Empfaenger eine Warteschlange genauso schnell abarbeiten koennen wie ein einzelner. Die Schwankungen lassen sich mit der synchronisation der Empfaenger erklaeren. Da diese Schwankungen minimal sind, kann dieser Effekt vernachlaessigt werden.
+Diese stärkere Streuung lässt sich mit der Synchronisation der Empfänger erklären, die an einer gemeinsamen Warteschlange arbeiten. Da diese Streuung nicht stark ist, wird dieser Effekt im Folgenden vernachläßigt werden. Somit zeigt diese Messung, dass mehrere Empfänger gemeinsam an die Leistung eines einzelnen Empfängers heran kommen. 
 
 \subsubsection{Mehrere Sender}
-Diese Messung soll ueberpruefen ob es einen Unterschied macht ob mehrere Sender die gleiche Performanz schaffen, wie ein einzelner. Dazu wurde als Referenz ein Sender mit einer Senderate von 5000 Nachrichten die Sekunde und 5 Sender mit jeweils 1000 Nachrichten die Sekunde untersucht. 
+Diese Messung soll Überprüfen ob mehrere Sender genau so schnell die gleiche Menge an Nachrichten schaffen zu versenden, wie ein einzelner. Dazu wurde als Referenz ein Sender mit einer Senderate von 5000 Nachrichten die Sekunde und fünf Sender mit jeweils 1000 Nachrichten die Sekunde untersucht. Die Messung wurde auf Testmaschine \textit{lokal} durchgefürt. Erwartet wird, dass es keinen Unterschied macht, ob ein Sender 5000 Nachrichten sendet oder fünf Sender jeweils 1000 Nachrichten senden. 
 %B
-In \autoref{img:varyingProducer} sind die Ergebnisse dieser Messung zu sehen. 
+In \autoref{img:varyingProducer} sind die Ergebnisse dieser Messung zu sehen. Dabei ist zu sehen, dass mehr Sender etwas schlechter abschneiden als ein einzelner. 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/varying-producer.pdf}
@@ -245,7 +252,7 @@ In \autoref{img:varyingProducer} sind die Ergebnisse dieser Messung zu sehen.
   \label{img:varyingProducer}
 \end{figure}
 %E
-Diese Messung zeigt, dass er vernachlaessigbar ist ob ein Sender oder mehrere Sender benutzt werden um eine bestimmte Senderate zu erreichen. 
+Auch in diesem Fall kann die höhere Latenz, der mehreren Sender, auf die Synchronisation an einer Warteschlange zurückgeführt werden. Da jedoch dieser Effekt wieder im Mikrosekunden Bereich ist, wird dieser Effekt im Folgenden vernachlässigt und angenommen, dass mehrere Sender genauso gut wie ein einzelner sind. 
 %A
 %In einer weiteren Messung sollte Ausserdem geprueft werden, ob mehrere Sender ohne Sendelimit mehr Nachrichten senden koennen als ein Sender. Dazu wurde der selbe Versuchsaufbau wie oben gewaehlt mit dem Unterschied, dass diesmal die Senderate nicht eingeschraenk wurde.
 %B
@@ -266,19 +273,18 @@ Diese Messung zeigt, dass er vernachlaessigbar ist ob ein Sender oder mehrere Se
 %ActiveMQ \cite{activeMQ} ist eine Open-Source-MOM, die seit 2004 kontinuierlich weiter entwickelt wird. ActiveMQ ist in Java geschrieben und implementiert den Java Message Service (JMS) \cite{jms}. Dabei handelt es sich um eine Programmierschnittstelle zur Ansteuerung einer MOM. Dabei soll eine lose gekoppelte, verlässliche und asynchrone Kommunikation zwischen den Komponenten einer verteilten Anwendung ermöglicht werden. ActiveMQ verfügt außerdem über mehrere Betriebsarten für hohe Verfügbarkeit und einen robusten horizontalen Skalierungsmechanismus. Darüber hinaus ist es sehr flexibel in der Konfiguration und unterstützt eine Vielzahl von Transportprotokollen, darunter auch AMQP.
 
 \subsection{Zusammenfassung}
+\label{sec:rmqZusammenfassung}
 welche Einflussfaktoren konnnten identifiziert werden und werden weiter betrachtet? \\
 Nachrichtengroesse hat einfluss auf Latenz, Senderate und gesendete Datenmenge \\
-%Througput der Verbindung (linking Ressource)\\
 %Msg rate des Senders und Empfaengers (ankunftsrate im Usage modell) \\
-%Nachrichtengroesse und ihre Latenz (response time einer Nachricht) \\
 Netzwerklatenz \\
 Moegliche Datenmenge ist durch Netzwerk begrenzt\\
 Ob Nachrichten in HS oder HDD gespeichert werden (lazy queues) \\
 Kein Unterschied ob ein oder mehrere Sender/Empfaenger Warteschlange fuellen/abarbeiten \\
 
 welche weiteren Einflussfaktoren gibt es, die aus bestimmten gruenden nicht betrachtet werden (koennen)\\
-wenn system mehr Nachrichten auf einmal sendet/empfaengt sinkt latenz wieder \\
-RMQ hat auch Prefetch von Nachrichten. Wird nicht betrachtet (zeit und trotzdem nicht so gut wie kafka) \\
+wenn system mehr Nachrichten auf einmal sendet/empfaengt sinkt latenz wieder (messung fehlt noch)\\
+%RMQ hat auch Prefetch von Nachrichten. Wird nicht betrachtet (zeit und trotzdem nicht so gut wie kafka) \\
 Latenz steigt an, wenn die queue gefuellt wird \\
 - benoetigt tracken einer Nachricht durch das system \\
 - explizite Queue Modellierung, mit groesse und fuellstand \\
