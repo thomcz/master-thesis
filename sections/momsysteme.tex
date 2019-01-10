@@ -128,7 +128,7 @@ Da in den vorherigen Messung die Nachrichtengröße als Einflussfaktor auf die L
 In \autoref{img:msgsize} sind die Ergebnisse dieser Messung abgebildet. Durch die jeweiligen Mediane wurde eine Linie gezogen. Die Auswirkung der Nachrichtengröße auf die Senderate ist dabei in \autoref{img:msgsize}a zu sehen. Diese nimmt, wie erwartet, mit zunehmender Größe ab. In \autoref{img:msgsize}b ist die insgesamt gesendete Datenmenge zu sehen. Auch hier verhällt sich das System wie erwartet und die insgesamt gesendete Datenmenge nimmt zu.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/msg-size.png}
+  \includegraphics[width=0.7\textwidth]{images/msg-size.png}
   \caption{TODO besseres Bild}
   \label{img:msgsize}
 \end{figure}
@@ -143,7 +143,7 @@ Nachdem die Effekte der zunehmende Nachrichtengröße geprüft wurden, soll nun 
 Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfänger vorhanden ist, mit zunehmender Nachrichtengröße die insgesamt gesendete Datenmenge an einen Wert bei ca. 1.5 GByte pro Sekunde annähert. Wenn ein Empfänger vorhanden ist, nähert sich die Datenmenge an 700 MByte pro Sekunde an. Dieser unterschied lässt sich auf den fehlenden Empfänger bzw. die fehlende Warteschlange zurückführen. Es gibt somit keinen Schreib-Overhead, da die Nachricht nirgends hingeschrieben wird.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/measurement/rate-limit-unlimited-consumer-vs-no-consumer.pdf}
+  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-consumer-vs-no-consumer.pdf}
   \caption{Max Datenmenge ca. 230/174 (kein Empfaenger/mit Empfaenger), Testsystem A}
   \label{img:maxByteThroughputA}
 \end{figure}
@@ -162,13 +162,13 @@ Die selbe Messung wurde mit Testsystem \textit{remote} durchgeführt. Erwartet w
 Die Gegenüberstellung für den Fall, dass es einen Sender, aber keine Empfänger gibt ist in \autoref{img:maxByteThroughputNoConsumerB} zu sehen. Die an das \textit{remote}-System gesendete Datenmenge ist dabei deutlich kleiner als zuvor. Diese nähert sich dem Wert von ca. 700 Mbyte anstatt 1.5 Gbyte an. Die Messung mit Empfänger ist in \autoref{img:maxByteThroughputB} abgebildet. Auch hier ist die gesendete Datenmenge deutlich kleiner und nähert sich nur einem Wert von ca. 400 Mbyte anstatt 700 Mbyte an.
 \begin{figure}
 \center
- \includegraphics[width=1\textwidth]{images/measurement/rate-limit-unlimited-no-consumer-AvsB.pdf}
+ \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-no-consumer-AvsB.pdf}
   \caption{Max Datenmenge ohne Empfaenger (Remote)}
   \label{img:maxByteThroughputNoConsumerB}
 \end{figure}
 \begin{figure}
 \center
- \includegraphics[width=1\textwidth]{images/measurement/rate-limit-unlimited-AvsB.pdf}
+ \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-AvsB.pdf}
   \caption{Max Datenmenge mit Empfaenger (Remote)}
   \label{img:maxByteThroughputB}
 \end{figure}
@@ -194,7 +194,7 @@ Die vorherige Messung hat gezeigt, das sich das anwachsen der Warteschlange nega
 Die Ergebnisse sind in \autoref{img:maxlength} abgebildet. Wie erwartete wachsen die Latenzen der Nachrichten bei den begrenzten Warteschlangen ab einem bestimmten Moment nicht weiter an. Wie in \autoref{img:maxlength}a und \autoref{img:maxlength}b zu sehen ist, tritt dieser Moment für die kürzere Warteschlange früher ein. In \autoref{img:maxlength}c wächst die Latenz immer weiter.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/measurement/max-length.pdf}
+  \includegraphics[width=0.7\textwidth]{images/measurement/max-length.pdf}
   \caption{Senderate 1000/sec, Empfangsrate 100/sec}
   \label{img:maxlength}
 \end{figure}
@@ -219,7 +219,7 @@ Eine weiter Konfiguration die RMQ ermöglicht sind Lazy-Warteschlangen. Wie bere
 In \autoref{img:lazy} ist ein Vergleich der Messung aus \autoref{sec:oneMsgLatency} und den Messergebnissen mit Lazy-Warteschlangen abgebildet. Zu sehen ist, dass die Latenz mit Lazy Warteschlangen größer ist, als in der Standardkonfiguration.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/measurement/lazy-queues.pdf}
+  \includegraphics[width=0.7\textwidth]{images/measurement/lazy-queues.pdf}
   \caption{Lazy Queue vs not Lazy Queue}
   \label{img:lazy}
 \end{figure}
@@ -234,7 +234,7 @@ In \autoref{sec:queueGrowth} und \autoref{sec:maxlength} war bereits zu sehen, d
 In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. \autoref{img:varyingConsumer}a zeigt dabei einen Empfänger der alleine die Nachrichten empfängt. Da der Empfänger die Nachrichten nicht schnell genug empfängt steigt die Latenz. In \autoref{img:varyingConsumer}b kommt ein weiterer Empfänger hinzu. Die Latenz wächst nicht ganz so schnell. \autoref{img:varyingConsumer}c zeigt fünf Empfänger die gemeinsam die Warteschlange abarbeiten. Im Vergleich zu der Referenzmessung in\autoref{img:varyingConsumer}d mit einem Empfänger, streut die Messung mit mehreren Empfängern stärker.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/measurement/varying-consumer.pdf}
+  \includegraphics[width=0.7\textwidth]{images/measurement/varying-consumer.pdf}
   \caption{Verschiedene Empfaenger Anzahl}
   \label{img:varyingConsumer}
 \end{figure}
@@ -247,7 +247,7 @@ Diese Messung soll Überprüfen ob mehrere Sender genau so schnell die gleiche M
 In \autoref{img:varyingProducer} sind die Ergebnisse dieser Messung zu sehen. Dabei ist zu sehen, dass mehr Sender etwas schlechter abschneiden als ein einzelner. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/measurement/varying-producer.pdf}
+  \includegraphics[width=0.7\textwidth]{images/measurement/varying-producer.pdf}
   \caption{Verschiedene Sender Anzahl}
   \label{img:varyingProducer}
 \end{figure}
@@ -274,20 +274,23 @@ Auch in diesem Fall kann die höhere Latenz, der mehreren Sender, auf die Synchr
 
 \subsection{Zusammenfassung}
 \label{sec:rmqZusammenfassung}
-welche Einflussfaktoren konnnten identifiziert werden und werden weiter betrachtet? \\
-Nachrichtengroesse hat einfluss auf Latenz, Senderate und gesendete Datenmenge \\
-%Msg rate des Senders und Empfaengers (ankunftsrate im Usage modell) \\
-Netzwerklatenz \\
-Moegliche Datenmenge ist durch Netzwerk begrenzt\\
-Ob Nachrichten in HS oder HDD gespeichert werden (lazy queues) \\
-Kein Unterschied ob ein oder mehrere Sender/Empfaenger Warteschlange fuellen/abarbeiten \\
+Mithilfe der durchgeführten Messungen konnten die folgenden Einflussfaktoren identifiziert werden, die einen Einfluss die Performance haben:
+\begin{itemize}
+    \item Die Nachrichtengröße hat einen Einfluss auf die Latenz einer Nachricht, die mögliche Senderate und die insgesamt gesendete Datenmange.
+    \item Die Netzwerklatenz zwischen Sender, Empfänger und Broker hat einen zusätzlichen Einfluss auf die Latenz einzelner Nachrichten.
+    \item Die mögliche Datenmenge die auf einmal gesendet werden kann, ist durch die Netzwerkverbindung begrenzt.
+    \item Wenn Nachrichten direkt aus der Warteschlange empfangen werden können, ist ihre Latenz gering.
+    \item Die Latenz der Nachricht steigt, wenn die Warteschlange sich füllt und die Nachrichten in ihr warten müssen um abgeholt zu werden.
+    \item Das begrenzen der Warteschlangengröße kann die Latenz der Nachrichten klein halten.
+    \item Ob Nachrichten in den Hauptspeicher oder auf die Festplatte geschrieben werden hat einen Einfluss auf die Latenz.
+\end{itemize}
+Mithilfe dieser Einflussfaktoren soll im Folgenden eine Modell einer MOM erstellt werden, mit dem diese Einflussfaktoren abgebildet werden können. Außerdem werden die Messergebnisse dieses Kapitels verwendet um das Modell zu kalibrieren.
 
-welche weiteren Einflussfaktoren gibt es, die aus bestimmten gruenden nicht betrachtet werden (koennen)\\
-wenn system mehr Nachrichten auf einmal sendet/empfaengt sinkt latenz wieder (messung fehlt noch)\\
+
 %RMQ hat auch Prefetch von Nachrichten. Wird nicht betrachtet (zeit und trotzdem nicht so gut wie kafka) \\
-Latenz steigt an, wenn die queue gefuellt wird \\
-- benoetigt tracken einer Nachricht durch das system \\
-- explizite Queue Modellierung, mit groesse und fuellstand \\
+%Latenz steigt an, wenn die queue gefuellt wird \\
+%- benoetigt tracken einer Nachricht durch das system \\
+%- explizite Queue Modellierung, mit groesse und fuellstand \\
 
 
 %--	Vergleich: https://stackshare.io/stackups/activemq-vs-kafka-vs-rabbitmq  \\

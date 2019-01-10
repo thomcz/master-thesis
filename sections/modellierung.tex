@@ -12,8 +12,8 @@
 
 \chapter{Modellierung}
 \label{ch:modellierung}
-Wie bereits in \autoref{sec:eventbasetransformation} beschrieben bietet das PCM die Möglichkeit eventbasierte Kommunikation zu modellieren und auch eine konkrete MOM Architektur zu modellieren, die mithilfe einer Modelltransformation in die Systemarchitektur eingewoben wird. Diese Modellierung hat jedoch das Problem, dass die Kommunikation nur in eine Richtung funktioniert, wie in \autoref{img:oldEventBased}a zu sehen. Ein Sender sendet eine Nachricht an einen Empfänger und auf dem Weg dorthin durchläuft die Nachricht eine Komponentenkette und wird mit bestimmten Ressourcenanforderungen belegt. Der Empfänger erhält schließlich die Nachricht. In diesem Szenario fehlt jedoch die Warteschlange, die eine wichtige Komponente einer MOM ist. Eigentlich sollte die Komunikation wie in \autoref{img:oldEventBased}b abgebildet stattfinden. Der Sender sendet die Nachricht an die MOM, diese leitet die Nachricht an die entsprechende Warteschlange weiter und ein Empfänger holt sich die Nachricht ab, sobald er die Ressourcen dazu hat. Dieses Szenario ist mit der aktuellen eventbasierten Kommunikation in PCM nicht darstellbar, weil kein abholen einer Nachricht vorgesehen ist. Deshalb soll im Folgenden eine Modellierung präsentiert werden, die eine explizite Warteschlange und ein Verteilsystem, das Nachrichten an passenden Warteschlangen verteilt, modelliert.\par
-Dazu soll zunächst mithilfe einer Anforderungserhebung in \autoref{sec:anforderungserhebung} Anforderungen gesammelt werden, die eine solche Modellierung erfüllen soll. Im Anschluss wird in \autoref{sec:modell} die Modellierung einer MOM vorgestellt, die die Anforderungen erfüllen soll. In \autoref{sec:modellkalibrierung} soll das Modell mithilfe der in \autoref{sec:rmqBenchmark} ausgemessenen MOM RMQ kalibriert werden. Dabei soll ein kalibrierter MOM Baustein entstehen, der sich wie die ausgemessene MOM verhalten soll. Schließlich wird in \autoref{sec:momsimulation} das MOM Modell in mehreren Simulationen eingesetzt werden und mit den realem Messungen verglichen. 
+Wie bereits in \autoref{sec:eventbasetransformation} beschrieben bietet das PCM die Möglichkeit eventbasierte Kommunikation zu modellieren und auch eine konkrete MOM-Architektur zu modellieren, die mithilfe einer Modelltransformation in die Systemarchitektur eingewoben wird. Diese Modellierung hat das Problem, dass die Kommunikation nur in eine Richtung funktioniert, wie in \autoref{img:oldEventBased}a zu sehen ist. Ein Sender sendet eine Nachricht an einen Empfänger. Auf dem Weg dorthin durchläuft die Nachricht eine Komponentenkette und wird mit bestimmten Ressourcenanforderungen belegt. Der Empfänger erhält schließlich die Nachricht. In diesem Szenario fehlt jedoch die Warteschlange, die eine wichtige Komponente einer MOM ist. Eigentlich sollte die Kommunikation wie in \autoref{img:oldEventBased}b abgebildet stattfinden. Der Sender sendet die Nachricht an die MOM, diese sortiert die Nachricht in die entsprechende Warteschlange ein und ein Empfänger holt sich die Nachricht ab, sobald er die Ressourcen dazu hat. Dieses Szenario ist mit der aktuellen eventbasierten Kommunikation in PCM nicht darstellbar, weil kein abholen einer Nachricht vorgesehen ist. Deshalb soll im Folgenden eine Modellierung präsentiert werden, die eine explizite Warteschlange und ein Verteilsystem, das Nachrichten an passenden Warteschlangen verteilt, modelliert.\par
+Dazu soll zunächst mithilfe einer Anforderungserhebung in \autoref{sec:anforderungserhebung} Anforderungen gesammelt werden, die eine solche Modellierung erfüllen soll. Im Anschluss wird in \autoref{sec:modell} die Modellierung einer MOM vorgestellt, die die Anforderungen erfüllen soll. In \autoref{sec:modellkalibrierung} soll das Modell mithilfe der in \autoref{sec:rmqBenchmark} ausgemessenen MOM kalibriert werden. Ziel dabei ist, dass das kalibrierte Modell sich wie die echte MOM verhält und die Einflussfaktoren, die dabei identifiziert wurden, auch sichtbar werden. Dazu wird in \autoref{sec:momsimulation} das MOM-Modell in mehreren Simulationen eingesetzt werden und mit den realem Messungen verglichen. 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/modelling/oldEventBased.png}
@@ -110,7 +110,7 @@ In \cite{palladio17} wird Modellkalibrierung als Anreicherung von Modellen mit q
 In \autoref{oneMsgLatency} wurde die Latenz einer Nachricht mit verschiedenen Größen ausgemessen. Darin ist ein lineares Wachstum der Latenz mit ansteigen der Nachrichtengröße zu beobachten. Dies liegt die Vermutung nahe, dass diese beiden Variablen voneinander abhängen. Um diese Vermutung zu bestätigen wurde für die Variablen Latenz und Nachrichtengröße ihre Korellation berechnet. Dabei ist die Korrelation ein statistisches Maß, das den Grad der linearen Abhängigkeit zwischen zwei Variablen anzeigt, die im Paar auftreten. Ist diese Abhängigkeit hoch, liegt der Wert nahe eins. Liegt der Wert dagegen bei minus eins, ist die Abhängigkeit sehr gering. Die Korrelation der Variablen Latenz und Nachrichtengröße ist 0.9850627. Somit ist eine hohe lineare Abhängigkeit der Variablen gezeigt. Als nächstes soll mithilfe einer linearen Regressionsanalyse einen Ressourcenbedarf für das Modell definiert werden. Das Ziel einer linearen Regressionsanalyse ist es, eine lineare Beziehung zwischen einer Prädiktorvariable Y und der Reaktionsvariable X herzustellen, so dass der Wert von Y getschätzt werden kann, wenn nur der Wert des Prädiktoren X bekannt ist. Die dabei entstandene Regressionsgerade hat die Form: \[latency = 1256.2782902 + (0.003299 * msgSize)\] und ist in \autoref{img:regplot} eingezeichnet. Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/oneMsgRegression.pdf}
+  \includegraphics[width=0.7\textwidth]{images/modelling/oneMsgRegression.pdf}
   \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse}
   \label{img:regplot}
 \end{figure}
@@ -124,7 +124,7 @@ Auch die Netzwerklatenz, die in \autoref{oneMsgLatency} ausgemessen wurde, hat e
 Neben der Standardkonfiguration wurde auch die Konfiguration für Lazy-Warteschlangen in \autoref{sec:rmqLazy} ausgemessen. Auch hier wurde wie oben beschrieben zunächst die Korrelation der beiden Variablen berechnet. Mit 0.9951195 ist diese ebenfalls sehr hoch. Die entstandene Regressionsgerade hat die Form: \[latency = 1602.5021193 + (0.0049697 * msgSize)\] und ist in \autoref{img:regplotlazy} eingezeichnet. Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird, wenn Lazy-Warteschlangen betrachtet werden sollen.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/oneMsgLazyRegression.pdf}
+  \includegraphics[width=0.7\textwidth]{images/modelling/oneMsgLazyRegression.pdf}
   \caption{Regressionsgerade aus der Regressionsanalyse mit Lazy-Warteschlangen}
   \label{img:regplotlazy}
 \end{figure}
@@ -161,6 +161,7 @@ Im Folgenden wird diese Modellierung in einer Performanzanalyse eingesetzt.
 
 
 \subsection{Performance-Analyse}
+\label{sec:performanceanalyse}
 Die Palladio-Bench bietet eine Sammlung von Qualitätsanalysen mit Hauptfokus auf Performance an. Nachdem in den vergangen Abschnitten eine MOM Modellierung und ihre Kalibrierung beschrieben wurde, kann im nächsten Schritt eine Performance-Analyse ausgeführt werden. Dazu wird das Analysewerkzeug \textbf{SimuCom} verwendet, das verschiedene Performance Charakteristiken, darunter Antwortzeiten für Systeme und Komponenten, sowie die Auslastung einzelner Ressourcen berechnet. Im Folgenden werden die Ergebnisse der Performance-Analyse präsentiert und mit den Messungen aus \autoref{sec:rmqBenchmark} verglichen. Dazu wird für jede Simulation der Fehler zwischen dem gemessenen Wert und dem vom Modell vorhergesagten Wert berechnet. Dazu wird die Folgende Formel verwendet: \[ error\% = \frac{|prediction - measurement|}{measurement} * 100 \]. Für \textit{prediction} wird der Wert aus der Modell-Vorhersage eingesetzt. Für \textit{measurement} wird der jeweilige Median aus der Messungen eingesetzt.
 \subsubsection{Simulation 1} 
 \label{sec:rmqSimulation1}
@@ -170,7 +171,7 @@ Da die Ankunftszeiten der beiden Akteure gleich sind, bleibt die Warteschlange d
 
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation1.pdf}
+  \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation1.pdf}
   \caption{Latenz einer Nachricht mit verschiedenen Groessen (Modell vs. Real System)}
   \label{img:simulation1}
 \end{figure}
@@ -198,7 +199,7 @@ Diese Simulation betrachtet zusätzlich zu dem Fall aus Simulation 1 die Netzwer
 Die Warteschlange bleibt über die Simulationsdauer leer, da die Ankunftszeiten der Sender und Empfänger gleich sind. Die Latenz der Nachrichten ist in \autoref{img:simulation2} abgebildet. Außerdem sind die Messpunkte aus der Messung eingetragen. In \autoref{tab:sim2} ist der Fehler für jede Größe angegeben. Der Fehler liegt zwischen 21.15\% und 33.43\%.
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation2.pdf}
+  \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation2.pdf}
   \caption{Latenz einer Nachricht mit verschiedenen Groessen mit Netzwerklatenz (Modell vs. Real System)}
   \label{img:simulation2}
 \end{figure}
@@ -218,12 +219,13 @@ Die Warteschlange bleibt über die Simulationsdauer leer, da die Ankunftszeiten 
 
 
 \subsubsection{Simulation 3}
+\label{sec:simulation3}
 In dieser Simulation wird die Auswirkung der Ankunftszeiten auf das System geprüft. Verglichen wird mit der Messung aus \autoref{sec:queueGrowth}. Dabei ist die Ankunftszeit des Senders einmal pro Sekunde und die des Empfängers einmal alle zwei Sekunde. Der Füllstand der Warteschlange, sowie die Latenz der Nachrichten wird über die Zeit betrachtet.
 %B
 Die Ergebnisse sind in \autoref{img:simulation3} abgebildet. In \autoref{img:simulation3}a ist zu sehen, dass sich der Füllstand der Warteschlange bei Messung und Simulation gleich verhält und über die Zeit ansteigen, da jede Sekunde eine Nachricht in der Warteschlange unbearbeitet bleibt. In \autoref{img:simulation3}b sieht man außerdem die Auswirkungen auf die Latenz der einzelnen Nachrichten. Während bei der Messung die Latenz für die Nachrichten steigt, bleibt sie in der Modellierung unverändert. Dies liegt daran, dass die Latenz auch vom Füllstand der Warteschlange abhängt. In diesem Fall müsste der Füllstand bei der Berechnung der Latenz mit berücksichtigt werden. Dies ist mit SimuCom nicht möglich. 
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation3.pdf}
+  \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation3.pdf}
   \caption{Anwachsen der Warteschlange (Modell vs. Real System)}
   \label{img:simulation3}
 \end{figure}
@@ -235,7 +237,7 @@ Die Simulation zeigt, dass beide Empfänger die Warteschlange gemeinsam abarbeit
 
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation4.png}
+  \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation4.png}
   \caption{Gemeinsames Abarbeiten einer Warteschlange durch zwei Empfaenger (Modell)}
   \label{img:simulation4}
 \end{figure}
@@ -252,7 +254,7 @@ Schließlich betrachtet diese Simulation Lazy-Warteschlangen aus RMQ. Sender und
 Die Warteschlange bleibt aufgrunde der gleichen Ankuftszeiten gleich. In \autoref{img:simulation6} sind die Ergebnisse bezüglich der Latenz abgebildet. Neben den Vorhersagepunkten aus dieser Simulation und den Messpunkte aus der Messung mit Lazy-Warteschlangen, sind die Vorhersagepunkte aus \autoref{sec:rmqSimulation1} eingetragen. In \autoref{tab:sim5} sind die Fehler abgebildet. Dabei wird neben dem Fehler zur Messung mit Lazy-Warteschlangen und der Vorhersage mit Lazy-Warteschlangen auch der Fehler zwischen der Messung mit Lazy-Warteschlangen und der Vorhersage aus \autoref{sec:rmqSimulation1} berechnet. Dabei ist zunächst zu sehen, dass der Fehler zwischen der Messung und der Vorhersage mit Lazy-Warteschlangen zwischen 10.14\% und 22.12\% liegt. Der Fehler zwischen der Messung mit Lazy-Warteschlangen und der Vorhersage aus \autoref{sec:rmqSimulation1} liegt zwischen 7.38\% und 15.78\% und ist somit besser. TODO begründung warum dieser denoch nicht verwendet werden soll oder weglassen?.
 \begin{figure}
 \center
-  \includegraphics[width=0.5\textwidth]{images/modelSimulationResults/simulation6.pdf}
+  \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation6.pdf}
   \caption{Latenz einer Nachricht mit verschiedenen Groessen bei Lazy Warteschlangen (Modell vs. Real System)}
   \label{img:simulation6}
 \end{figure}
@@ -273,10 +275,8 @@ Die Warteschlange bleibt aufgrunde der gleichen Ankuftszeiten gleich. In \autore
 \end{table}
 
 
-\section{Grenzen}
-Dieser Ansatz ermöglicht es jedoch nicht einzelne Nachrichten durch das System zu verfolgen\\
-
-welche Moeglichkeiten gibt es? Dominiks Queue Modell. Direkt drauf verweisen, oder eine/diese Idee beschreiben.\\
+\section{Diskussion}
+Die in diesem Kapitel vorgestellt Modellierung einer MOM erfüllt die zu beginn definierten Anforderungen an eine MOM. Da eine Warteschlange explizit modelliert wurde, können Sender und Empfänger asynchron Nachrichten senden und empfangen. Im Modell ist dies durch unterschiedliche Angabe von Ankunftszeiten möglich. Die zu senden Nachrichten können an unterschiedliche Warteschlangen gesendet werden. Dies wurde durch Einsatz von UsageVariable und einem GuardedBranch im Seff der Exchange Komponente gelöst. Diese Warteschlangen Angabe kann der Benutzer bereits im Nutzungsmodell angeben, zusammen mit der Nachrichtengröße der zu sendenden Nachricht. Wie die Performance-Analyse gezeigt hat, kann sowohl der Füllstand der Warteschlange, als auch die Latenz einer Nachricht, anhand der Modellierung und Kalibrierung, ermittelt werden. Somit konnten die definierten Anforderungen erfüllt werden. Neben den Anforderungen aus diesem Kapitel wurden in \autoref{ch:mom} Einflussfaktoren auf die Performance der MOM identifiziert. Diese können mit dem aktuellen Ansatz und den aktuellen verfügbaren Modell Elementen nicht abgebildet werden. Dazu gehört der Effekt, dass Nachrichten die Lange in der Warteschlange bleiben, eine höhere Latenz haben. Wie die Simulation in \autoref{sec:simulation3} gezeigt hat, kann der Füllstand der Warteschlange zwar richtig angezeigt werden, die erhöhte Latenz dagegen nicht. Ein weiterer Faktor ist die Begrenzung der Warteschlangengröße. Da in dieser Modellierung die Warteschlange als Passive Ressource modelliert ist, ist die Angabe einer Größe nicht möglich. Um diese beiden Faktoren abbilden zu können braucht es eine Erweiterung des PCM mit der eine Warteschlange explizit als Modellelement vorhanden sein muss. Diese Warteschlange kann dann konfiguriert werden mit Topic, Warteschlangegröße und weiteren Konfigurationen. Eine erweiterte Performance-Analyse könnte die Effekte einzelner Nachrichten untersuchen, die eine bestimmte Dauer in der Warteschlange verbracht haben. Dennoch lassen sich mit dieser Modellierung und der ausgewählten Performance-Analyse viele Effekte abbilden, wie die Simulationen in \autoref{sec:performanceanalyse} gezeigt haben.
 %Queue Fuellstand ist unbekannt \\
 
 %Nachdem eine MOM in das Experimentsystem eingebaut wurde, soll sie im Anschluss in Palladio modelliert werden. Wie bereits erwähnt existiert eine Palladio Modellierung des Experimentsystem, auf der aufgebaut werden kann. Bei der Modellierung der MOM soll zunächst die Standardkonfiguration und in späteren Iterationen Parametrisierbarkeit modelliert werden. Dazu soll zunächst versucht werden die MOM mithilfe vorhandener PCM Elementen zu modellieren und Unzugänglichkeiten zu identifizieren. Die Idee ist, mithilfe von Architecture-Templates \cite{architcturetemplate} diese Unzugänglichkeiten zu beseitigen. Dabei handelt es sich um wiederverwendbare Muster, die auf Palladio-Modelle angewendet werden können. Beispielsweise kann anstelle der manuellen Modellierung eines Lastverteilers auch das Architectural-Template für Lastverteiler verwendet werden. %Da diese Anwendung nur aus wenigen kleinen Schritten besteht, können Architekten viel Modellierungsaufwand einsparen.

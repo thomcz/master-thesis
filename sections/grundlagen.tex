@@ -45,19 +45,20 @@ Wie eine MOM Nachrichten austauscht, wird in ihrem Nachrichtenmodell festgelegt.
 \end{itemize}
 
 \subsection{Interaktionstypen}
-?
+Der Interaktionstyp einer MOM gibt an, wie viele Sender und Empfänger an einer Komunikation teilnehmen können. Dabei wird zwischen den Folgenden Typen unterschieden:
 \begin{itemize}
-    \item 1:1
-    \item 1:n
-    \item m:1
-    \item m:n
+    \item Eins-Zu-Eins: Genau ein Sender und ein Empfänger können an einer Interaktion teilnehmen.
+    \item Eins-Zu-Vielen: Es gibt einen Sender und mehrere Empfänger, die an einer Interaktion teilnehmen können. 
+    \item Viele-Zu-Eins: Mehrere Sender senden an einen Empfänger.
+    \item Viele-Zu-Viele: Mehrere Sender und mehrere Empfänger nehmen an der Interaktion teil.
 \end{itemize}
+
 \subsection{Grad der Entkopplung}
-?
+Entkopplung der Komponenten ist ein Vorteil der durch nachrichtenbasierte Middleware versprochen wird. Dabei werden zwischen drei Aspekten der Entkopplung (Eugster03) unterschieden:
 \begin{itemize}
-    \item Synchronisation
-    \item Raum
-    \item Zeit
+    \item Synchronisation: Die Kontrollflüße von Sender und Empfänger sind entkoppelt. D.h. die Sender und Empfänger warten nicht aufeinander sondern senden und empfangen asynchron Nachrichten.
+    \item Raum: Dabei wissen die Sender nicht mit wie vielen Empfängern sie kommunizieren und umgekehrt wissen die Empfänger nicht, wie viele Sender Nachrichten senden.
+    \item Zeit: Sender und Empfänger müssen nicht gleichzeitig aktiv sein.
 \end{itemize}
 \section{Java Message Service (JMS)}
 Der Java Message Service (JMS) ist eine standardisierte Programmierschnittstelle (API) (Hapner JMS Specification). Sie dient dazu Java Applikationen Zugriff auf nachrichtenbasierten Middlewares zu geben. Im JMS Umfeld wird die MOM als JMS Server und die Applikationen die die API verwenden, um Nachrichten auszutauschen, als JMS Klienten bezeichnet. JMS ist Teil der Java Platform Enterprise Edition, die Standards für Enterprise Applikationen definiert. JMS unterstützt verschiedene Nachrichtentypen, wie Text-, Byte- oder Objektnachrichten. Es werden die beiden oben vorgestellten Nachrichtenmodelle, Punkt-Zu-Punkt und Publish/Subscriber Modell unterstützt.
