@@ -51,7 +51,7 @@ Diese Architektur erlaubt verschiedene Interaktionstypen. Sowohl eins-zu-eins al
 In \autoref{img:rmq_architecture} ist ein Beispiel für eine mögliche RMQ-Architektur und Kommunikation zwischen Sendern und Empfängern dargestellt. Dabei ist ExhangeA vom Typ Direkt. Dieser ist mit WarteschlangeA verbunden. ExchangeB ist ein Topic-Exchange und mit WarteschlangeB und WarteschlangeC verbunden. Dabei unterscheiden sich die beiden Bindungen in ihrem Routing-Muster. EmpfängerA empfängt Nachrichten aus WarteschlagenA und EmpfängerB Nachrichten aus WarteschlangeB und WarteschlangeC. Wenn ein Sender eine Nachricht an ExchangeA sendet, wird diese in WarteschlangeA abgelegt, wenn der Routing-Schlüssel der Nachricht mit dem Routing-Schlüssel der Warteschlange übereinstimmt, da diese über eine direkte Bindung mit dem Exchange verbunden ist. Wenn eine Nachricht an ExchangeB gesendet wird, wird anhand des Routing-Musters entschieden, ob die Nachricht an WarteschlangeB oder WarteschlangeC gesendet wird. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/measurement/rmqexample.png}
+  \includegraphics[width=1\textwidth]{images/measurement/rmqexample.pdf}
   \caption{beispiel einer Kommunikation in RMQ}
   \label{img:rmq_architecture}
 \end{figure}
