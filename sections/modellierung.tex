@@ -63,15 +63,15 @@ Die untersuchte MOM Architektur besteht aus einem Verteiler und einer Warteschla
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/repository.pdf}
+  \includegraphics[width=1\textwidth]{images/modelling/modelingRepository.pdf}
   \caption{Repository einer MOM mit Exchange und Warteschlange}
   \label{img:mom_repository}
 \end{figure}
 
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/modelling/branchSeff.png}
-  \caption{Repository einer MOM mit Exchange und Warteschlange}
+  \includegraphics[width=0.7\textwidth]{images/modelling/modelingGuardedBranch.pdf}
+  \caption{Guarded Branch des Exchanges.receive}
   \label{img:queueBranch}
 \end{figure}
 
@@ -80,7 +80,7 @@ Im Systemmodell werden die einzelnen Komponenten aus dem Repository vom Software
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/systemModell.pdf}
+  \includegraphics[width=1\textwidth]{images/modelling/modelingSystem.pdf}
   \caption{Systemmodell einer MOM}
   \label{img:mom_system}
 \end{figure}
@@ -88,7 +88,7 @@ Im Systemmodell werden die einzelnen Komponenten aus dem Repository vom Software
 Im Ausführungs-Umgebungs-Modell kann der Software-Verteilungs-Experte die Hardware Knoten und Netzwerkverbindungen darstellen. Für jeden Exchange und jede Warteschlange kann eine eigene Ressource definiert werden. Außerdem müssen die einzelnen Verbindungen zwischen einem Exchange und den Sendern und Empfängern modelliert werden. Falls Exchange und Warteschlange sich auf unterschiedlichen Ressourcen befinden, müssen die Verbindungen auch modelliert werden. In \autoref{img:mom_ressorceEnv} ist eine mögliche Ausführungsumgebung für das oben beschriebene System dargestellt. Die Ausführungsumgebung besteht aus je einer MOM Ressource für den jeweiligen Exchange und die an ihn angeschlossenen Warteschlangen. Die einzelnen Sender und Empfänger sind jeweils auf eigenen Ressourcen verteilt und sind über Netzwerkverbindungen mit der jeweiligen MOM Ressource verbungen. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/recenv.png}
+  \includegraphics[width=1\textwidth]{images/modelling/modelingRecEnv.pdf}
   \caption{Ausführungsumgebung und Allokation einer MOM}
   \label{img:mom_ressorceEnv}
 \end{figure}
@@ -97,7 +97,7 @@ Im Ausführungs-Umgebungs-Modell kann der Software-Verteilungs-Experte die Hardw
 Im Nutzungsmodell wird die Benutzung des Systems durch den Domänenexperten modelliert. Für jeden Sender und Empfänger wird dazu je ein UsageScenario angelegt. Dieses beinhaltet das Verhalten eines Benutzers und seine Ankunftszeit. Der Domänenexperte kann somit festlegen wie oft ein Sender oder Empfänger pro Zeiteinheit ankommt um Nachrichten zu senden oder zu empfangen. Außerdem kann dadurch die Anzahl der Nachrichten die pro Zeiteinheit gesendet werden abgebildet werden. Wenn ein Sender zum Beispiel 0.1 mal pro Zeiteinheit ankommt, heißt das, dass er 10 mal pro Zeiteinheit ankommt und somit 10 Nachrichten versendet. Neben der Ankunftzeit wird im UsageScenario auch das Verhalten modelliert. Mithilfe eines EntryLevelSystemCalls kann die passende Funktion im passenden Exchange aufgerufen werden. Möchte ein Sender ein Nachricht an einen Exchange senden, muss er mithilfe des ELSC den passenden Exchange auswählen. Mithilfe von UsageVariablen, könnne dem Aufruf außderdem Parameter mitgegeben werden. Mithilfe dieses Mechanismuses kann für jeden Aufruf spezifiziert werden wie groß die Nachricht die gesendet oder empfangen werden soll ist und zu welcher Warteschlange oder Topic sie gehört. In \autoref{img:mom_usage} ist ein mögliches Nutzungsmodell für das oben beschriebene System. Dabei wird nur der Teil mit Exchange1 betrachtet. Das Nutzungsmodell besteht aus zwei UsageScenarios. Das erste stellt den Sender des Systems dar. Seine Interaktion mit dem System besteht darin, die distribute Funktion im Exchange1 aufzurufen und dabei eine Nachricht mit 5000 Bytes zu versende. Da seine Ankuftszeit 0.1 Beträgt, tut er die zehn mal pro Zeiteinheit. Das zweite UsageScenario stellt den Empfänger des Systems dar. Seine Interaktion mit dem System besteht darin, die receive Funktion im Exchange1 aufzurufen und dabei eine Nachricht mit 5000 Bytes zu empfangen. Da seine Ankuftszeit 0.5 beträgt, tut er die fünf mal pro Zeiteinheit. Da der Empfänger somit pro Zeiteinheit fünf der zehn Nachrichten nicht empfängt sollten diese in der Warteschlange landen und in einer Simulation sichtbar.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/usage.png}
+  \includegraphics[width=1\textwidth]{images/modelling/modelingUsage.pdf}
   \caption{Nutzungsmodell einer MOM mit einem Sender und Empfänger}
   \label{img:mom_usage}
 \end{figure}
@@ -153,7 +153,7 @@ Im Folgenden betrachten wir das in \autoref{img:simulationscenario} abgebildete 
 % Der Sender sendet pro Zeiteinheit und der Empfaenger empfaengt pro Zeiteinheit eine bestimmte Menge an verschieden Großen Nachrichten. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelSimulationResults/simulationScenario.pdf}
+  \includegraphics[width=1.35\textwidth, angle=90]{images/modelling/modelingSimulationSzenario.pdf}
   \caption{Simulationsszenario }
   \label{img:simulationscenario}
 \end{figure}
