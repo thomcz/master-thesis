@@ -74,56 +74,116 @@ Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modelli
 Das für die Evaluierung verwendete System ist das im SPECJms2007 Benchmark verwendete Testsystem \cite{Sachs2013}. Der Benchmark stellt eine reale ereignisbasierte Anwendung dar und umfasst eine Reihe von verschiedener Interaktionen, die sowohl Punkt-zu-Punkt- als auch Publish/Subscribe-Nachrichten einschließlich One-to-One-, One-to-Many- und Many-to-Many-Kommunikation umfasst. Das Hauptziel des SPECjms2007 Benchmarks ist es, einen Standard-Workload bereitzustellen, der die Leistung und Skalierbarkeit von JMS-basierten Message-Oriented Middleware-Plattformen bewertet. Bei dem System handelt es sich um ein Lieferkettenmanagement für eine Supermarktkette. Der Benchmark verwendet verschiedene Nachrichtentypen und verwendet Nachrichten verschiedenen Größe. Für die Masterarbeit liegt sowohl die Implementierung des Benchmarks, als auch eine Modellierung aus einer früheren Arbeit von Christoph Rathfelder \cite{Rathfelder2013} vor. Dieses System soll als Experimentsystem verwendet werden um die verschiedenen MOMs zu vergleichen und zum kalibrieren der später erstellten Modellierung. 
 
 \subsection{Anwendungsszenario}
-Das gewählte Anwendungsszenario bildet die Lieferkette eines Supermarktunternehmens ab. Beteiligte lassen sich wie folgt gruppieren: 
+Das gewählte Anwendungsszenario bildet die Lieferkette eines Supermarktunternehmens ab. In \autoref{img:specjmsInteraction} sind die beteiligten Rollen abgebildet und wie sie miteinander kommunizieren. Die beteiligten lassen sich wie folgt gruppieren: 
 \begin{itemize}
     \item Hauptquartier (HQ): Für die Buchhaltung des Unternehmens verantwortlich. Beobachtet den Geld und Warenfluss im System. Verwaltet Informationen ueber Waren und definiert Preise.
     \item Supermarkt (SM): Verkauft Waren an Kunden. Im Benchmark liegt der Fokus auf der Verwaltung der eigenen Warenlager. Jeder SM ist mit einem Vertriebszentrum verbunden.
     \item Vertriebszentrum (DC): Beliefert SM mit Waren. Ein DC nimmt Aufträge von SMs an und liefert diese. Wenn ein DC die Waren nicht vorrätig hat, werden diese Waren von einem Zulieferer angefordert. Außerdem sind DCs dafür verantwortlich Verkaufsstatistiken an das HQ zu senden.
     \item Zulieferer (SP): SPs sind nicht Teil des Supermarktunternehmens. Jeder SP bietet eine bestimmte Art von Waren an. Diese werden an DCs geliefert, wenn angefordert.
 \end{itemize}
-In \autoref{img:specjmsInteraction} sind die vier Rollen zu sehen und wie sie miteinander kommunizieren. SpecJms sieht insgesamt sieben verschiedenen Interaktionsmöglichkeiten vor: 
-\begin{itemize}
-    \item Interaktion 1: Diese Interaktion modelliert die Auftrags- und Versandabwicklung zwischen SMs und DCs. Die Interaktion wird ausgelöst, wenn Waren im Lager eines SM aufgebraucht sind. Der SM bestellt bei einem DC Nachschub um seine Waren aufzufüllen. In \autoref{img:specjmsInteraction1} ist der Ablauf als Sequenzdiagramm abgebildet. Zunächst sendet der SM eine Order Nachricht an den DC. Der DC bestätigt dem SM den Eingang der Nachricht. Als nächstes werden die Waren verschickt. Dabei werden sie von einem RFID Leser erfasst. Schließlich sendet der DC Informationen über die Transaktion an das HQ. Sobald die Lieferung beim SM ankommt wird eine Bestätigung an DC gesendet.
-\end{itemize}
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/evaluation/specjms/specjmsOverview.pdf}
+  \includegraphics[width=0.7\textwidth]{images/evaluation/specjms/specjmsOverview.pdf}
   \caption{Anwendungszenario des SpecJms}
   \label{img:specjmsInteraction}
 \end{figure}
+
+\subsection{Interaktionen und Kommunikation}
+SpecJms sieht insgesamt sieben verschiedenen Interaktionsmöglichkeiten vor: 
+\begin{enumerate}
+    \item Bestell- und Versandabwicklung zwischen SM und seinem DC (Punkt-Zu-Punkt).
+    \item Bestell- und Versandabwicklung zwischen DC und seinen SPs (Punkt-Zu-Punkt und Publisher/Subsciber).
+    \item Preisaktualisierung (Publisher/Subsciber).
+    \item Inventurmanagmenet (Punkt-Zu-Punkt).
+    \item Verkaufsstatistik Sammlung (Punkt-Zu-Punkt).
+    \item Bekanntmachungen zu Produkten (Publisher/Subsciber).
+    \item Kreditkarten Hot-List (Publisher/Subsciber).
+    
+\end{enumerate}
+Im Rahmen der Masterarbeit wurden (, aus Zeitlichen Gründen,) zwei dieser Interaktionen betrachtet. Um trotzdem verschiedene Nachrichtenmodelle und Interaktionstypen betrachten zu können wurden die folgenden beiden Interaktionen ausgewählt.
+%warum wurden nur 2 und wiese genau diese ausgewaehlt? (Zeit, welche kommunikationsarten konnten abgedeckt werden?)\\
+%Nachrichtenmodelle mit einbeziehen \\
+%Interaktionstypen mit einbeziehen \\
+\subsubsection{Interaktion 1}
+Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem DC und dem DC und dem HQ aus. Die Interaktion wird ausgelöst, wenn Waren im Lager eines SM aufgebraucht sind. Der SM bestellt bei einem DC Nachschub um seine Waren aufzufüllen. Neben dem SM und DC ist das HQ auch an dieser Interaktion beteiligt. In \autoref{img:specjmsInteraction1} ist der Ablauf als Sequenzdiagramm abgebildet. 
+\begin{itemize}
+    \item Der SM sendet eine Bestellung an seinen DC (Order).
+    \item Der DC sendet eine Bestätigung, über den Eingang der Nachricht zurück an den SM (OrderConf).
+    \item Die bestellte Ware wird registriert während sie das Warenlager des DC verlässt (ShipDep).
+    \item Der DC sendet Informationen über die Transaktion an HQ (StatInfoOrder).
+    \item Die bestellte Ware wurde vom DC an SM gesendet und empfangen (ShipInfo).
+    \item Der SM sendet eine Bestätigung über den erhalt der Bestellung an DC (ShipConf)
+\end{itemize}
+%Zunächst sendet der SM eine Order Nachricht an den DC. Der DC bestätigt dem SM den Eingang der Nachricht. Als nächstes werden die Waren verschickt. Dabei werden sie von einem RFID Leser erfasst. Schließlich sendet der DC Informationen über die Transaktion an das HQ. Sobald die Lieferung beim SM ankommt wird eine Bestätigung an DC gesendet.
+
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/Interaction1Diag.png}
   \caption{Interaktion 1}
   \label{img:specjmsInteraction1}
 \end{figure}
-Das System besteht aus vier Rollen, die in sieben verschiedenen Interaktionsmöglichkeiten miteinander kommunizieren können. 
-Alle aufzaehlen\\
-warum wurden nur 2 und wiese genau diese ausgewaehlt? (Zeit, welche kommunikationsarten konnten abgedeckt werden?)\\
-Nachrichtenmodelle mit einbeziehen \\
-Interaktionstypen mit einbeziehen \\
-Szenario 1 (SM sendet Anfrage an DC)
 
-Szenario 2 (DC muss Waren auffüllen)
-%- 3 szenarios aus Dissertation \\
-%- 1. alle interaktionen und p2p uns p/s \\
-%- 2. teilmenge der interaktionen und fokus auf p2p \\
-%- 3. teilmenge der interaktionen und fokus auf p/s \\
+\subsubsection{Interaktion 3}
+Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet.
+\begin{itemize}
+    \item Das HQ sendet ein Preisaktualisierung (PriceUpdate).
+    \item Betroffene SMs empfangen und ändern die Information in ihrem System.
+\end{itemize}
 
-\subsection{Konfiguration}
-Das System erlaubt verschiedene konfigurationen durch den Benutzer, wie die Skalierungsart oder die Nachrichtenröße. Das Szenario kann vertikal (Anzahl Msg (Produkte die verkauft werden) wird erhoeht, Consumer bleiben gleich) oder
-hoizontal skalliert werden (Anzahl msg bleibt gleich, Consumer (SM) werden mehr)\\
-Interaktionen können ausgeschaltet werden \\
-
-Für jede Nachricht wird die Größe anhand festgelegter Parameter berechnet. Diese sind in \autoref{img:specjmsMsgSize} abgebildet. Die Größe wird mit folgender Formel berechnet: m1 + x * b, wobei x vom Benutzer des Benchmarks eingestellt werden kann.
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/specjmsmsgsize.png}
-  \caption{Tabelle zum Berechnen der Nachrichtengröße}
-  \label{img:specjmsMsgSize}
+  \includegraphics[width=1\textwidth]{images/Interaction1Diag.png}
+  \caption{Interaktion 1}
+  \label{img:specjmsInteraction3}
 \end{figure}
+
+
+\subsection{Konfiguration}
+SpecJMS2007 erlaubt verschiedene Konfigurationen durch den Benutzer. Dabei kann die Toplogie sowhohl horizontal, als auch vertikal skalliert werden. Bei der horizontalen Skalierung, wird die Anzahl der Akteure erhöht, während die Anzahl der gesendeten Nachrichten pro Akteur gleich bleibt. Die vertikale Topologie erhöht die Anzahl der Nachrichten die die Sender senden. Beide Skalierungsarten werden in einer eigenen Konfigurationsdatei mithilfe des Parameters BASE eingestellt.
+
+Außerdem lassen sich für jede Nachricht die Größe und die Verteilung festlegen, mit welcher Wahrscheinlichkeit eine bestimmte Nachrichtengröße auftritt. Die Nachrichtengröße wird dabei mit folgender Formel berechnet: 
+\[m1 + x * b\] 
+Dabei kann x vom Benutzer des Benchmarks eingestellt werden. Die beiden anderen Parameter wurden in der Arbeit von Sachs et al.\cite{Sachs2013} hergeleitet. Somit kann für jede Nachricht die Wahrscheinlichkeit und ihre Größe festgelegt werden. In \autoref{tab:parameters} sind die für diese Arbeit wichtigen Parameter abgebildet. Die Verteilungen und die dazugehörige Nachrichtengrößen sind in \autoref{tab:msgpropandsize} abgebildet.
+
+
+\begin{table}
+\center
+  \begin{tabular}{|c|l|l|l|}
+  \hline
+    \textbf{Interaktion} & \textbf{Nachricht} & \textit{m1} & \textit{b}  \\
+    \hline \hline
+    \multirow{6}{*}{1} & Order & 0,0565 & 1,4534 \\\cline{2-4}
+    & OrderConf & 0,0565 & 1,4534 \\\cline{2-4}
+    & ShipDep & 0,0787 & 0,7222 \\\cline{2-4}
+    & StatInfoOrder & 0,0153 & 0,1463 \\\cline{2-4}
+    & ShipInfo & 0,0787 & 0,8912 \\\cline{2-4}
+    & ShipConf & 0,0202 & 0,7140  \\\hline
+    \hline
+     3 & PriceUpdate & - & 2,310 \\\hline
+  \end{tabular}
+	\caption{\label{tab:parameters} Parameter zur Berechnung der Nachrichtengröße.}
+\end{table}
+
+\begin{table}
+\center
+  \begin{tabular}{|c|l|l|l|l|}
+  \hline
+    \textbf{Interaktion} & \textbf{Nachricht} & \textbf{Größe 1} & \textbf{Größe 2} &\textbf{Größe 3} \\
+     & \textit{Wahrscheinlichkeit} & \textit{95\%}  & \textit{4\%} &\textit{1\%}   \\
+    \hline \hline
+    \multirow{6}{*}{1} & Order & 1,74 & 7,10 & 41,01 \\\cline{2-5}
+    & OrderConf & 2,02 & 7,39 & 41,29 \\\cline{2-5}
+    & ShipDep & 1,12 & 8,59 & 55,79\\\cline{2-5}
+    & StatInfoOrder & 0,22 & 1,67 & 10,83 \\\cline{2-5}
+    & ShipInfo & 1,28 & 8,76 & 55,95 \\\cline{2-5}
+    & ShipConf & 0,81 & 2,73 & 14,83  \\\hline
+    \hline
+     3 & PriceUpdate & 0,24 & 0,24 & 0,24 \\\hline
+  \end{tabular}
+	\caption{\label{tab:msgpropandsize} Nachrichtengröße in KByte.}
+\end{table}
 
 \section{Beschreibung des Modells}
 Modelle sind uebernommen worden aus diss. \\
@@ -168,7 +228,9 @@ Meine Transformation wird verwendet anstatt Event Transformation \\
 MOM Modell wird nicht verwendet\\
 msg size wird nicht mehr in MOM fuer jede Nachricht berechnet und eingepflegt, sondern werden im UsageModell oder beim EmitEvent (incl) Verteilung mitgegeben \\
 
-evtl ankunftsraten anpassen
+evtl nachrichtengröße wird in usage modell mit angegeben \\
+nachrichtengröße mit verteilung angegeben und nicht verteilung und rd
+
 
 \subsection{Modell nach Transformation}
 Beschreibe Modelle nach Transformation \\
