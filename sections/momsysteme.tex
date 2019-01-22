@@ -237,6 +237,7 @@ Grund hierfür ist das die Nachrichten auf die Festplatte anstatt in den Hauptsp
 
 
 \subsubsection{Mehrere Empfänger}
+\label{sec:varyingConsumer}
 In \autoref{sec:queueGrowth} und \autoref{sec:maxlength} war bereits zu sehen, dass volle Warteschlangen einen Einfluss auf die Latenz haben. In dieser Messung soll geprüft werden, ob es einen Unterschied macht einen oder mehrere Empfänger eine Warteschlange abarbeiten zu lassen. Dazu wurde die Senderate eines Senders auf 1000 Nachrichten und die Empfangsrate auf 200 Nachrichten pro Sekunde limitiert. Alle Empfänger greifen auf die selbe Warteschlange zu. Außerdem wurde eine Referenzmessung mit einem Sender und einem Empfänger mit einer Sende- und Empfangsrate von 1000 durchgeführt. Die Messung wurde mit dem \textit{lokal}-Szenario durchgeführt. Erwartet wird, dass es keinen unterschied macht ob ein oder mehrere Empfänger eine Warteschlange abarbeiten.
 %B
 In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. \autoref{img:varyingConsumer}a zeigt dabei einen Empfänger der alleine die Nachrichten empfängt. Da der Empfänger die Nachrichten nicht schnell genug empfängt, steigt die Latenz. In \autoref{img:varyingConsumer}b kommt ein weiterer Empfänger hinzu. Die Latenz wächst nicht ganz so schnell. \autoref{img:varyingConsumer}c zeigt fünf Empfänger die gemeinsam die Warteschlange abarbeiten. Im Vergleich zu der Referenzmessung in \autoref{img:varyingConsumer}d mit einem Empfänger, streut die Messung mit mehreren Empfängern stärker.
