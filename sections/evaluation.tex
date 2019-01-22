@@ -106,26 +106,26 @@ Im Rahmen der Masterarbeit wurden (, aus Zeitlichen Gründen,) zwei dieser Inter
 %Nachrichtenmodelle mit einbeziehen \\
 %Interaktionstypen mit einbeziehen \\
 \subsubsection{Interaktion 1}
-Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem DC und dem DC und dem HQ aus. Die Interaktion wird ausgelöst, wenn Waren im Lager eines SM aufgebraucht sind. Der SM bestellt bei einem DC Nachschub um seine Waren aufzufüllen. Neben dem SM und DC ist das HQ auch an dieser Interaktion beteiligt. In \autoref{img:specjmsInteraction1} ist der Ablauf als Sequenzdiagramm abgebildet. 
+Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem DC und dem DC und dem HQ aus. Die Interaktion wird ausgelöst, wenn Waren im Lager eines SM aufgebraucht sind. Der SM bestellt bei einem DC Nachschub um seine Waren aufzufüllen. Neben dem SM und DC ist das HQ auch an dieser Interaktion beteiligt. In \autoref{img:specjmsInteraction1seq} ist der Ablauf als Sequenzdiagramm abgebildet. 
 \begin{itemize}
     \item Der SM sendet eine Bestellung an seinen DC (Order).
     \item Der DC sendet eine Bestätigung, über den Eingang der Nachricht zurück an den SM (OrderConf).
     \item Die bestellte Ware wird registriert während sie das Warenlager des DC verlässt (ShipDep).
     \item Der DC sendet Informationen über die Transaktion an HQ (StatInfoOrder).
     \item Die bestellte Ware wurde vom DC an SM gesendet und empfangen (ShipInfo).
-    \item Der SM sendet eine Bestätigung über den erhalt der Bestellung an DC (ShipConf)
+    \item Der SM sendet eine Bestätigung über den Erhalt der Bestellung an DC (ShipConf)
 \end{itemize}
 %Zunächst sendet der SM eine Order Nachricht an den DC. Der DC bestätigt dem SM den Eingang der Nachricht. Als nächstes werden die Waren verschickt. Dabei werden sie von einem RFID Leser erfasst. Schließlich sendet der DC Informationen über die Transaktion an das HQ. Sobald die Lieferung beim SM ankommt wird eine Bestätigung an DC gesendet.
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/Interaction1Diag.png}
-  \caption{Interaktion 1}
-  \label{img:specjmsInteraction1}
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion1seq.pdf}
+  \caption{Sequenzdiagramm von Interaktion 1}
+  \label{img:specjmsInteraction1seq}
 \end{figure}
 
 \subsubsection{Interaktion 3}
-Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet.
+Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3seq} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet.
 \begin{itemize}
     \item Das HQ sendet ein Preisaktualisierung (PriceUpdate).
     \item Betroffene SMs empfangen und ändern die Information in ihrem System.
@@ -134,9 +134,9 @@ Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und se
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/Interaction1Diag.png}
-  \caption{Interaktion 1}
-  \label{img:specjmsInteraction3}
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion3seq.pdf}
+  \caption{Sequenzdiagramm von Interaktion 3.}
+  \label{img:specjmsInteraction3seq}
 \end{figure}
 
 
@@ -200,14 +200,14 @@ Interaktion 3: \autoref{img:interaction3system}
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/evaluation/specjms/interaction1system_events.png}
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion1events.pdf}
   \caption{Interaktion 1 mit Events}
   \label{img:interaction1system}
 \end{figure}
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/evaluation/specjms/interaction3system_events.png}
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion3events.pdf}
   \caption{Interaktion 3 mit Events}
   \label{img:interaction3system}
 \end{figure}
@@ -246,7 +246,7 @@ Beschreibe Modelle nach Transformation \\
 \autoref{img:interaction3systemAfterTransformation}
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/evaluation/specjms/interaction3system.png}
+  \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion3new.pdf}
   \caption{Interaktion 3 nach Transformation}
   \label{img:interaction3systemAfterTransformation}
 \end{figure}
