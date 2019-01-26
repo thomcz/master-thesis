@@ -163,16 +163,23 @@ Hohe Anforderungen führen meist zu hohen Kosten. Deshalb muss i.d.R. zwischen K
 %Disertation s.103
 In der Arbeit \cite{Rathfelder2013} wurden Events als Elemente erster Klasse in PCM eingeführt. Im Folgenden sollen Events in PCM vorgestellt werden, da diese im späteren Verlauf der Masterarbeit wiederverwendet werden sollen. \par
 In eventbasierten Systemen wird die Geschäftslogik in sogenannten Event-Handlern  Methoden implementiert und ausgeführt, wenn ein bestimmtes Event beim Empfänger ankommt. Der Sender und Empfänger müssen das jeweilige Event unterstützen, damit sie damit kommunizieren können. In Komponentenbasierten Systemen werden solche Anforderungen mithilfe von Schnittstellen, die einen Vertrag zwischen den kommunizierenden darstellt, umgesetzt. In eventbasierten System besteht ein solcher Vertrag nicht aus Funktionen, sondern aus Events, die gesendet und empfangen werden können. In PCM wurde dazu eine \emph{EventGroup} eingeführt. Diese verhält sich ähnlich wie eine Schnittstelle. Eine \emph{EventGroup} spezifiziert anstatt einer Signatur, einen oder mehrere \emph{EventType}s. Ein \emph{EventType} kann dabei einen Payload haben. Eine Komponente die Events aus einer \emph{EventGroup} sendet, benötigt einen \emph{SourcePort}. Die Komponente die Events einer \emph{EventGroup} empfängt hat dagegen einen \emph{SinkPort}. Diese beiden Elemente verhalten sich ähnlich zu einer \emph{RequiredRole} und \emph{ProvidedRole}. 
+Damit Komponenten Events senden und empfangen können benötigt es Elemente, die das senden und empfangen ermöglichen. Der Sender kann mit einer \emph{EmitEventAction} innerhalb eines SEFF einen \emph{EventType} über den \emph{SourcePort} senden. Auf Empfänger Seite benötigt es neben einem \emph{SourcePort}, einen SEFF der als Event-Handler dient. In \autoref{img:grundlageneventsrepo} ist ein Beispiel Repository-Modell abgebildet. Darin sendet die Supermarkt-Komponente Nachrichten vom \emph{EventType} \emph{Bestellung} über ihren \emph{SourcePort}. Die Zulieferer-Komponente empfängt Nachrichten vom \emph{EventType} \emph{Bestellung} über ihren \emph{SinkPort}.
 
-TODO Beispiel
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/grundlagen/grundlagenEventRepo.pdf}
+  \caption{Repository-Modell mit Events.}
+  \label{img:grundlageneventsrepo}
+\end{figure}
 
-Damit Komponenten Events senden und empfangen können benötigt es Elemente, die das senden und empfangen ermöglichen. Der Sender kann mit einer \emph{EmitEventAction} innerhalb eines SEFF einen \emph{EventType} über den \emph{SourcePort} senden. Auf Empfänger Seite benötigt es neben einem \emph{SourcePort}, einen SEFF der als Event-Handler dient.
+Schließlich müssen die Komponenten im Systemmodell verbunden werden. Komponenten die Events senden und empfangen werden über ihren \emph{SinkPort} und \emph{SourcePort} verbunden. Das PCM bietet dazu zwei Möglichkeiten und deckt damit die Nachrichtenmodelle aus \autoref{sec:nachrichtenmodelle} ab. Wenn Events direkt an eine Komponente geschickt werden sollen, werden die beiden Komponenten mithilfe eines \emph{P2PConnector} verbunden. Sollen Komponenten in einem Publish/Subscribe-Szenario miteinander kommunizieren, benötigt es einen \emph{EventChannel}. Ein \emph{EventChannel} enthält genau eine \emph{EventGroup}. Die sendende Komponente verbindet ihren \emph{SourcePort} mit dem \emph{EventChannel}. Die empfangende Komponente verbindet ihren \emph{SinkPort} mit dem \emph{EventChannel}. In \autoref{img:grundlageneventssystem} sind zwei Systemmodelle abgebildet. Das erste zeigt eine Punkt-Zu-Punkt Verbindung zwischen einer Supermarkt- und Zulieferer-Komponente. Dabei sind der \emph{SourcePort} und der \emph{SinkPort} direkt mit einem \emph{P2PConnector} verbunden. Das zweite Systemmodell zeigt eine Publish/Subscribe Kommunikation zwischen mehreren Supermarkt-Komponenten und mehreren Zulieferer-Komponenten. Dabei wird über einen EventChannel kommuniziert.
 
-TODO Beispiel
-
-Schließlich müssen die Komponenten im Systemmodell verbunden werden. Komponenten die Events senden und empfangen werden über ihren \emph{SinkPort} und \emph{SourcePort} verbunden. Das PCM bietet dazu zwei Möglichkeiten und deckt damit die Nachrichtenmodelle aus \autoref{sec:nachrichtenmodelle} ab. Wenn Events direkt an eine Komponente geschickt werden sollen, werden die beiden Komponenten mithilfe eines \emph{P2PConnectors} verbunden. Sollen Komponenten in einem Publish/Subscribe-Szenario miteinander kommunizieren, benötigt es einen \emph{EventChannel}. Ein \emph{EventChannel} enthält genau eine \emph{EventGroup}. Die sendende Komponente verbindet ihren \emph{SourcePort} mit dem \emph{EventChannel}. Die empfangende Komponente verbindet ihren \emph{SinkPort} mit dem \emph{EventChannel}. 
-
-TODO Beispiel
+\begin{figure}
+\center
+  \includegraphics[width=1\textwidth]{images/grundlagen/grundlagenEventSystem.pdf}
+  \caption{Punkt-Zu-Punkt und Publish/Subscribe mit PCM.}
+  \label{img:grundlageneventssystem}
+\end{figure}
 
 
 
