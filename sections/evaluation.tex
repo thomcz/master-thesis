@@ -252,25 +252,37 @@ In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmo
 
 \section{Evaluation der Vorhersagegenauigkeit}
 Im Folgende soll die Vorhersagegenauigkeit des Ansatzes dieser Masterarbeit mithilfe des zuvor vorgestellten SpecJMS2007-Benchmark und der Modellierung dessen gezeigt werden. Wie bereits erwähnt werden dazu die Interaktionen eins und drei in ihrer, vom Benchmark vorgegebenen, Standard- und einer Lastkonfiguration getestet. Als MOM wurde RMQ verwendet. Die einzelnen Messungen starteten mit eine X sekündigen Aufwärmphase. Im Anschluss wurde eine Y sekündige Messung durchgeführt. Die Dauer wurde aus der Standardkonfiguration des Benchmarks übernommen. Jede Messung wurde zehn mal durchgeführt. Die Experimentumgebung ist, wie schon beim Ausmessen von RMQ, auf einem virtuellen Server ausgeführt worden. Die Spezifikation des Systems ist in \autoref{tab:systespec} abgebildet. Es wurde der Fall betrachtet, dass alle Sender, Empfänger und der RMQ-Broker sich auf der selben Maschine befinden. Somit wurde der Aufbau wie in \autoref{img:machineoverview}a betrachtet. Für die Vorhersage wurde eine Performance-Analyse mithilfe der Palladio-Bench durchgeführt. Als Analysewerkzeug wurde \textbf{SimuCom} verwendet. Im Folgenden werden die Ergebnisse der Messungen und der Vorhersagen aus der Performance-Analyse, für beide Interaktionen und der jeweiligen Konfigurationen, präsentiert. Dazu wird der Fehler zwischen dem gemessenen und vorhergesagten Wert, für die Latenz einer Nachricht, berechnet. Die dazu verwendete Formel ist:
-\[ Fehler\% = \frac{|Vorgersage - Messung|}{Messung} * 100 \]
+\[ Fehler\% = \frac{|Vorhersage - Messung|}{Messung} * 100 \]
+Der SpecJMS Benchmark liefert für jede Interaktion eine Interaktionszeit, die angibt, wie lange die Interaktion vom Senden der ersten Nachricht, bis zum Empfangen der letzten Nachricht gedauert hat. Außerdem wird für jede Nachricht die gesendet wird, auch die Latenz geliefert. Bei der Präsentation der Ergebnisse werden beide Werte verglichen. Die Performance-Analyse liefert hingegen nur die Latenz der einzelnen Nachrichten. Um eine Annäherung an die Interaktionszeit zu bekommen, werden die jeweils relevanten Ergebnisse aufaddiert.
 %CPU Auslastung des Specjms vs. Modellierung\\
 %mehrer Messungen für Interaktion => Boxplot, der einen Median zeigt. Mit diesem wird dann das Modell verglichen.
 \subsection{Interaktion 1}
-Fehler bei der einzelnen Messungen bei ca 50 \% warsch ist man fuer kleine Messungen schlechter als fuer grosse nachrichten \\
-evtl noch mit groesseren Nachrichten \\
-wenn interaktions time genommen, dann ist fehler bei ca 36\% \\
+Fehler bei der einzelnen Messungen bei ca 50 \% warsch ist man fuer kleine Messungen schlechter als fuer grosse nachrichten siehe \autoref{img:specjminteraction1results}
+
+\begin{figure}
+\center
+  \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion1.pdf}
+  \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 1}
+  \label{img:specjminteraction1results}
+\end{figure}
+
+
+wenn interaktions time genommen, dann ist fehler bei ca 36, siehe \autoref{img:specjminteraction1interactiontimeresults}\% \\
+%noch mit groesseren Nachrichten \\
 in Interaktions time ist auch kleiner, weil 3 Nachrichten gleichzeitig bearbeitet werden und die delivery time nicht reingerechnet wird
 
 Aufadieren der UsageTimes um näherung an InteractionTime
 
-\subsubsection{Msg Rate 1}
-Für diesen Vergleich wurde die Senderate der Bestellungen auf eine Bestellung die Sekunde limitiert. Im Anschluss wurde die Interaktion gestartet und nach 10 Minuten beendet. Diese Messung wurde 10 mal durchgeführt. Die durchschnittlichen Interaktionszeiten sind in \autoref{img:specjmsMsgRate1Impl} als Boxplot dargestellt. TODO Boxplot beschreiben. Die Simulation der Modellierung liefert eine Interaktionszeit von 9500 Mikrosekunden (Mit Bild?). Die Fehler sind in \autoref{tab:interaction1msgrate1error} abgebildet. Somit liegt der Fehler fuer diesen Vergleich zwischen 24.66\% und 31.21\%. 
 \begin{figure}
 \center
-  \includegraphics[width=0.6\textwidth]{images/evaluation/specjms/interaction1msgrate1.png}
+  \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion1InteractionTime.pdf}
   \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 1}
-  \label{img:specjmsMsgRate1Impl}
+  \label{img:specjminteraction1interactiontimeresults}
 \end{figure}
+
+%\subsubsection{Msg Rate 1}
+%Für diesen Vergleich wurde die Senderate der Bestellungen auf eine Bestellung die Sekunde limitiert. Im Anschluss wurde die Interaktion gestartet und nach 10 Minuten beendet. Diese Messung wurde 10 mal durchgeführt. Die durchschnittlichen Interaktionszeiten sind in \autoref{img:specjmsMsgRate1Impl} als Boxplot dargestellt. TODO Boxplot beschreiben. Die Simulation der Modellierung liefert eine Interaktionszeit von 9500 Mikrosekunden (Mit Bild?). Die Fehler sind in \autoref{tab:interaction1msgrate1error} abgebildet. Somit liegt der Fehler fuer diesen Vergleich zwischen 24.66\% und 31.21\%. 
+
 \begin{table}
   \begin{tabular}{|l|l|l|l|l|}
     Unterer Whisker & unteres Quartil & Median & Oberes Quartil & oberer Whisker \\
@@ -279,12 +291,29 @@ Für diesen Vergleich wurde die Senderate der Bestellungen auf eine Bestellung d
   \end{tabular}
 	\caption{\label{tab:interaction1msgrate1error} Fehler für Interaktion 1 Msgrate 1}
 \end{table}
-\subsubsection{Msg Rate Standard}
 \subsubsection{Msg Rate Lastszenario}
 Queue fuellt sich im Modell und in echt
 \subsubsection{Lazy Konfiguration}
 
 \subsection{Interaktion 3}
+fehler sehr hoch bei std konfig, ca 70\% siehe \autoref{img:specjminteraction3results10sm} \\
+
+\begin{figure}
+\center
+  \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion3-10SM.pdf}
+  \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 3}
+  \label{img:specjminteraction3results10sm}
+\end{figure}
+
+fehler bei 1sm weniger hoch, ungefähr wie bei interaktion 1 siehe \autoref{img:specjminteraction3results1sm} \\
+warsch ist beim fanout ein nicht beachteter RD
+
+\begin{figure}
+\center
+  \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion3-1SM.pdf}
+  \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 3}
+  \label{img:specjminteraction3results1sm}
+\end{figure}
 
 
 \section{Zusammenfassung}

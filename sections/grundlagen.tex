@@ -13,8 +13,10 @@
 
 \chapter{Grundlagen}
 \label{ch:Grundlagen}
+Dieses Kapitel beschreibt die in dieser Masterarbeit verwendete Terminologie und eine Übersicht über die Grundlagen auf der, diese Masterarbeit aufbaut. Dazu wird zunächst die Domäne der nachrichtenbasierten Middleware (MOM) in \autoref{sec:mom} beschrieben. \autoref{sec:mdsd} beschreibt den Ansatz der modellgetriebenen Softwareentwicklung. In \autoref{sec:palladio} wird das Palladio-Komponentenmodell (PCM) vorgestellt, dass die Grundlage für die Implementierung dieser Masterarbeit zur Verfügung stellt.
 
 \section{Nachrichtenbasierte Middleware (MOM)}
+\label{sec:mom}
 Ereignissbasierte Systeme bestehen aus Ereignissen, Sendern, Empfängern und einer Middleware \cite{Carzaniga1998}. In einem solchen System werden Ereignisse von einem Sender instanziiert und von einem Empfänger entgegengenommen. Ereignisse sind dabei signifikante Änderungen eines Zustands (chandy06). Unter signifikant versteht man Änderungen, die das System beeinflussen. Dieser Transport von Ereignissen zwischen Sender und Empfänger wird durch die Middleware ermöglicht. Eine solche Middleware nennt man eine nachrichtenbasierte Middleware (MOM) \cite{Curry05}. Diese bietet eine Infrastruktur zum asynchronen Senden und Empfangen von Nachrichten, in verteilten Systemen an. Teilnehmer einer MOM müssen nicht blockieren und warten, wenn sie eine Nachricht gesendet haben oder empfangen wollen. Dieser asynchroner Mechanismus ist ein großer Vorteil. Außerdem führen MOMs eine Vermittlerschicht zwischen Sender und Empfänger ein, die für den Nachrichtenaustausch genutzt wird. Diese Zwischenschicht führt zu einer losen Kopplung der einzelnen Komponenten.  \\
 %- Vorteile \\
 %- Standards \\
@@ -54,17 +56,19 @@ Der Interaktionstyp einer MOM gibt an, wie viele Sender und Empfänger an einer 
 \end{itemize}
 
 \subsection{Grad der Entkopplung}
-Entkopplung der Komponenten ist ein Vorteil der durch nachrichtenbasierte Middleware versprochen wird. Dabei werden zwischen drei Aspekten der Entkopplung (Eugster03) unterschieden:
+Entkopplung der Komponenten ist ein Vorteil der durch nachrichtenbasierte Middleware versprochen wird. Dabei werden zwischen drei Aspekten der Entkopplung \cite{Eugster03} unterschieden:
 \begin{itemize}
-    \item Synchronisation: Die Kontrollflüße von Sender und Empfänger sind entkoppelt. D.h. die Sender und Empfänger warten nicht aufeinander sondern senden und empfangen asynchron Nachrichten.
+    \item Synchronisation: Die Kontrollflüsse von Sender und Empfänger sind entkoppelt. D.h. die Sender und Empfänger warten nicht aufeinander sondern senden und empfangen asynchron Nachrichten.
     \item Raum: Dabei wissen die Sender nicht mit wie vielen Empfängern sie kommunizieren und umgekehrt wissen die Empfänger nicht, wie viele Sender Nachrichten senden.
     \item Zeit: Sender und Empfänger müssen nicht gleichzeitig aktiv sein.
 \end{itemize}
+
 \section{Java Message Service (JMS)}
-Der Java Message Service (JMS) ist eine standardisierte Programmierschnittstelle (API) (Hapner JMS Specification). Sie dient dazu Java Applikationen Zugriff auf nachrichtenbasierten Middlewares zu geben. Im JMS Umfeld wird die MOM als JMS Server und die Applikationen die die API verwenden, um Nachrichten auszutauschen, als JMS Klienten bezeichnet. JMS ist Teil der Java Platform Enterprise Edition, die Standards für Enterprise Applikationen definiert. JMS unterstützt verschiedene Nachrichtentypen, wie Text-, Byte- oder Objektnachrichten. Es werden die beiden oben vorgestellten Nachrichtenmodelle, Punkt-Zu-Punkt und Publish/Subscriber Modell unterstützt.
+Der Java Message Service (JMS) ist eine standardisierte Programmierschnittstelle (API) \cite{jmsspec}. Sie dient dazu Java-Applikationen Zugriff auf nachrichtenbasierten Middlewares zu geben. Im JMS-Umfeld wird die MOM als JMS-Server und die Applikationen die die API verwenden, um Nachrichten auszutauschen, als JMS-Klienten bezeichnet. JMS ist Teil der JavaPlatform Enterprise Edition, die Standards für Enterprise-Applikationen definiert. JMS unterstützt verschiedene Nachrichtentypen, wie Text-, Byte- oder Objektnachrichten. Es werden die beiden oben vorgestellten Nachrichtenmodelle, Punkt-Zu-Punkt und Publish/Subscriber Modell unterstützt. JMS unterscheidet zwischen persistenter und nicht-persistenter Nachrichtenzustellung. Im nicht-persistenten-Modus, werden Nachrichten in den Hauptspeicher geschrieben. Eine Nachricht wird außerdem auf die Festplatte geschrieben, wenn der Hauptspeicher voll ist. Nachrichten die im nicht-persistenten-Modus gesendet werden, werden maximal einmal ausgeliefert. Der persistente-Modus schreibt ankommende Nachrichten auf die Festplatte und in den Hauptspeicher. Außerdem wird garantiert, dass die Nachricht genau einmal ausgeliefert wird. 
 Die API wird bei der Untersuchung der MOM und bei der Evaluierung benötigt.
 
 \section{Modellgetriebene Softwareentwicklung}
+\label{sec:mdsd}
 In der modellgetriebenen Software-Entwicklung \cite{MDSD} werden Teile des Software-Systems innerhalb von Modellen unter Nutzung von Abstraktionen beschrieben. Modelle sind Entwicklungsartefakte und Systembestandteile oder erlauben das automatische Ableiten von Systemartefakten. Das Ziel der modellgetriebenen Softwareentwicklung ist, die Verbesserung der Softwarequalität und der Wiederverwendbarkeit. Außerdem soll eine Erhöhung der Entwicklungseffizienz, zum Beispiel durch Quellcodeerzeugung, aus den Modellen erreicht werden.
 
 \subsection{Modell}
@@ -207,7 +211,7 @@ Im Kontext der Informatik bezeichnet der Begriff Benchmark einen oder mehrere Te
 \item \textbf{Synthetische Benchmarks} sind Tests künstlicher Instruktionsfolgen. Die getesteten Instruktionsfolgen können dabei in realen Anwendung vorkommen, müssen aber nicht.
 \item \textbf{Anwendungsbenchmarks} beschreiben vollständige Programme, welche repräsentativ für eine bestimmte Klasse von Anwendungen sind. 
 \end{itemize}
-Im Rahmen der Masterarbeit wird ein Anwendungsbenchmark verwendet um eien MOM zu untersuchen und zu bewerten.
+Im Rahmen der Masterarbeit wird ein Anwendungsbenchmark verwendet um eine MOM zu untersuchen und zu bewerten.
 
 %- warum sind benchmark sinnvoll? bestehendes und einheitliches system mit dem man sich und andere vergleichen kann!!
 
