@@ -109,12 +109,12 @@ Im Rahmen der Masterarbeit wurden (, aus Zeitlichen Gründen,) zwei dieser Inter
 \label{sec:interaction1desc}
 Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem DC und dem DC und dem HQ aus. Die Interaktion wird ausgelöst, wenn Waren im Lager eines SM aufgebraucht sind. Der SM bestellt bei einem DC Nachschub um seine Waren aufzufüllen. Neben dem SM und DC ist das HQ auch an dieser Interaktion beteiligt. In \autoref{img:specjmsInteraction1seq} ist der Ablauf als Sequenzdiagramm abgebildet. 
 \begin{itemize}
-    \item Der SM sendet eine Bestellung an seinen DC (Order).
-    \item Der DC sendet eine Bestätigung, über den Eingang der Nachricht zurück an den SM (OrderConf).
-    \item Die bestellte Ware wird registriert während sie das Warenlager des DC verlässt (ShipDep).
-    \item Der DC sendet Informationen über die Transaktion an HQ (StatInfoOrder).
-    \item Die bestellte Ware wurde vom DC an SM gesendet und empfangen (ShipInfo).
-    \item Der SM sendet eine Bestätigung über den Erhalt der Bestellung an DC (ShipConf)
+    \item Der SM sendet eine Bestellung an seinen DC (\emph{Order}).
+    \item Der DC sendet eine Bestätigung, über den Eingang der Nachricht zurück an den SM (\emph{OrderConf}).
+    \item Die bestellte Ware wird registriert während sie das Warenlager des DC verlässt (\emph{ShipDep}).
+    \item Der DC sendet Informationen über die Transaktion an HQ (\emph{StatInfoOrder}).
+    \item Die bestellte Ware wurde vom DC an SM gesendet und empfangen (\emph{ShipInfo}).
+    \item Der SM sendet eine Bestätigung über den Erhalt der Bestellung an DC (\emph{ShipConf})
 \end{itemize}
 %Zunächst sendet der SM eine Order Nachricht an den DC. Der DC bestätigt dem SM den Eingang der Nachricht. Als nächstes werden die Waren verschickt. Dabei werden sie von einem RFID Leser erfasst. Schließlich sendet der DC Informationen über die Transaktion an das HQ. Sobald die Lieferung beim SM ankommt wird eine Bestätigung an DC gesendet.
 
@@ -129,7 +129,7 @@ Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem
 \label{sec:interaction3desc}
 Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3seq} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet.
 \begin{itemize}
-    \item Das HQ sendet ein Preisaktualisierung (PriceUpdate).
+    \item Das HQ sendet ein Preisaktualisierung (\emph{PriceUpdate}).
     \item Betroffene SMs empfangen und ändern die Information in ihrem System.
 \end{itemize}
 

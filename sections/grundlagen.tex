@@ -207,11 +207,13 @@ Die Palladio-Bench bietet eine Sammlung von Qualitätsanalysen mit Hauptfokus au
 \section{Benchmark}
 Im Kontext der Informatik bezeichnet der Begriff Benchmark einen oder mehrere Tests, die ausgeführt werden, um die Leistungsfähigkeit von Computersystemen zu vergleichen. Hierfür wird zwischen verschiedenen Arten von Benchmarks unterschieden \cite{Lilja2004}. 
 \begin{itemize}
-\item \textbf{Mikrobenchmarks} sind Tests einzelner Komponenten ohne Interaktion mit dem Gesamtsystem. Sie werden meistens verwendet, um die maximal mögliche Leistungsfähigkeit einer Komponente zu testen.
+\item \textbf{Mikrobenchmarks} sind Tests einzelner Komponenten ohne Interaktion mit dem Gesamtsystem. Mit ihnen kann beispielsweise festgestellt werden, ob die Leistungsfähigkeit aller Komponenten innerhalb eines Systems im Gleichgewicht ist. Das erstellen von Mikrobenchmarks erfordert ein tiefes Verständnis der zu testenden Systemkomponente.
+
 \item \textbf{Synthetische Benchmarks} sind Tests künstlicher Instruktionsfolgen. Die getesteten Instruktionsfolgen können dabei in realen Anwendung vorkommen, müssen aber nicht.
-\item \textbf{Anwendungsbenchmarks} beschreiben vollständige Programme, welche repräsentativ für eine bestimmte Klasse von Anwendungen sind. 
+
+\item \textbf{Anwendungsbenchmarks} beschreiben vollständige Programme, welche repräsentativ für eine bestimmte Klasse von Anwendungen sind. Dieser Art von Benchmark kann am Besten das Verhalten eines Benutzers oder externen Systems widerspiegeln. Da Anwendungsbenchmarks sehr aufwändig sind, wird mithilfe von kleinen Eingabedaten versucht die Laufzeit zu reduzieren.
 \end{itemize}
-Im Rahmen der Masterarbeit wird ein Anwendungsbenchmark verwendet um eine MOM zu untersuchen und zu bewerten.
+Im Rahmen der Masterarbeit wird ein Anwendungsbenchmark verwendet um eine MOM zu untersuchen.
 
 %- warum sind benchmark sinnvoll? bestehendes und einheitliches system mit dem man sich und andere vergleichen kann!!
 

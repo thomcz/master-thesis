@@ -12,16 +12,9 @@
 
 \chapter{Zusammenfassung}
 \label{ch:zusammenfassung}
-
-
 %1. Zusammenfassung: Was wurde in dieser Arbeit gemacht? Was waren die Schlüsselergebnisse? Diesmal jedoch zusammengefasst nochmals für einen Leser, der die vorherigen Seiten mit allen Details bereits gelesen hat.
-Prozess um MOM auszumessen, modellieren, kalibrieren, transformieren und evaluieren.
+In dieser Masterarbeit wurde in \autoref{ch:modellierung} eine Modellierung für MOMs mit explizit modellierten Warteschlangen auf Architekturebene vorgestellt. Diese Modellierung lässt sich in Performance-Analysen verwenden und ermöglicht Effekte, die beim Einsatz von MOMs auftreten, sichtbar zu machen. Dazu zählen, neben der Latenz einer Nachricht auch die Auswirkung auf den Füllstand einer Warteschlange. Um dies zu ermöglichen wurde in \autoref{ch:mom} die MOM RMQ mithilfe eines Benchmarks ausgemessen. Durch ausführen bestimmter Szenarien konnte das Verhalten von RMQ in bestimmten Situationen untersucht werden. Diese Ergebnisse wurden im Anschluss verwenden um die Modellierung zu kalibrieren. Schließlich wurde in \autoref{ch:Evaluation} mithilfe des SPECjms2007 Benchmark die Anwendbarkeit und Vorhersagegenauigkeit geprüft. Dabei wurde ein Vorhersagefehler von X\% nachgewiesen. Da der in der Literatur akzeptierte Fehler zwischen 35\% und 40\% \cite{error} liegt, konnte die Vorhersagegenauigkeit gezeigt werden. \par
 %2. Adressaten der Verbesserung: Wem nützen die Verbesserungen/Beiträge der Arbeit? Inwieweit wird die Software-Technik durch die Arbeit verbessert?
-Softwarearchitekt kann Auswirkung einer MOM an seiner Software-Architektur sehen. 
+Mithilfe der in dieser Masterarbeit vorgestellten Modellierung einer MOM kann ein Softwarearchitekt bestimmte Effekte einer MOM in seiner Software-Architektur sehen. Außerdem können, mithilfe des präsentierten Prozesses, weitere MOMs ausgemessen, modelliert und evaluiert werden.  \par
 %3. Aufbauende/Zukünftige Arbeiten: Welche nächsten Schritte sind geplant (erst kurzfristige, dann längerfristige)? Welche möglichen Lösungsansätze für noch bestehende Probleme sind denkbar? Wie könnten Folgearbeiten aussehen?
-Ausblick\\
-Nachrichtenanzahl und Nachrichtengröße betrachten bei der Ausmessung \\
-Messe Zeit von Sendenr und Empfänger getrennt und pflege es in Modell ein, momentan ist alles in Sender eingetragen \\
-weitere effekte \\
-batching \\
-wartschlange als tatsächliches PCM Element nicht über passive Ressource (kann nachricht durch system tracken)
+Der in dieser Masterarbeit vorgestellte Ansatz bietet die Grundlage für weitere Arbeiten. Dazu zählt eine genauere Ausmessung der einzelnen Komponenten einer MOM, zum Beispiel das getrennte Ausmessen von senden und empfangen von Nachrichten und anschließendes kalibrieren der Modellierung. Außerdem könnte neben der Nachrichtengröße auch die Nachrichtenanzahl als weitere Dimension betrachtet werden, wenn die Ressourcenanforderung für eine MOM bestimmt wird. Um weitere Effekte und Eigenschaften einer MOM abbilden zu können, bedarf es einer Erweiterung des PCM bei der eine Warteschlange explizit als Modell-Element exisitiert und nicht, wie in dieser Masterarbeit, durch eine PassiceRessource modelliert wird. Dabei kann das Warteschlangen-Element eine Unterklasse der PassiveRessource sein. 

@@ -11,4 +11,18 @@
 %% Version 1.3.3, 2018-04-17
 
 \Abstract
-Deutsche Zusammenfassung
+%1. Eingrenzung des Forschungsbereichs (In welchem Themengebiet ist die Arbeit angesiedelt? Wie ist das Verhältnis zum Thema der Konferenz/des Journals?)
+Nachrichtenbasierte Middleware (MOM) wird in verschiedenen Domänen genutzt und wird verwendet um verteilte, und skalierbare Systeme zu bauen. Dabei werden hohe Anforderungen an Performance, Verfügbarkeit und Sicherheit gestellt.
+%2. Beschreibung des Problems, das in dieser Arbeit gelöst werden soll (Was ist das Problem und warum ist es wichtig dies zu lösen?)
+Es gibt eine Vielzahl von verschiedenen MOMs, die jeweils unterschiedliche Ziele oder Schwerpunkte haben. Währende die einen besonderen Wert auf Performance oder auf Verfügbarkeit legen, möchten andere allseitig einsetzbar sein. Außerdem bieten die MOMs eine hohe Konfigurierbarkeit an. Somit ist bereits Expertenwissen notwendig, wenn eine MOM ausgewählt oder konfiguriert werden soll. Das Ziel dieser Masterarbeit ist es, den Softwarearchitekten bei der Wahl und der konfiguration einer MOM, bereits in der Designphase, zu unterstützen.
+%3. Mängel an existierenden Arbeiten bzgl. des Problems (Warum ist es ein Problem, obwohl sich schon andere mit dem gleichen Thema beschäftigt haben?)
+Existierende Modellierungs- und Vorhersagetechniken vernachlässigen den Einfluss von Warteschlangen in Systemen mit einer nachrichtenbasierten Middleware. Dadurch können bestimmte Effekte der MOM nicht abgebildet werden. Ein solcher Effekt ist zum Beispiel, dass die Dauer, bis eine Nachricht beim Empfänger ankommt, länger wird, wenn die Warteschlange nicht leer ist.
+%4. Eigener Lösungsansatz (Welcher Ansatz wurde in dieser Arbeit verwendet, um das Problem zu lösen? Was ist der Beitrag dieses Artikels?)
+Deshalb wurde im Rahmen dieser Masterarbeit ein Ansatz entwickelt, bei dem aus einer MOM ein wiederverwendbarer Baustein wird, bei dem Warteschlangen explizit betrachtet werden. Die Beiträge der Masterarbeit können wie folgt zusammengefasst werden:
+\begin{itemize}
+    \item Auswahl und Ausmessen einer MOM, mithilfe eines Benchmarks um bestimmte Effekte und Ressourcenanforderungen zu untersuchen.
+    \item Modellierung einer MOM im PCM mit anschließender Kalibrierung, damit die Modellierung in Performance-Analysen eingesetzt werden kann.
+    \item Eine Modeltransformation um bereits existierende Modell-Elemente zum Abbilden eventbasierter Kommunikation wiederzuverwenden.
+\end{itemize}
+%5 Art der Validierung + Ergebnisse (Wie wurde nachgewiesen, dass die Arbeit die versprochenen Verbesserung wirklich vollbringt (Fallstudie, Experiment, o.ä.); Was waren die Ergebnisse der Validierung (idealerweise Prozentsatz der Verbesserung)?)
+Mithilfe des SPECjms2007 Benchmarks wurde eine Evaluation des Ansatzes durchgeführt. Dabei wurde die Anwendbarkeit und Vorhersagegenauigkeit evaluiert. Bei der Vorhersagegenauigkeit konnte ein Vorhersagefehler von X\% nachgewiesen werden.
