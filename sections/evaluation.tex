@@ -17,7 +17,9 @@ Das Hauptziel dieser Masterarbeit ist es eine Modellierung einer MOM mit explizi
 Die Ziele und die Bewertung, ob diese erreicht werden konnten werden mithilfe der Goal-Question-Metric (GQM) untersucht.
 Die GQM-Methode \cite{gqm} spezifiziert Ziele für das zu evaluierende Konzept. Daraufhin werden zu den Zielen Fragen spezifiziert, mit denen die Erfüllung des Ziels überprüft werden soll. Schließlich werden Metriken festgelegt, durch die die Fragen beantwortet werden sollen. Aus \autoref{tab:gqm} können die Ziele, Fragen und Metriken entnommen werden, mit denen diese Masterarbeit evaluiert werden soll.
 
-Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modellierung von MOMs in Palladio zu ermöglichen. Dafür wurden zwei Fragen definiert. Die erste Frage prüft ob sich MOMs überhaupt modellieren lassen. Die zweite Frage prüft die Modularität der MOM Bausteine. Das zweite Ziel ist, dass die Entscheidungsfindung, welche MOM verwendet werden soll, bereits zur Modellierungszeit und aus Architekturperspektive verbessert werden soll. Die dazu definierte Frage soll prüfen ob die Analyseergebnisse brauchbar, bzw. ob sich die Probleme einer Architekturentscheidung aus den Analyseergebnissen ableiten lassen. 
+Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modellierung von MOMs in Palladio zu ermöglichen. Das zweite Ziel ist es, Vorhersagen mithilfe der Performance-Analyse zu ermöglichen und dadurch die Entscheidungsfindung, welche MOM verwendet werden soll, bereits zur Modellierungszeit und aus Architekturperspektive zu verbessern. Die dazu definierten Fragen prüfen ob mithilfe der Modellierung sowohl Punkt-Zu-Punkt, als auch Publish/Subscribe-Kommunikation vorhergesagt werden können. Dabei dient der Fehler zwischen Messung und Vorhersage als Metrik. In der Literatur ist ein Fehler zwschen 35\% und 40\% akzeptiert \cite{error}.
+
+Im Folgenden wird in \autoref{sec:specjms} der SPECjms2007 Benchmark vorgestellt, mit dem die Evaluierung durchgeführt wird. Anschließend werden in \autoref{sec:specjmsmodell} die PCM-Modellierung des Benchmarks beschrieben. Im Anschluss wird in \autoref{sec:specjmsmodellvorhersage} die Vorhersagegenauigkeit der Modellierung untersucht. Schließlich werden in \autoref{sec:evaluationzusammenfassung} die Ergebnisse zusammengefasst und diskutiert. 
 \begin{table}
   \begin{tabular}{|l|l|}
     \hline
@@ -29,17 +31,6 @@ Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modelli
     Sicht & aus Architekturperspektive \\
    
     \hline \hline
-    Frage 1 & Lassen sich MOMs modellieren? \\
-    \hline
-    Metrik & - Wie viele MOM Parameter konnten nicht modelliert werden? \\
-    & - Wie viele Schritte müssen durchgeführt werden um eine neue \\
-    & MOM zu modellieren\\
-    \hline\hline
-    Frage 2 & Wie modular sind die MOM Bausteine? \\
-    \hline
-    Metrik & - Wie viele Elemente müssen beim Austausch geändert werden? \\
-    & - Min. Anzahl an Schritte um MOM auszutauschen \\
-    \hline\hline
     \multicolumn{2}{|l|}{Ziel 2} \\
     \hline
     Zweck & Verbessere \\
@@ -47,11 +38,15 @@ Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modelli
     Prozess & beim Einsatz einer MOM \\
     Sicht & aus Architekturperspektive \\
     \hline \hline
-    Frage 1 & Sind die Analyse Ergebnisse brauchbar? \\
+    Frage 1 & Lässt sich die Latenz einer Nachricht für Punkt-Zu-Punkt \\
+    & Kommunikation vorhersagen? \\
     \hline
-    Metrik & - Wie viel \% Abweichung zur naiven Modellierung/Implementierung? \\
-    & - Wie viele Schritte müssen durchgeführt werden um Problem der \\
-    & Architekturentscheidung aus dem Analyseergebnis abzuleiten? \\
+    Metrik & Fehler in \% zwischen Messung und Vorhersage? \\
+    \hline \hline
+    Frage 2 & Lässt sich die Latenz einer Nachricht für Publish/Subscribe-\\
+    & Kommunikation vorhersagen? \\
+    \hline
+    Metrik & Fehler in \% zwischen Messung und Vorhersage? \\
     \hline
   \end{tabular}
 	\caption{\label{tab:gqm} Ziele, Fragen und Metriken für die Evaluierung, nach der GQM-Methode}
@@ -71,6 +66,7 @@ Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modelli
 %\end{itemize}
 
 \section{SPECJms2007}
+\label{sec:specjms}
 Das für die Evaluierung verwendete System ist das im SPECJms2007 Benchmark verwendete Testsystem \cite{Sachs2013}. Der Benchmark stellt eine reale ereignisbasierte Anwendung dar und umfasst eine Reihe von verschiedener Interaktionen, die sowohl Punkt-zu-Punkt- als auch Publish/Subscribe-Nachrichten einschließlich One-to-One-, One-to-Many- und Many-to-Many-Kommunikation umfasst. Das Hauptziel des SPECjms2007 Benchmarks ist es, einen Standard-Workload bereitzustellen, der die Leistung und Skalierbarkeit von JMS-basierten Message-Oriented Middleware-Plattformen bewertet. Bei dem System handelt es sich um ein Lieferkettenmanagement für eine Supermarktkette. Der Benchmark verwendet verschiedene Nachrichtentypen und verwendet Nachrichten verschiedenen Größe. Für die Masterarbeit liegt sowohl die Implementierung des Benchmarks, als auch eine Modellierung aus einer früheren Arbeit von Christoph Rathfelder \cite{Rathfelder2013} vor. Dieses System soll als Experimentsystem verwendet werden um die verschiedenen MOMs zu vergleichen und zum kalibrieren der später erstellten Modellierung. 
 
 \subsection{Anwendungsszenario}
@@ -127,7 +123,7 @@ Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem
 
 \subsubsection{Interaktion 3}
 \label{sec:interaction3desc}
-Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Dabei werden persistenten Nachrichten versendet. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3seq} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet.
+Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Dabei werden persistenten Nachrichten versendet. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3seq} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet. In der Standardkonfiguration komuniziert ein HQ mit zehn SMs.
 \begin{itemize}
     \item Das HQ sendet ein Preisaktualisierung (\emph{PriceUpdate}).
     \item Betroffene SMs empfangen und ändern die Information in ihrem System.
@@ -188,6 +184,7 @@ Dabei kann x vom Benutzer des Benchmarks eingestellt werden. Die beiden anderen 
 \end{table}
 
 \section{Beschreibung der PCM-Modelle}
+\label{sec:specjmsmodell}
 In der Arbeit von Rathfelder \cite{Rathfelder2013} wurde SpecJMS auch als eines von zwei Fallbeispielen verwendet. Dabei ist eine PCM-Modellierung des Systems entstanden. Teile der Modellierung wurden für die Evaluierung dieser Masterarbeit wiederverwendet. Dabei handelt es sich um die Teile, die die Interaktion ein und drei beschreiben. Im Folgenden werden diese PCM-Modell-Teile beschrieben. Außerdem werden Änderungen an den Modellen, sowie ihr Aussehen nach der in \autoref{ch:transformation} beschriebenen Transformation, besprochen. 
 
 \subsection{Repository und Systemmodell}
@@ -251,27 +248,25 @@ In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmo
 
 
 \section{Evaluation der Vorhersagegenauigkeit}
+\label{sec:specjmsmodellvorhersage}
 Im Folgende soll die Vorhersagegenauigkeit des Ansatzes dieser Masterarbeit mithilfe des zuvor vorgestellten SpecJMS2007-Benchmark und der Modellierung dessen gezeigt werden. Wie bereits erwähnt werden dazu die Interaktionen eins und drei in ihrer, vom Benchmark vorgegebenen, Standard- und einer Lastkonfiguration getestet. Als MOM wurde RMQ verwendet. Die einzelnen Messungen starteten mit eine X sekündigen Aufwärmphase. Im Anschluss wurde eine Y sekündige Messung durchgeführt. Die Dauer wurde aus der Standardkonfiguration des Benchmarks übernommen. Jede Messung wurde zehn mal durchgeführt. Die Experimentumgebung ist, wie schon beim Ausmessen von RMQ, auf einem virtuellen Server ausgeführt worden. Die Spezifikation des Systems ist in \autoref{tab:systespec} abgebildet. Es wurde der Fall betrachtet, dass alle Sender, Empfänger und der RMQ-Broker sich auf der selben Maschine befinden. Somit wurde der Aufbau wie in \autoref{img:machineoverview}a betrachtet. Für die Vorhersage wurde eine Performance-Analyse mithilfe der Palladio-Bench durchgeführt. Als Analysewerkzeug wurde \textbf{SimuCom} verwendet. Im Folgenden werden die Ergebnisse der Messungen und der Vorhersagen aus der Performance-Analyse, für beide Interaktionen und der jeweiligen Konfigurationen, präsentiert. Dazu wird der Fehler zwischen dem gemessenen und vorhergesagten Wert, für die Latenz einer Nachricht, berechnet. Die dazu verwendete Formel ist:
 \[ Fehler\% = \frac{|Vorhersage - Messung|}{Messung} * 100 \]
 Der SpecJMS Benchmark liefert für jede Interaktion eine Interaktionszeit, die angibt, wie lange die Interaktion vom Senden der ersten Nachricht, bis zum Empfangen der letzten Nachricht gedauert hat. Außerdem wird für jede Nachricht die gesendet wird, auch die Latenz geliefert. Bei der Präsentation der Ergebnisse werden beide Werte verglichen. Die Performance-Analyse liefert hingegen nur die Latenz der einzelnen Nachrichten. Um eine Annäherung an die Interaktionszeit zu bekommen, werden die jeweils relevanten Ergebnisse aufaddiert.
 %CPU Auslastung des Specjms vs. Modellierung\\
 %mehrer Messungen für Interaktion => Boxplot, der einen Median zeigt. Mit diesem wird dann das Modell verglichen.
 \subsection{Interaktion 1}
-Fehler bei der einzelnen Messungen bei ca 50 \% warsch ist man fuer kleine Messungen schlechter als fuer grosse nachrichten siehe \autoref{img:specjminteraction1results}
+Die Messergebnisse für Interaktion 1 des SPECjms2007 Benchmarks und der Performance-Analyse des Modells, sind in  \autoref{img:specjminteraction1results} abgebildet. Dabei sind für jede Nachricht die jeweiligen Messergebnisse, der Durchschnittslatenz, eingezeichnet. Außerdem wurde für jede Nachricht der Median eingezeichnet. Die Vorhersage durch die Performance-Analyse wurde auch eingetragen. In \autoref{tab:interaction1error} sind die Fehler für die jeweilige Nachricht eingetragen. Dabei ist zu sehen, dass dieser zwischen 20,76\% und 23,79\% liegt. 
 
 \begin{figure}
 \center
   \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion1.pdf}
-  \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 1}
+  \caption{Latenz der einzelnen Nachrichten aus Interaktion 1 und die Vorhersage aus der Performance-Analyse.}
   \label{img:specjminteraction1results}
 \end{figure}
 
-
-wenn interaktions time genommen, dann ist fehler bei ca 36, siehe \autoref{img:specjminteraction1interactiontimeresults}\% \\
+In \autoref{img:specjminteraction1interactiontimeresults} ist außerdem ein Boxplot für die gesamte Interaktionszeit abgebildet. Diese setzt sich aus der Latenz der einzelnen Nachrichten wie folgt zusammen: \[Order + max(OrderConf, ShipDep, StatInfoOrder) + ShipInfo + ShipConf\] 
+Die Vorhersage der Interaktionszeit aus der Performance-Analyse ist 8,43 ms. Der Fehler zwischen dem Median der gemessenen Interaktionszeit und der Vorhersage beträgt 6,37\%.
 %noch mit groesseren Nachrichten \\
-in Interaktions time ist auch kleiner, weil 3 Nachrichten gleichzeitig bearbeitet werden und die delivery time nicht reingerechnet wird
-
-Aufadieren der UsageTimes um näherung an InteractionTime
 
 \begin{figure}
 \center
@@ -284,19 +279,19 @@ Aufadieren der UsageTimes um näherung an InteractionTime
 %Für diesen Vergleich wurde die Senderate der Bestellungen auf eine Bestellung die Sekunde limitiert. Im Anschluss wurde die Interaktion gestartet und nach 10 Minuten beendet. Diese Messung wurde 10 mal durchgeführt. Die durchschnittlichen Interaktionszeiten sind in \autoref{img:specjmsMsgRate1Impl} als Boxplot dargestellt. TODO Boxplot beschreiben. Die Simulation der Modellierung liefert eine Interaktionszeit von 9500 Mikrosekunden (Mit Bild?). Die Fehler sind in \autoref{tab:interaction1msgrate1error} abgebildet. Somit liegt der Fehler fuer diesen Vergleich zwischen 24.66\% und 31.21\%. 
 
 \begin{table}
-  \begin{tabular}{|l|l|l|l|l|}
-    Unterer Whisker & unteres Quartil & Median & Oberes Quartil & oberer Whisker \\
+  \begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+    Nachricht & Order & OrderConf & ShipDep & StatInfo & ShipInfo & ShipConf \\
     \hline
-    24.66 & 26.98 & 28.03 & 29.5 & 31.21
+    Messung (ms) & 2,77 & 2,785 & 2,67 & 2,715 & 2,66 & 2,655 \\\hline
+    Vorhersage (ms) & 2,12 & 2,12 & 2,1 & 2,1 & 2,11 & 2,1 \\\hline
+    Fehler (\%)& 23,36 & 23,79 & 21,5 & 22,8 & 20,76 & 20,91 \\\hline
   \end{tabular}
-	\caption{\label{tab:interaction1msgrate1error} Fehler für Interaktion 1 Msgrate 1}
+	\caption{\label{tab:interaction1error} Fehler für Interaktion 1}
 \end{table}
-\subsubsection{Msg Rate Lastszenario}
-Queue fuellt sich im Modell und in echt
-\subsubsection{Lazy Konfiguration}
 
 \subsection{Interaktion 3}
-fehler sehr hoch bei std konfig, ca 70\% siehe \autoref{img:specjminteraction3results10sm} \\
+In \autoref{img:specjminteraction3results10sm} ist ein Boxplot für die Messungen der Interaktion 3 des SPECjms2007 Benchmark eingezeichnet. Der Median der Latenz, der \emph{PriceUpdate}-Nachricht, beträgt 4,3ms. Die Performance-Analyse liefert eine Latenz von 2,1ms. Der Fehler liegt somit bei 51,16\% und ist somit höher als 40\%, was der in Literatur akzeptierte Wert ist.
 
 \begin{figure}
 \center
@@ -305,9 +300,7 @@ fehler sehr hoch bei std konfig, ca 70\% siehe \autoref{img:specjminteraction3re
   \label{img:specjminteraction3results10sm}
 \end{figure}
 
-fehler bei 1sm weniger hoch, ungefähr wie bei interaktion 1 siehe \autoref{img:specjminteraction3results1sm} \\
-warsch ist beim fanout ein nicht beachteter RD
-
+In \autoref{img:specjminteraction3results1sm} wurde der Benchmark nochmal ausgeführt, jedoch mit einem SM anstatt zehn SMs. Der Median der Latenz beträgt in diesem Fall 2,84ms. Die Performance-Analyse liefert wieder eine Latenz von 2,1ms. Der Fehler liegt nun bei 26,06\%. Dies liegt wahrscheinlich daran, dass beim Senden einer Publish/Subscribe-Nachricht eine nicht beachtete Ressourcenanforderung stattfindet.
 \begin{figure}
 \center
   \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion3-1SM.pdf}
@@ -316,10 +309,14 @@ warsch ist beim fanout ein nicht beachteter RD
 \end{figure}
 
 
-\section{Zusammenfassung}
-Was ist das Ergebnis \\
-wie ist die Genauigkeit? Besser, gleich, schlechter\\
-Vergleich zu davor, auch mit Modellierungsaufwand \\
+\section{Zusammenfassung der Evaluation}
+\label{sec:evaluationzusammenfassung}
+In diesem Kapitel wurde der Ansatz dieser Masterarbeit mithilfe des SPECjms2007 Benchmark evaluiert. In \autoref{tab:gqm} wurden dazu die Ziele der Evaluierung mithilfe des GQM-Plans formuliert. Im Folgenden wird darauf eingegangen, ob und wie diese Ziele erreicht werden konnten. \par
+In \autoref{sec:specjmsmodell} wurden die PCM-Modelle, die den Benchmark modellieren, vorgestellt. Im Anschluss wurden sie mithilfe der Modeltransformation aus \autoref{ch:transformation} transformiert. Dabei konnte gezeigt werden, dass die in \autoref{ch:modellierung} vorgestellte Art eine MOM zu modellieren anwendbar ist. Somit konnte das erste Ziel dieser Arbeit erfüllt werden. 
+In \autoref{sec:specjmsmodellvorhersage} wurde die Vorhersagegenauigkeit der Modellierung und ihrer Kalibrierung geprüft. Diese hat gezeigt, dass dies bei einer Punkt-Zu-Punkt-Kommunikation möglich ist, da der Fehler der einzelnen Nachrichten unter 24\% und für die Gesamte Interaktion unter 7\% liegt. Die Vorhersagegenauigkeit für Publish/Subscribe-Kommunikation konnte, mit der aktuellen Kalibrierung, nicht gezeigt werden. Der Fehler beträgt über 40\% und ist somit nicht mehr akzeptiert. Dies zeigt, dass die aktuelle Kalibrierung Publish/Subscribe-Kommunikation nicht unterstützt. Somit konnte das zweite Ziel nur zur hälfte erreicht werden. \par
+In der Arbeit von Rathfelder \cite{Rathfelder2013} liegt der Fehler zwischen 20\% und 25\%. Somit bietet der Ansatz dieser Masterarbeit eine ähnlichen Vorhersagegenauigkeit an.
+
+%Modellierungsaufwand \\
 
 %Modellierung eroeffnet neue moeglichkeiten\\
 
