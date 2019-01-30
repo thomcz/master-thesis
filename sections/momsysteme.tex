@@ -64,7 +64,7 @@ Da in dieser Arbeit der Fokus auf der Performance einer MOM liegt, wurden Anhand
     \item Plötzlicher anstieg ankommender Nachrichten
     \item Empfänger sind langsamer als normal
 \end{itemize}
-Das bedeutet, dass Hauptziel von Lazy-Warteschlangen vor allem eine hohe Zuverlässigkeit ist. Da aber die Festplatte anstatt der Hauptspeicher verwendet wird um die Nachrichten zu verwalten, ist diese Konfiguration langsamer. Im Fall dass Performance bevorzugt wird, sollte also auf Lazy-Warteschlangen verzichtet werden. Der Durchsatz von RMQ kann außerdem dadurch erhöht werden, dass mehrere Warteschlangen verwendet werden. Zum Einen kann eine einzelne Warteschlange nicht mehr als ca. 50\,000 Nachrichten bearbeiten. Zum anderen sind Warteschlangen einfädig. Das heißt, dass der beste Durchsatz auf einem System möglich ist, bei dem es genau so viele Warteschlangen wie Kerne hat. 
+Das bedeutet, dass Hauptziel von Lazy-Warteschlangen vor allem eine hohe Zuverlässigkeit ist. Da aber die Festplatte anstatt der Hauptspeicher verwendet wird um die Nachrichten zu verwalten, ist diese Konfiguration langsamer. Im Fall dass Performance bevorzugt wird, sollte also auf Lazy-Warteschlangen verzichtet werden. Der Unterschied von Lazy-Warteschlangen zu persistenen Nachrichten, die auch auf die Festplatte geschrieben werden, ist das bei persistenen Nachrichten der Sender entscheidet, ob die Nachricht persistiert wird. Bei Lazy-Warteschlangen, legt der Besitzer der Warteschlange fest, welche Nachrichten persisitiert werden. Der Durchsatz von RMQ kann außerdem dadurch erhöht werden, dass mehrere Warteschlangen verwendet werden. Zum Einen kann eine einzelne Warteschlange nicht mehr als ca. 50\,000 Nachrichten bearbeiten. Zum anderen sind Warteschlangen einfädig. Das heißt, dass der beste Durchsatz auf einem System möglich ist, bei dem es genau so viele Warteschlangen wie Kerne hat. 
 
 In der Folgenden Ausmessung von RMQ wurden diese und weitere Konfiguration untersucht um zu prüfen ob sie einen messbaren Einfluss auf die Performance haben.
 
@@ -104,9 +104,9 @@ Jede Messung wurde zehn mal durchgeführt. Die einzelnen Konfiguration wurde jew
 
 
 
-\subsubsection{Latenz einer Nachricht}
+\subsubsection{Latenz einer nicht-persistenter Nachricht}
 \label{sec:oneMsgLatency}
-Zunächst soll geprüft werden wie groß die Latenz einer einzelnen Nachricht ist. Dabei wurde auch die Größe einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht mit ihrer Nachrichtengröße steigt.
+Zunächst soll geprüft werden wie groß die Latenz einer einzelnen, nicht persistenten, Nachricht ist. Dabei wurde auch die Größe einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht mit ihrer Nachrichtengröße steigt.
 %B
 Die Ergebnisse sind in \autoref{img:senderate1-A} abgebildet. Neben den Messergebnissen ist eine Linie durch die Mediane der einzelnen Messungen gezogen. Dabei ist zu sehen, dass die Latenz einer Nachricht mit Ansteigen der Nachrichtengröße auch ansteigt. Somit verhält sich das System wie erwartet.
 \begin{figure}
@@ -130,6 +130,17 @@ Somit ist neben der Nachrichtengröße auch die Netzwerklatenz ein Faktor, der d
   \label{img:senderate1-B}
 \end{figure}
 
+\subsubsection{Latenz einer persistente Nachricht}
+Da zuvor die Latenz nicht-persistenter Nachrichten ausgemessen wurde, wird in dieser Messung die Latenz einer persistenten Nachricht ausgemessen. Die Senderate wurde auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer persistenten Nachricht größer als die einer nicht-persistenten Nachricht ist, da die Nachricht auch auf die Festplatte geschrieben wird.
+%B
+In \autoref{img:senderatepersisten} sind die Ergebnisse der Messung zu sehen. Außerdem wurde zu Vergleich auch die nicht-persistente Messung eingezeichnet. Wie erwartet ist die Latenz einer persistenten Nachricht größer. Der Grund hierfür ist, dass die Nachricht auch auf die Festplatte geschrieben wird, um eine Zustellung zu garantieren. Somit hat die Wahl zwischen nicht-persistenten und persistenten Nachrichten einen Einfluss auf die Performance.
+
+\begin{figure}
+\center
+  \includegraphics[width=0.7\textwidth]{images/measurement/lazy-queues.pdf}
+  \caption{Latenz einer nicht-persistenten im Vergleich zu einer persistenten Nachricht.}
+  \label{img:senderatepersisten}
+\end{figure}
 \subsubsection{Nachrichtengröße}
 Da in den vorherigen Messung die Nachrichtengröße als Einflussfaktor auf die Latenz und somit die Performance identifiziert wurde, sollen im Folgenden weitere Effekte im Zusammenhang mit der Nachrichtengröße untersucht werden. Dazu wurde ein Sender und ein Empfänger eingerichtet. Beide senden und empfangen Nachrichten so schnell sie können; die oben beschriebene Limitierung der Senderate auf eine Nachricht pro Sekunde ist somit aufgehoben. Die Nachrichtengröße variiert zwischen 1 KByte und 200 KByte. Es wurde mit dem \textit{lokal}-Szenario ausgemessen. Erwartet wird, dass sich mit zunehmender Nachrichtengröße die insgesamt pro Sekunde gesendete Nachrichtenmenge verringert. Gleichzeitig sollte die insgesamt gesendete Datenmenge zunehmen, da die Nachrichten weniger Routing-Overhead beim RMQ-Broker verursachen.
 %B
@@ -222,9 +233,9 @@ Diese Konfiguration zeigt, dass die Warteschlangenbegrenzung einen Einfluss auf 
 
 \subsubsection{Konfiguration: Lazy-Warteschlangen}
 \label{sec:rmqLazy}
-Eine weitere Konfiguration die RMQ ermöglicht sind Lazy-Warteschlangen. Wie bereits erwähnt, werden dabei Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben. In der nächsten Messung soll untersucht werden ob die Konfiguration von Lazy-Warteschlangen Auswirkungen auf die Performance hat. Dabei wurde auch die Größe einer Nachricht betrachtet. Für die Messung wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht im Vergleich zur Konfiguration ohne Lazy-Warteschlangen (\autoref{sec:oneMsgLatency}) größer ist.
+Eine weitere Konfiguration die RMQ ermöglicht sind Lazy-Warteschlangen. Wie bereits erwähnt, werden dabei Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben. In der nächsten Messung soll untersucht werden ob die Konfiguration von Lazy-Warteschlangen Auswirkungen auf die Performance hat. Dabei wurde auch die Größe einer Nachricht betrachtet. Für die Messung wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht, im Vergleich zu nicht-persistenten Nachrichten größer ist. Außerdem sollte die Messung ähnliche Ergebnisse liefern wie die Messung mit persistenten Nachrichten.
 %B
-In \autoref{img:lazy} ist ein Vergleich der Messung aus \autoref{sec:oneMsgLatency} und den Messergebnissen mit Lazy-Warteschlangen abgebildet. Zu sehen ist, dass die Latenz mit Lazy Warteschlangen größer ist, als in der Standardkonfiguration.
+In \autoref{img:lazy} ist ein Vergleich der Messung mit nicht-persistenten und den Messergebnissen mit Lazy-Warteschlangen abgebildet. Zu sehen ist, dass die Latenz mit Lazy-Warteschlangen größer ist, als die der nicht-persistenten Nachrichten. Außerdem sind die Messergebnisse dieser Messung und der Messung mit persistenten Nachrichten ähnlich.
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/lazy-queues.pdf}
@@ -232,7 +243,7 @@ In \autoref{img:lazy} ist ein Vergleich der Messung aus \autoref{sec:oneMsgLaten
   \label{img:lazy}
 \end{figure}
 %E
-Grund hierfür ist das die Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben werden. Somit hat diese Konfiguration einen Einfluss auf die Performance.
+Grund hierfür ist das die Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben werden. Somit hat diese Konfiguration einen ähnlichen Einfluss auf die Performance, wie der Einsatz persistenter Nachrichten.
 
 
 
@@ -293,7 +304,7 @@ Mithilfe der durchgeführten Messungen konnten die folgenden Einflussfaktoren id
     \item Das Begrenzen der Warteschlangengröße kann die Latenz der Nachrichten klein halten.
     \item Ob Nachrichten in den Hauptspeicher oder auf die Festplatte geschrieben werden hat einen Einfluss auf die Latenz.
 \end{itemize}
-Mithilfe dieser Einflussfaktoren soll im Folgenden eine Modell einer MOM erstellt werden, mit dem diese Einflussfaktoren abgebildet werden können. Außerdem werden die Messergebnisse dieses Kapitels verwendet um das Modell zu kalibrieren.
+Mithilfe dieser Einflussfaktoren soll im Folgenden ein Modell einer MOM erstellt werden, mit dem diese Einflussfaktoren abgebildet werden können. Außerdem werden die Messergebnisse dieses Kapitels verwendet um das Modell zu kalibrieren.
 
 
 %RMQ hat auch Prefetch von Nachrichten. Wird nicht betrachtet (zeit und trotzdem nicht so gut wie kafka) \\

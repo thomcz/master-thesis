@@ -107,7 +107,7 @@ Im Rahmen der Masterarbeit wurden (, aus Zeitlichen Gründen,) zwei dieser Inter
 %Interaktionstypen mit einbeziehen \\
 \subsubsection{Interaktion 1}
 \label{sec:interaction1desc}
-Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem DC und dem DC und dem HQ aus. Die Interaktion wird ausgelöst, wenn Waren im Lager eines SM aufgebraucht sind. Der SM bestellt bei einem DC Nachschub um seine Waren aufzufüllen. Neben dem SM und DC ist das HQ auch an dieser Interaktion beteiligt. In \autoref{img:specjmsInteraction1seq} ist der Ablauf als Sequenzdiagramm abgebildet. 
+Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem DC und dem DC und dem HQ aus. Dabei werden persistenten Nachrichten gesendet. Die Interaktion wird ausgelöst, wenn Waren im Lager eines SM aufgebraucht sind. Der SM bestellt bei einem DC Nachschub um seine Waren aufzufüllen. Neben dem SM und DC ist das HQ auch an dieser Interaktion beteiligt. In \autoref{img:specjmsInteraction1seq} ist der Ablauf als Sequenzdiagramm abgebildet. 
 \begin{itemize}
     \item Der SM sendet eine Bestellung an seinen DC (\emph{Order}).
     \item Der DC sendet eine Bestätigung, über den Eingang der Nachricht zurück an den SM (\emph{OrderConf}).
@@ -127,7 +127,7 @@ Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem
 
 \subsubsection{Interaktion 3}
 \label{sec:interaction3desc}
-Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3seq} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet.
+Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Dabei werden persistenten Nachrichten versendet. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3seq} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet.
 \begin{itemize}
     \item Das HQ sendet ein Preisaktualisierung (\emph{PriceUpdate}).
     \item Betroffene SMs empfangen und ändern die Information in ihrem System.
@@ -232,7 +232,7 @@ Die anderen zuvor vorgestellten Modelle werden dagegen wiederverwendet. Außerde
 
 
 \subsubsection{Interaktion 1}
-In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 1 darstellt. Zu sehen ist, dass die einzelnen Akteure voneinander entkoppelt wurden und an einen zentralen Exchange angeschlossen wurden. Für jeden Nachrichtentyp (EventType) wurde eine Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Für die Empfangsaktionen wurde jeweils ein neues UsageScenario angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnehmen.
+In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 1 darstellt. Zu sehen ist, dass die einzelnen Akteure voneinander entkoppelt wurden und an einen zentralen Exchange angeschlossen wurden. Für jeden Nachrichtentyp (EventType) wurde eine Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Für die Empfangsaktionen wurde jeweils ein neues UsageScenario angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnehmen. 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion1new.pdf}
