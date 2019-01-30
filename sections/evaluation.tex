@@ -86,7 +86,7 @@ Das gewählte Anwendungsszenario bildet die Lieferkette eines Supermarktunterneh
 \end{figure}
 
 \subsection{Interaktionen und Kommunikation}
-SpecJms sieht insgesamt sieben verschiedenen Interaktionsmöglichkeiten vor: 
+SPECjms2007 sieht insgesamt sieben verschiedenen Interaktionsmöglichkeiten vor: 
 \begin{enumerate}
     \item Bestell- und Versandabwicklung zwischen SM und seinem DC (Punkt-Zu-Punkt).
     \item Bestell- und Versandabwicklung zwischen DC und seinen SPs (Punkt-Zu-Punkt und Publisher/Subsciber).
@@ -210,13 +210,26 @@ Die Akteure, SM, DC, SP und HQ, des Benchmarks sind in der Modellierung jeweils 
 Das Nutzungsmodell enthält für jede Interaktion ein eigenes UsageScenario. Jedes dieser UsageScenarios beinhaltet einen Aufruf, der im Repository-Modell die jeweilige Interaktion startet. Die Verwendung von separaten UsageScenarios ermöglicht es, für jede Interaktion eine individuelle Senderate festzulegen. Eine Interaktion kann bei Bedarf auch deaktiviert werden. Die Verteilung der verschiedenen Nachrichtengrößen wird an dieser Stelle als Parameterbelegung eingefügt.
 
 \subsection{MOM}
-Zusätzlich enthält die Modellierung des SpecJMS ein Middleware-Repository. Dieses besteht aus drei Komponenten die die fünf Middleware-Schnittstellen bereitstellen, damit die Middleware, wie in .. beschrieen, in die Systemarchitektur eingewebt wird. Um die Resourcenanforderung richtig abbilden zu können wurde in der Arbeit von Rathfelder \cite{Rathfelder2013}, für jede Nachricht die Resourcenanforderung ausgemessen. Anschließend wurde das Middleware-Repository-Modell damit kalibriert. Ein Auszug der Resourcenanforderungen für die Nachrichten der Interaktionen eins und drei ist in \autoref{img:specjmsMsgSizeRd} abgebildet. Um die Ressourcenanforderungen im Middleware-Modell zu spezifizieren wurden  GuardedBranchTransissions verwendet. Dazu wurde zu jedem Nachrichtentyp eine eigene GuardedBranchTransission angelegt, die die Ressourcenanforderung angibt. 
-\begin{figure}
+Zusätzlich enthält die Modellierung des SpecJMS ein Middleware-Repository. Dieses besteht aus drei Komponenten die die fünf Middleware-Schnittstellen bereitstellen, damit die Middleware, wie in .. beschrieen, in die Systemarchitektur eingewebt wird. Um die Resourcenanforderung richtig abbilden zu können wurde in der Arbeit von Rathfelder \cite{Rathfelder2013}, für jede Nachricht die Resourcenanforderung ausgemessen. Anschließend wurde das Middleware-Repository-Modell damit kalibriert. Ein Auszug der Resourcenanforderungen für die Nachrichten der Interaktionen eins und drei ist in \autoref{tab:specjmsMsgSizeRd} abgebildet. Um die Ressourcenanforderungen im Middleware-Modell zu spezifizieren wurden  GuardedBranchTransissions verwendet. Dazu wurde zu jedem Nachrichtentyp eine eigene GuardedBranchTransission angelegt, die die Ressourcenanforderung angibt. 
+
+\begin{table}
 \center
-  \includegraphics[width=1\textwidth]{images/specjmsmsgsizerd.png}
-  \caption{Ausgerechnete RDs fuer jede Nachricht}
-  \label{img:specjmsMsgSizeRd}
-\end{figure}
+  \begin{tabular}{|c|l|l|l|l|}
+  \hline
+    \textbf{Interaktion} & \textbf{Nachricht} & \textbf{CPU-RD 1} & \textbf{CPU-RD 2} &\textbf{CPU-RD 3} \\
+    \hline \hline
+    \multirow{6}{*}{1} & Order & 0,973 & 0,987 & 1,846 \\\cline{2-5}
+    & OrderConf & 0,390 & 0,365 & 0,663 \\\cline{2-5}
+    & ShipDep & 0,539 & 1,148 & 2,494\\\cline{2-5}
+    & StatInfoOrder & 0,053 & 0,112 & 0,242 \\\cline{2-5}
+    & ShipInfo & 0,616 & 1,170 & 2,501 \\\cline{2-5}
+    & ShipConf & 0,390 & 0,365 & 0,663  \\\hline
+    \hline
+     3 & PriceUpdate & 0,501 & 0,501 & 0,501 \\\hline
+  \end{tabular}
+	\caption{\label{tab:specjmsMsgSizeRd} Ausgerechnete Ressourcenanforderungen für die Nachrichten. Auszug aus \cite{Rathfelder2013}}
+\end{table}
+
 
 
 \subsection{Anpassung des Modells}

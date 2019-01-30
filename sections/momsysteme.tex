@@ -87,8 +87,8 @@ Die Ausmessung mit zwei virtuellen Servern ausgeführt, die von bwCloud \footnot
 
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/measurement/benchmarkSzenarioOverview.pdf}
-  \caption{Die Beiden Testszenarien.}
+  \includegraphics[width=1\textwidth]{images/measurement/benchmarkSzenarioOverview.pdf}
+  \caption{Die Beiden Testszenarien}
   \label{img:machineoverview}
 \end{figure}
 
@@ -112,7 +112,7 @@ Die Ergebnisse sind in \autoref{img:senderate1-A} abgebildet. Neben den Messerge
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-A.pdf}
-  \caption{Nachrichten werden an Testmaschine \textit{lokal} gesendet}
+  \caption{Latenz einer Nachricht im \textit{lokal}-Szenario}
   \label{img:senderate1-A}
 \end{figure}
 
@@ -126,7 +126,7 @@ Somit ist neben der Nachrichtengröße auch die Netzwerklatenz ein Faktor, der d
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-AvsB.pdf}
-  \caption{Nachrichten werden an Testmaschine \textit{remote} gesendet}
+  \caption{Latenz einer Nachricht im \textit{remote}-Szenario}
   \label{img:senderate1-B}
 \end{figure}
 
@@ -137,7 +137,7 @@ In \autoref{img:senderatepersisten} sind die Ergebnisse der Messung zu sehen. Au
 
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/measurement/lazy-queues.pdf}
+  \includegraphics[width=0.7\textwidth]{images/measurement/persistentVsNonPersistent.pdf}
   \caption{Latenz einer nicht-persistenten im Vergleich zu einer persistenten Nachricht.}
   \label{img:senderatepersisten}
 \end{figure}
@@ -182,13 +182,13 @@ Die Gegenüberstellung für den Fall, dass es einen Sender, aber keine Empfänge
 \begin{figure}
 \center
  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-no-consumer-AvsB.pdf}
-  \caption{Max Datenmenge ohne Empfaenger (Remote)}
+  \caption{Maximale Datenmenge ohne Empfänger im \textit{remote}-Szenario}
   \label{img:maxByteThroughputNoConsumerB}
 \end{figure}
 \begin{figure}
 \center
  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-AvsB.pdf}
-  \caption{Max Datenmenge mit Empfaenger (Remote)}
+  \caption{Maximale Datenmenge mit Empfänger im \textit{remote}-Szenario}
   \label{img:maxByteThroughputB}
 \end{figure}
 %E
@@ -201,8 +201,8 @@ Diese Messung untersucht die Auswirkung des Warteschlangen-Füllstands auf die L
 In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \autoref{img:queuegrowth}a der Füllstand der Warteschlange zu sehen. Diese wächst pro Sekunde um eine Nachricht die nicht abgeholt wird an. In \autoref{img:queuegrowth}b ist die Latenz der Nachrichten abgebildet. Wie erwartet steigt diese mit Ansteigen des Füllstandes, da die Nachrichten länger in der Warteschlange warten müssen, bis sie abgeholt werden.
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/measurement/queuegrowth.pdf}
-  \caption{Senderate 1000/sec, Empfangsrate 100/sec}
+  \includegraphics[width=0.7\textwidth]{images/measurement/queuegrowth.pdf}
+  \caption{Wachstum einer Warteschlange und Auswirkung auf die Latenz.}
   \label{img:queuegrowth}
 \end{figure}
 
@@ -214,7 +214,7 @@ Die Ergebnisse sind in \autoref{img:maxlength} abgebildet. Wie erwartet wachsen 
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/max-length.pdf}
-  \caption{Senderate 1000/sec, Empfangsrate 100/sec}
+  \caption{Auswirkung auf die Latenz bei verschieden großen Warteschlangen.}
   \label{img:maxlength}
 \end{figure}
 %E
@@ -239,7 +239,7 @@ In \autoref{img:lazy} ist ein Vergleich der Messung mit nicht-persistenten und d
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/lazy-queues.pdf}
-  \caption{Lazy Queue vs not Lazy Queue}
+  \caption{Lazy-Warteschlange im Vergleich mit nicht-persistenten Nachrichten.}
   \label{img:lazy}
 \end{figure}
 %E
