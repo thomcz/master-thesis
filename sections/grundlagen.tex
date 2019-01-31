@@ -17,59 +17,59 @@ Dieses Kapitel beschreibt die in dieser Masterarbeit verwendete Terminologie und
 
 \section{Nachrichtenbasierte Middleware (MOM)}
 \label{sec:mom}
-Ereignissbasierte Systeme bestehen aus Ereignissen, Sendern, Empfängern und einer Middleware \cite{Carzaniga1998}. In einem solchen System werden Ereignisse von einem Sender instanziiert und von einem Empfänger entgegengenommen. Ereignisse sind dabei signifikante Änderungen eines Zustands (chandy06). Unter signifikant versteht man Änderungen, die das System beeinflussen. Dieser Transport von Ereignissen zwischen Sender und Empfänger wird durch die Middleware ermöglicht. Eine solche Middleware nennt man eine nachrichtenbasierte Middleware (MOM) \cite{Curry05}. Diese bietet eine Infrastruktur zum asynchronen Senden und Empfangen von Nachrichten, in verteilten Systemen an. Teilnehmer einer MOM müssen nicht blockieren und warten, wenn sie eine Nachricht gesendet haben oder empfangen wollen. Dieser asynchroner Mechanismus ist ein großer Vorteil. Außerdem führen MOMs eine Vermittlerschicht zwischen Sender und Empfänger ein, die für den Nachrichtenaustausch genutzt wird. Diese Zwischenschicht führt zu einer losen Kopplung der einzelnen Komponenten.  \\
+Ereignissbasierte Systeme bestehen aus Ereignissen, Sendern, Empfängern und einer Middleware \cite{Carzaniga1998}. In einem solchen System werden Ereignisse von einem Sender instantiiert und von einem Empfänger entgegengenommen. Ereignisse sind dabei signifikante Änderungen eines Zustands (chandy06). Unter signifikant versteht man Änderungen, die das System beeinflussen. Dieser Transport von Ereignissen zwischen Sender und Empfänger wird durch die Middleware ermöglicht. Eine solche Middleware nennt man eine nachrichtenbasierte Middleware (MOM) \cite{Curry05}. Diese bietet eine Infrastruktur zum asynchronen Senden und Empfangen von Nachrichten, in verteilten Systemen an. Teilnehmer einer MOM müssen nicht blockieren und warten, wenn sie eine Nachricht gesendet haben oder empfangen wollen. Dieser asynchroner Mechanismus ist ein großer Vorteil. Außerdem führen MOMs eine Vermittlerschicht zwischen Sender und Empfänger ein, die für den Nachrichtenaustausch genutzt wird. Diese Zwischenschicht führt zu einer losen Kopplung der einzelnen Komponenten.  \\
 %- Vorteile \\
 %- Standards \\
 %-- wie jms and amqp \\
 
 \subsection{Architektur}
-MOMs unterscheiden sich, neben ihrer Implementierung, in ihrer Architektur. Es gibt drei verschiedene Architekturen für MOMs.
+MOMs unterscheiden sich, neben ihrer Implementierung, in ihrer Architektur. Es gibt drei verschiedene Architekturen für MOMs (TODO ref).
 \begin{itemize}
-\item Die \textbf{Peer-To-Peer} Architektur, hat keinen ausgewählten Knoten, der die MOM bereitstellt. Die Funktionalität, die zum kommunizieren benötigt wird, wird von den Sendern und Empfängern bereitgestellt.
-\item In der \textbf{zentralen} Variante läuft die MOM auf einem Zentralen Knoten. Alle Sender und Empfänger sind mit diesem Knoten verbunden. 
+\item Die \textbf{Peer-To-Peer} Architektur, hat keinen ausgewählten Knoten, der die MOM bereitstellt. Die Funktionalität, die zum Kommunizieren benötigt wird, wird von den Sendern und Empfängern bereitgestellt.
+\item In der \textbf{zentralen} Variante läuft die MOM auf einem zentralen Knoten. Alle Sender und Empfänger sind mit diesem Knoten verbunden. 
 \item Schließlich gibt es noch die \textbf{verteilte} Architektur. Die MOM ist über mehrere Knoten verteilt. Der Austausch von Daten wird mithilfe von Routing-Algorithmen bewerkstelligen. Sender und Empfänger müssen nicht mit dem selben Middlewareknoten verbunden sein.
 \end{itemize}  
 
 \subsection{Warteschlangen}
-Warteschlangen sind ein wichtiger Bestandteil von MOMs, vor allem für deren asynchronen Nachrichtenaustausch. Sender nutzen sie um Nachrichten hinzuschicken. Empfänger nutzen sie um Nachrichten abzuholen. Die Nachrichten in der Warteschlange sind nach einer festgelegten Ordnung geordnet, z.B. First-In-First-Out, also die Nachricht, die als erstes in die Warteschlange eingefügt wurde, wird auch als erste wieder herausgenommen. Eine Warteschlange kann i.d.R. von einem Nutzer konfiguriert werden. Mögliche Konfigurationen für eine Warteschlange können Größe, Verweildauer oder Sortierung sein.
+Warteschlangen sind ein wichtiger Bestandteil von MOMs (TODO ref), vor allem für deren asynchronen Nachrichtenaustausch. Sender nutzen sie um Nachrichten abzulegen. Empfänger nutzen sie um Nachrichten abzuholen. Die Nachrichten in der Warteschlange sind nach einer festgelegten Ordnung geordnet, z.B. First-In-First-Out, also die Nachricht, die als erstes in die Warteschlange eingefügt wurde, wird auch als erste wieder herausgenommen. Eine Warteschlange kann i.d.R. von einem Nutzer konfiguriert werden. Mögliche Konfigurationen für eine Warteschlange können Größe, Verweildauer oder Sortierung sein.
 
 \subsection{Nachrichtenmodelle}
 \label{sec:nachrichtenmodelle}
-Wie eine MOM Nachrichten austauscht, wird in ihrem Nachrichtenmodell festgelegt. Man unterscheidet dabei zwischen dem Point-To-Point und dem Publish/Subscribe Modell. Eine MOM kann auch aus einer Kombination der beiden Modelle bestehen um auf bestimmte Szenarien reagieren zu können.
+Wie eine MOM Nachrichten austauscht, wird in ihrem Nachrichtenmodell festgelegt. Man unterscheidet dabei zwischen dem Point-To-Point und dem Publish/Subscribe Modell (TODO ref). Eine MOM kann auch aus einer Kombination der beiden Modelle bestehen um auf bestimmte Szenarien reagieren zu können.
 \begin{itemize}
 \item Im \textbf{Point-To-Point} Modell werden Nachrichten von einem Sender an eine bestimmte  Warteschlange gesendet. Normalerweise ist eine Warteschlange mit genau einem Empfänger verbunden. Es können aber auch mehrere Empfänger mit einer Warteschlange verbunden sein. Die Nachrichten werden in diesem Fall nach dem First-Come-First-Serve (FCFS) Prinzip entnommen und verarbeitet. 
-\item Beim \textbf{Publish/Subscriber} Modell verbindet sich der Empfänger (Subscriber) mit der MOM und legt, für die Nachrichten die er Empfangen möchte, Bedingungen fest (Eugster 03). Dabei wird zwischen drei Arten von Bedingungen unterschieden \cite{Rathfelder2013}:
+\item Beim \textbf{Publish/Subscriber} Modell verbindet sich der Empfänger (Subscriber) mit der MOM und legt, für die Nachrichten die er Empfangen möchte, Bedingungen fest \cite{Eugster03}. Dabei wird zwischen drei Arten von Bedingungen unterschieden \cite{Rathfelder2013}:
 \begin{itemize}
-    \item Inhaltsbasiert: Dabei lassen sich Filterregeln definieren, die auf den Inhalt und die Payload der Nachrichten angewendet werden können.
-    \item Kanalbasiert: Die MOM bietet verschiedene Kanäle (Channel) an, an die Nachrichten gesendet werden können. Empfänger können sich an einem Kanal anmelden und erhalten alle Nachrichten, die an diesen Kanal gesendet werden.
-    \item Typbasiert: Die Nachrichten werden anhand ihres Typs identifiziert und an die Empfänger weitergeleitet.
+    \item \textbf{Inhaltsbasiert}: Dabei lassen sich Filterregeln definieren, die auf den Inhalt und die Payload der Nachrichten angewendet werden können.
+    \item \textbf{Kanalbasiert}: Die MOM bietet verschiedene Kanäle (Channel) an, an die Nachrichten gesendet werden können. Empfänger können sich an einem Kanal anmelden und erhalten alle Nachrichten, die an diesen Kanal gesendet werden.
+    \item \textbf{Typbasiert}: Die Nachrichten werden anhand ihres Typs identifiziert und an die Empfänger weitergeleitet.
 \end{itemize}
 \end{itemize}
 
 \subsection{Interaktionstypen}
-Der Interaktionstyp einer MOM gibt an, wie viele Sender und Empfänger an einer Komunikation teilnehmen können. Dabei wird zwischen den Folgenden Typen unterschieden:
+Der Interaktionstyp einer MOM gibt an, wie viele Sender und Empfänger an einer Komunikation teilnehmen können. Dabei wird zwischen den Folgenden Typen unterschieden (TODO ref):
 \begin{itemize}
-    \item Eins-Zu-Eins: Genau ein Sender und ein Empfänger können an einer Interaktion teilnehmen.
-    \item Eins-Zu-Vielen: Es gibt einen Sender und mehrere Empfänger, die an einer Interaktion teilnehmen können. 
-    \item Viele-Zu-Eins: Mehrere Sender senden an einen Empfänger.
-    \item Viele-Zu-Viele: Mehrere Sender und mehrere Empfänger nehmen an der Interaktion teil.
+    \item \textbf{Eins-Zu-Eins}: Genau ein Sender und ein Empfänger können an einer Interaktion teilnehmen.
+    \item \textbf{Eins-Zu-Vielen}: Es gibt einen Sender und mehrere Empfänger, die an einer Interaktion teilnehmen können. 
+    \item \textbf{Viele-Zu-Eins}: Mehrere Sender senden an einen Empfänger.
+    \item \textbf{Viele-Zu-Viele}: Mehrere Sender und mehrere Empfänger nehmen an der Interaktion teil.
 \end{itemize}
 
 \subsection{Grad der Entkopplung}
-Entkopplung der Komponenten ist ein Vorteil der durch nachrichtenbasierte Middleware versprochen wird. Dabei werden zwischen drei Aspekten der Entkopplung \cite{Eugster03} unterschieden:
+Entkopplung der Komponenten ist ein Vorteil der durch nachrichtenbasierte Middleware versprochen wird. Dabei wird zwischen drei Aspekten der Entkopplung \cite{Eugster03} unterschieden:
 \begin{itemize}
-    \item Synchronisation: Die Kontrollflüsse von Sender und Empfänger sind entkoppelt. D.h. die Sender und Empfänger warten nicht aufeinander sondern senden und empfangen asynchron Nachrichten.
-    \item Raum: Dabei wissen die Sender nicht mit wie vielen Empfängern sie kommunizieren und umgekehrt wissen die Empfänger nicht, wie viele Sender Nachrichten senden.
-    \item Zeit: Sender und Empfänger müssen nicht gleichzeitig aktiv sein.
+    \item \textbf{Synchronisation}: Die Kontrollflüsse, von Sender und Empfänger, sind entkoppelt. D.h. die Sender und Empfänger warten nicht aufeinander, sondern senden und empfangen asynchron Nachrichten.
+    \item \textbf{Raum}: Sender wissen nicht mit wie vielen Empfängern sie kommunizieren und umgekehrt wissen die Empfänger nicht, wie viele Sender Nachrichten senden.
+    \item \textbf{Zeit}: Sender und Empfänger müssen nicht gleichzeitig aktiv sein.
 \end{itemize}
 
 \section{Java Message Service (JMS)}
-Der Java Message Service (JMS) ist eine standardisierte Programmierschnittstelle (API) \cite{jmsspec}. Sie dient dazu Java-Applikationen Zugriff auf nachrichtenbasierten Middlewares zu geben. Im JMS-Umfeld wird die MOM als JMS-Server und die Applikationen die die API verwenden, um Nachrichten auszutauschen, als JMS-Klienten bezeichnet. JMS ist Teil der JavaPlatform Enterprise Edition, die Standards für Enterprise-Applikationen definiert. JMS unterstützt verschiedene Nachrichtentypen, wie Text-, Byte- oder Objektnachrichten. Es werden die beiden oben vorgestellten Nachrichtenmodelle, Punkt-Zu-Punkt und Publish/Subscriber Modell unterstützt. JMS unterscheidet zwischen persistenter und nicht-persistenter Nachrichtenzustellung. Im nicht-persistenten-Modus, werden Nachrichten in den Hauptspeicher geschrieben. Eine Nachricht wird außerdem auf die Festplatte geschrieben, wenn der Hauptspeicher voll ist. Nachrichten die im nicht-persistenten-Modus gesendet werden, werden maximal einmal ausgeliefert. Der persistente-Modus schreibt ankommende Nachrichten auf die Festplatte und in den Hauptspeicher. Außerdem wird garantiert, dass die Nachricht genau einmal ausgeliefert wird. 
+Der Java Message Service (JMS) ist eine standardisierte Programmierschnittstelle (API) \cite{jmsspec}. Sie dient dazu Java-Applikationen Zugriff auf nachrichtenbasierten Middlewares zu geben. Im JMS-Umfeld wird die MOM als JMS-Server und die Applikationen die die API verwenden, um Nachrichten auszutauschen, als JMS-Klienten bezeichnet. JMS ist Teil der "Java Platform Enterprise Edition", die Standards für Enterprise-Applikationen definiert. JMS unterstützt verschiedene Nachrichtentypen, wie Text-, Byte- oder Objektnachrichten. Es werden die beiden oben vorgestellten Nachrichtenmodelle, Punkt-Zu-Punkt und Publish/Subscriber Modell unterstützt. JMS unterscheidet zwischen persistenter und nicht-persistenter Nachrichtenzustellung. Im nicht-persistenten-Modus, werden Nachrichten in den Hauptspeicher geschrieben. Eine Nachricht wird außerdem auf die Festplatte geschrieben, wenn der Hauptspeicher voll ist. Nachrichten die im nicht-persistenten-Modus gesendet werden, werden maximal einmal ausgeliefert. Der persistente-Modus schreibt ankommende Nachrichten auf die Festplatte und in den Hauptspeicher. Außerdem wird garantiert, dass die Nachricht genau einmal ausgeliefert wird. 
 Die API wird bei der Untersuchung der MOM und bei der Evaluierung benötigt.
 
 \section{Modellgetriebene Softwareentwicklung}
 \label{sec:mdsd}
-In der modellgetriebenen Software-Entwicklung \cite{MDSD} werden Teile des Software-Systems innerhalb von Modellen unter Nutzung von Abstraktionen beschrieben. Modelle sind Entwicklungsartefakte und Systembestandteile oder erlauben das automatische Ableiten von Systemartefakten. Das Ziel der modellgetriebenen Softwareentwicklung ist, die Verbesserung der Softwarequalität und der Wiederverwendbarkeit. Außerdem soll eine Erhöhung der Entwicklungseffizienz, zum Beispiel durch Quellcodeerzeugung, aus den Modellen erreicht werden.
+In der modellgetriebenen Software-Entwicklung werden Teile des Software-Systems innerhalb von Modellen unter Nutzung von Abstraktionen beschrieben \cite{MDSD}. Modelle sind Entwicklungsartefakte und Systembestandteile oder erlauben das automatische Ableiten von Systemartefakten. Das Ziel der modellgetriebenen Softwareentwicklung ist, die Verbesserung der Softwarequalität und der Wiederverwendbarkeit. Außerdem soll eine Erhöhung der Entwicklungseffizienz, zum Beispiel durch Quellcodeerzeugung, aus den Modellen erreicht werden.
 
 \subsection{Modell}
 Nach Herbert Stachowiak \cite{Stachowiak1973} zeichnet sich ein Modell durch die folgenden drei Merkmale aus.
@@ -90,8 +90,8 @@ Ein Meta-Modell beschreibt die Struktur eines Modells. Dabei muss ein Meta-Model
 \subsection{Modeltransformation}
 Bei der Modelltransformation (Kleppe, Warmer und Bast 2003) wird ein Quellmodell in ein Zielmodell übersetzt. Dies geschieht mithilfe einer Transformationsdefinition. Die Transformationsdefinition besteht aus einer Menge von Transformationsregeln, die beschreiben wie ein Modell in ein anderes überführt wird. Dabei wird zwischen zwei Arten der Modelltransformation unterschieden:
 \begin{itemize}
-    \item Modell-Zu-Modell: Dabei wird ein Quellmodell, dass zu einem Quellmetamodell konform ist in ein Zielmodell, dass zu einem Zielmetamodell konform ist, transformiert.
-    \item Modell-Zu-Text: Dabei wird ein Modell in eine oder mehrere Textdateien übersetzt. Meistens beinhalten diese Quellcode einer gegebenen Programmiersprache. Eine Transformation kann aber auch Dokumentation oder Konfiguartionen generieren.
+    \item \textbf{Modell-Zu-Modell}: Dabei wird ein Quellmodell, dass zu einem Quellmetamodell konform ist, in ein Zielmodell, dass zu einem Zielmetamodell konform ist, transformiert.
+    \item \textbf{Modell-Zu-Text}: Dabei wird ein Modell in eine oder mehrere Textdateien übersetzt. Meistens beinhalten diese Quellcode einer gegebenen Programmiersprache. Eine Transformation kann aber auch Dokumentation oder Konfigurationen generieren.
 \end{itemize}
 Für die Masterarbeit wurde eine Modell-Zu-Modell Transformation beschrieben/entwickelt.
 \section{Palladio Komponenten Modell}
@@ -112,15 +112,15 @@ zuständig weitere Anweisungen an die anderen Rollen weiterzugeben. Gleichzeitig
 \item Das Wissen darüber, wie der Benutzer mit dem System interagiert
 und welche Parameter im Kontrollfluss verwendet werden, stammt vom \textbf{Domänenxperten}. Die Modellierung wird im \textbf{Usage-Modell} festgehalten.
 \item Für das Implementieren und Spezifizieren der einzelnen
-Komponenten ist der \textbf{Komponentenentwickler} verantwortlich. Diese modelliert er im \textbf{Komponen-ten-Repository-Modell}. Es enthält die einzelnen Komponenten und Schnittstellen.
+Komponenten ist der \textbf{Komponentenentwickler} verantwortlich. Diese modelliert er im \textbf{Repository-Modell}. Es enthält die einzelnen Komponenten und Schnittstellen.
 \item Die Zusammenstellung der Systemumgebung der Software wird vom \textbf{Softwareverteilungsexperten} übernommen. Diese wird von ihm im \textbf{Ausführungsum-gebungs-Modell} festgehalten. Außerdem weist der Softwareverteilungsexperte den Komponenten Ressourcen zu. Dies hält er im \textbf{Komponenten-Allokations-Modell} fest.
 \end{itemize}
-Die Modelle, die von den verschiedenen Rollen entwickelt und gewartet werden, bilden zusammen eine Palladio Modell Instanz. Mithilfe der Modellierung einer MOM sollen die verschiedenen Rollen unterstützt werden. 
+Die Modelle, die von den verschiedenen Rollen entwickelt und gewartet werden, bilden zusammen eine Palladio-Modellinstanz. Mithilfe der Modellierung einer MOM sollen die verschiedenen Rollen unterstützt werden. 
 
 \subsection{Teilmodelle}
 Wie bereits erwähnt, sind die einzelnen Rollen für bestimmte Teilmodelle zuständig, die zusammen die vollständige Architekturbeschreibung ergeben. Im Folgenden sollen die Teilmodelle des PCM genauer beschrieben werden.
 \subsubsection*{Repository-Modell (Component-Repository-Model)} 
-Das Repository-Modell enthält Datentypen, Schnittstellen und Komponenten. Eine Komponente kann ihre Funktionalität übe einer Schnittstelle nach außen anbieten. Dies wird mit einer \emph{ProvidedRole} modelliert. Sie kann außerdem fordern, dass eine bestimmte Schnittstelle benötigt wird, damit sie ihre Funktionalität anbieten kann. Dies wird mit einer \emph{RequiredRole} modelliert. Schnittstellen enthalten eine Sammlung an Signaturen, die eine Operation repräsentieren. 
+Das Repository-Modell enthält Datentypen, Schnittstellen und Komponenten. Eine Komponente kann ihre Funktionalität über eine Schnittstelle nach außen anbieten. Dies wird mit einer \emph{ProvidedRole} modelliert. Sie kann außerdem fordern, dass eine bestimmte Schnittstelle verfügbar sein muss, damit sie ihre Funktionalität anbieten kann. Dies wird mit einer \emph{RequiredRole} modelliert. Schnittstellen enthalten eine Sammlung an Signaturen, die eine Operation repräsentieren. 
 %In (ABB) ist ein Beispiel für ein Repository-Modell. Darin sind eine ISupermarkt- und IZulieferer-Schnittstelle abgebildet. Außerdem eine Supermarkt- und Zulieferer-Komponente. Die Supermarkt-Komponenten bietet ihre Funktionalität über die ISupermarkt-Schnittstelle an.  Die Schnittstelle enthält eine Signatur für eine Operation verkaufen(String warenName). Außerdem benötigt die Supermarkt-Komponente eine Komponente, die IZulieferer anbietet. Dies wird mit einer RequiredRole modelliert. Die Zulieferer-Komponente bietet ihre Funktionalität über die IZulieferer-Schnittstelle an. 
 Mithilfe einer Service-Effect-Specification (SEFF) kann außerdem das Verhalten innerhalb der Komponenten beschrieben werden. Durch Angabe eines SEFFs kann das Modell analysiert werden. Das Verhalten kann mit einer \emph{InternalCallAction} und einer \emph{ExternalCallAction} modelliert werden. Eine \emph{InternalCallAction} repräsentiert einen Aufruf zu Code, der sich innerhalb der Komponente befindet. Eine \emph{ExternalCallAction} ruft eine Operation in einer anderen Komponente auf. Mithilfe einer \emph{UsageVariable} kann eine Parameterbelegung für den Aufruf spezifiziert werden.
 %In dem Beispiel ist ein SEFF in der Supermarkt-Komponente, der das Verhalten für die Operation ISupermarkt.verkaufen abbildet.  Der Kontrollfluss beginnt mit dem Ausführen der InternalAction \textbf{prüfeVorätig}. Eine InternalAction repräsentiert dabei einen Aufruf zu Code, der sich innerhalb der Komponente befindet. Außerdem können damit Ressourcen angefordert werden. Im Beispiel werden CPU-Einheiten angefordert. Im Anschluss wird mit einer ExternalCallAction eine Operation in einer anderen Komponente, hier IZulieferer.liefere aufgerufen, wenn weniger als zehn Waren vorrätig sind. 
@@ -136,7 +136,7 @@ Das Ausführungs-Umgebungs-Modell beschreibt die benutzte Hardware und das Netzw
 Das Allokations-Modell beschreibt wie die einzelnen Komponenteninstanzen auf der, im Ausführungs-Umgebungs-Modell beschriebenen, Hardware verteilt werden. Dazu wird ein \emph{AllocationContext} verwendet. 
 %In (abb) werden die Komponenten-Instanzen des Beispiels auf jeweils einem RessourceContainer bereitgestellt. 
 \subsubsection*{Nutzungsmodell (Usage-Model)}
-Das Nutzungsmodell beschreibt die Interaktion des Benutzers, oder eines externen Systems, mit dem System. Mit einem \emph{UsageScenario} kann das Verhalten eines Benutzers spezifiziert werden. Für ein \emph{UsageScenario} wir zunächst ein \emph{Workload} (Arbeitslast) festgelegt. Dabei unterscheidet man zwischen einem \emph{Open-} oder \emph{ClosedWorkload}. Ein \emph{OpenWorkload} modelliert einen unendlichen Strom an Benutzern die in festgelegten Zeitabständen (\emph{ArrivalTime}) am System ankommen und das Szenario ausführen. Ein \emph{ClosedWorkload} modelliert, dass eine feste Anzahl von Benutzern (\emph{Population}) das Szenario ausführt, dann  wartet (\emph{Thinktime}) und dann wieder das Szenario ausführt. Ein Szenario kann mithilfe von einem \emph{EntryLevelSystemCall} eine vom System bereitgestellte Operation aufrufen. Dabei kann auch eine Parameterbelegung mithilfe einer \emph{UsageVariable} spezifiziert werden. 
+Das Nutzungsmodell beschreibt die Interaktion des Benutzers, oder eines externen Systems, mit dem System. Mit einem \emph{UsageScenario} kann das Verhalten eines Benutzers spezifiziert werden. Für ein \emph{UsageScenario} wir zunächst ein \emph{Workload} (Arbeitslast) festgelegt. Dabei unterscheidet man zwischen einem \emph{Open-} oder \emph{ClosedWorkload}. Ein \emph{OpenWorkload} modelliert einen unendlichen Strom an Benutzern die in festgelegten Zeitabständen (\emph{ArrivalTime}) am System ankommen und das Szenario ausführen. Ein \emph{ClosedWorkload} modelliert, dass eine feste Anzahl von Benutzern (\emph{Population}) das Szenario ausführt, dann  wartet (\emph{ThinkTime}) und dann wieder das Szenario ausführt. Ein Szenario kann mithilfe von einem \emph{EntryLevelSystemCall} eine vom System bereitgestellte Operation aufrufen. Dabei kann auch eine Parameterbelegung mithilfe einer \emph{UsageVariable} spezifiziert werden. 
 %In (abb) ist eine UsageScenario abgebildet. Dabei wird ein OpenWorkload verwendet und 
 \subsection{Qualitätsattribute}
 \subsubsection{Performance} 
@@ -151,18 +151,18 @@ Mithilfe der Performance soll im Rahmen der Masterarbeit untersucht werden, wie 
 %- Abgrenzung zu dynamischen performanz parameter änderungen \\
 
 \subsubsection{Zuverlässigkeit}
-Ein System, das einen Service wie erwartet und ohne Seiteneffekte anbietet, wir als zuverlässig bezeichnet. Jede Abweichung vom erwarteten Verhalten wird als Fehler betrachtet. Die gesamt Zuverlässigkeit eines Systems wird deshalb als Wahrscheinlichkeit, dass das System fehlerfrei arbeitet, angegeben. Dabei können verschiedene Fehler auftreten:
+Ein System, das einen Dienst wie erwartet und ohne Seiteneffekte anbietet, wir als zuverlässig bezeichnet. Jede Abweichung vom erwarteten Verhalten wird als Fehler betrachtet. Die gesamt Zuverlässigkeit eines Systems wird deshalb als Wahrscheinlichkeit, dass das System fehlerfrei arbeitet, angegeben. Dabei können verschiedene Fehler auftreten:
 \begin{itemize}
 \item \textbf{Softwarefehler} können auftreten, aufgrund von Fehlern in der Implementierung.
 \item \textbf{Hardwarefehler} können auftreten, weil bestimmte Ressourcen nicht verfügbar sind und somit ein Fehler in der Programmausführung auftritt.
 \item \textbf{Netzwerkfehler} können aufgrund von verlorenen Nachrichten auftreten, die über das Netzwerk gesendet werden.
 \end{itemize}
-In Palladio ist es möglich Fehlerwahrscheinlichkeiten an Komponenten und Ressourcen zu annotieren. Im Rahmen der Masterarbeit wird dieses Qualitätsattribut vorerst nicht betrachtet.
+In Palladio ist es möglich Fehlerwahrscheinlichkeiten an Komponenten und Ressourcen zu annotieren. Im Rahmen der Masterarbeit wird dieses Qualitätsattribut nicht betrachtet.
 
 \subsubsection{Kosten}
-Hohe Anforderungen führen meist zu hohen Kosten. Deshalb muss i.d.R. zwischen Kosten und Performanz oder Verlässlichkeit abgewogen werden. Palladio ermöglicht Kosten an Komponenten und Ressourcen zu annotieren um Gesamtkosten abzuschätzen und eine Abwägung zwischen den Qualitätsattributen zu treffen. Im Rahmen der Masterarbeit wird dieses Qualitätsattribut nicht betrachtet.
+Hohe Anforderungen führen meist zu hohen Kosten. Deshalb muss i.d.R. zwischen Kosten und Performance oder Verlässlichkeit abgewogen werden. Palladio ermöglicht Kosten an Komponenten und Ressourcen zu annotieren um Gesamtkosten abzuschätzen und eine Abwägung zwischen den Qualitätsattributen zu treffen. Im Rahmen der Masterarbeit wird dieses Qualitätsattribut nicht betrachtet.
 
-\subsection{Ereignisse im PCM}
+\subsection{Events im PCM}
 %(Konzept erklären und nicht genaue Elemente des MM) \\
 %Disertation s.103
 In der Arbeit \cite{Rathfelder2013} wurden Events als Elemente erster Klasse in PCM eingeführt. Im Folgenden sollen Events in PCM vorgestellt werden, da diese im späteren Verlauf der Masterarbeit wiederverwendet werden sollen. \par
@@ -176,7 +176,7 @@ Damit Komponenten Events senden und empfangen können benötigt es Elemente, die
   \label{img:grundlageneventsrepo}
 \end{figure}
 
-Schließlich müssen die Komponenten im Systemmodell verbunden werden. Komponenten die Events senden und empfangen werden über ihren \emph{SinkPort} und \emph{SourcePort} verbunden. Das PCM bietet dazu zwei Möglichkeiten und deckt damit die Nachrichtenmodelle aus \autoref{sec:nachrichtenmodelle} ab. Wenn Events direkt an eine Komponente geschickt werden sollen, werden die beiden Komponenten mithilfe eines \emph{P2PConnector} verbunden. Sollen Komponenten in einem Publish/Subscribe-Szenario miteinander kommunizieren, benötigt es einen \emph{EventChannel}. Ein \emph{EventChannel} enthält genau eine \emph{EventGroup}. Die sendende Komponente verbindet ihren \emph{SourcePort} mit dem \emph{EventChannel}. Die empfangende Komponente verbindet ihren \emph{SinkPort} mit dem \emph{EventChannel}. In \autoref{img:grundlageneventssystem} sind zwei Systemmodelle abgebildet. Das erste zeigt eine Punkt-Zu-Punkt Verbindung zwischen einer Supermarkt- und Zulieferer-Komponente. Dabei sind der \emph{SourcePort} und der \emph{SinkPort} direkt mit einem \emph{P2PConnector} verbunden. Das zweite Systemmodell zeigt eine Publish/Subscribe Kommunikation zwischen mehreren Supermarkt-Komponenten und mehreren Zulieferer-Komponenten. Dabei wird über einen EventChannel kommuniziert.
+Schließlich müssen die Komponenten im Systemmodell verbunden werden. Komponenten die Events senden und empfangen, werden über ihren \emph{SinkPort} und \emph{SourcePort} verbunden. Das PCM bietet dazu zwei Möglichkeiten und deckt damit die Nachrichtenmodelle aus \autoref{sec:nachrichtenmodelle} ab. Wenn Events direkt an eine Komponente geschickt werden sollen, werden die beiden Komponenten mithilfe eines \emph{P2PConnector} verbunden. Sollen Komponenten in einem Publish/Subscribe-Szenario miteinander kommunizieren, benötigt es einen \emph{EventChannel}. Ein \emph{EventChannel} enthält genau eine \emph{EventGroup}. Die sendende Komponente verbindet ihren \emph{SourcePort} mit dem \emph{EventChannel}. Die empfangende Komponente verbindet ihren \emph{SinkPort} mit dem \emph{EventChannel}. In \autoref{img:grundlageneventssystem} sind zwei Systemmodelle abgebildet. Das erste zeigt eine Punkt-Zu-Punkt Verbindung zwischen einer Supermarkt- und Zulieferer-Komponente. Dabei sind der \emph{SourcePort} und der \emph{SinkPort} direkt mit einem \emph{P2PConnector} verbunden. Das zweite Systemmodell zeigt eine Publish/Subscribe Kommunikation zwischen mehreren Supermarkt-Komponenten und mehreren Zulieferer-Komponenten. Dabei wird über einen EventChannel kommuniziert.
 
 \begin{figure}
 \center
@@ -202,7 +202,7 @@ Die \autoref{img:weaving} zeigt die verfügbaren Schnittstellen und die Position
 
 
 \subsection{Performance-Analyse}
-Die Palladio-Bench bietet eine Sammlung von Qualitätsanalysen mit Hauptfokus auf Performance an. Daneben gibt es auch eine Zuverlässigkeits- und Kostenanalyse. Jedes Analysewerkzeug hat seine Vor- und Nachteile. Außerdem unterscheiden sie sich in ihrer Genauigkeit, Geschwindigkeit und ihrem Funktionsumfang. Im Palladio Kontext ist ein Analysewerkzeug eine Software, die eine Analysetechnik implementiert, die ein bestimmtes Analysemodell löst. Mit lösen ist das Sammeln von Qualitätsmetriken aus dem Analysemodell gemeint. Diese Analysewerkzeuge können wie eine Blackbox verwendet werden, da ein Software-Architekt kein Spezialwissen benötigt um ein Analysewerkzeug zu verwenden. Nachdem ein Software-Architekt ein Modell erstellt hat, kann er ein Analysewerkzeug auswählen, das ihm Qualitätsmetriken vorhersagt. Mithilfe des Analysewerkzeugs \textbf{SimuCom} wurde im Rahmen der Masterarbeit die Performance von MOMs vorhergesagt. SimuCom berechnet verschiedene Performance Charakteristiken, darunter Antwortzeiten für Systeme und Komponenten. Außerdem wird die Auslastung der einzelnen Ressourcen berechnet. Für die Analyse transformiert SimuCom das Eingabemodell, mithilfe einer Modell-Zu-Text Transformation, in Java-Code. Der generierte Code wird im Anschluß an die Ausführungsumgebung von SimuCom angeschlossen und im nächsten Schritt ausgeführt. Nachdem die Simulation fertig ist, werden die Ergebnisse in der Palladio-Bench angezeigt. Dieser ganze Prozess ist vollautomatisch und benötigt keine Benutzerinteraktion. SimuCom wird im Rahmen der Masterarbeit bei der Modellierung und Evaluierung einer MOM verwendet.
+Die Palladio-Bench bietet eine Sammlung von Qualitätsanalysen mit Hauptfokus auf Performance an. Daneben gibt es auch Zuverlässigkeits- und Kostenanalysen. Jedes Analysewerkzeug hat seine Vor- und Nachteile. Außerdem unterscheiden sie sich in ihrer Genauigkeit, Geschwindigkeit und ihrem Funktionsumfang. Im Palladio Kontext ist ein Analysewerkzeug eine Software, die eine Analysetechnik implementiert, die ein bestimmtes Analysemodell löst. Mit lösen ist das Sammeln von Qualitätsmetriken aus dem Analysemodell gemeint. Diese Analysewerkzeuge können wie eine Blackbox verwendet werden, da ein Software-Architekt kein Spezialwissen benötigt um ein Analysewerkzeug zu verwenden. Nachdem ein Software-Architekt ein Modell erstellt hat, kann er ein Analysewerkzeug auswählen, das ihm Qualitätsmetriken vorhersagt. Mithilfe des Analysewerkzeugs \textbf{SimuCom} wurde im Rahmen der Masterarbeit die Performance von MOMs vorhergesagt. SimuCom berechnet verschiedene Performance Charakteristiken, darunter Antwortzeiten für Systeme und Komponenten. Außerdem wird die Auslastung der einzelnen Ressourcen berechnet. Für die Analyse transformiert SimuCom das Eingabemodell, mithilfe einer Modell-Zu-Text Transformation, in Java-Code. Der generierte Code wird im Anschluß an die Ausführungsumgebung von SimuCom angeschlossen und im nächsten Schritt ausgeführt. Nachdem die Simulation fertig ist, werden die Ergebnisse in der Palladio-Bench angezeigt. Dieser ganze Prozess ist vollautomatisch und benötigt keine Benutzerinteraktion. SimuCom wird im Rahmen der Masterarbeit bei der Modellierung und Evaluierung einer MOM verwendet.
 
 \section{Benchmark}
 Im Kontext der Informatik bezeichnet der Begriff Benchmark einen oder mehrere Tests, die ausgeführt werden, um die Leistungsfähigkeit von Computersystemen zu vergleichen. Hierfür wird zwischen verschiedenen Arten von Benchmarks unterschieden \cite{Lilja2004}. 
