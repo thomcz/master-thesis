@@ -81,7 +81,7 @@ Das gewählte Anwendungsszenario bildet die Lieferkette eines Supermarktunterneh
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/evaluation/specjms/specjmsOverview.pdf}
-  \caption{Anwendungszenario des SpecJms}
+  \caption{Anwendungszenario des SPECjms2007 Benchmark}
   \label{img:specjmsInteraction}
 \end{figure}
 
@@ -117,7 +117,7 @@ Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion1seq.pdf}
-  \caption{Sequenzdiagramm von Interaktion 1}
+  \caption{Sequenzdiagramm von Interaktion 1 des SPECjms2007}
   \label{img:specjmsInteraction1seq}
 \end{figure}
 
@@ -133,13 +133,13 @@ Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und se
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion3seq.pdf}
-  \caption{Sequenzdiagramm von Interaktion 3.}
+  \caption{Sequenzdiagramm von Interaktion 3 des SPECjms2007}
   \label{img:specjmsInteraction3seq}
 \end{figure}
 
 
 \subsection{Konfiguration}
-SpecJMS2007 erlaubt verschiedene Konfigurationen durch den Benutzer. Dabei kann die Toplogie sowhohl horizontal, als auch vertikal skalliert werden. Bei der horizontalen Skalierung, wird die Anzahl der Akteure erhöht, während die Anzahl der gesendeten Nachrichten pro Akteur gleich bleibt. Die vertikale Topologie erhöht die Anzahl der Nachrichten die die Sender senden. Beide Skalierungsarten werden in einer eigenen Konfigurationsdatei mithilfe des Parameters BASE eingestellt.
+SpecJMS2007 erlaubt verschiedene Konfigurationen durch den Benutzer. Dabei kann die Topologie sowohl horizontal, als auch vertikal skaliert werden. Bei der horizontalen Skalierung, wird die Anzahl der Akteure erhöht, während die Anzahl der gesendeten Nachrichten pro Akteur gleich bleibt. Die vertikale Topologie erhöht die Anzahl der Nachrichten die die Sender senden. Beide Skalierungsarten werden in einer eigenen Konfigurationsdatei mithilfe des Parameters BASE eingestellt.
 
 Außerdem lassen sich für jede Nachricht die Größe und die Verteilung festlegen, mit welcher Wahrscheinlichkeit eine bestimmte Nachrichtengröße auftritt. Die Nachrichtengröße wird dabei mit folgender Formel berechnet: 
 \[m1 + x * b\] 
@@ -161,7 +161,7 @@ Dabei kann x vom Benutzer des Benchmarks eingestellt werden. Die beiden anderen 
     \hline
      3 & PriceUpdate & - & 2,310 \\\hline
   \end{tabular}
-	\caption{\label{tab:parameters} Parameter zur Berechnung der Nachrichtengröße.}
+	\caption{\label{tab:parameters} Parameter zur Berechnung der Nachrichtengröße. Auszug aus Sachs et al.\cite{Sachs2013}}
 \end{table}
 
 \begin{table}
@@ -180,7 +180,7 @@ Dabei kann x vom Benutzer des Benchmarks eingestellt werden. Die beiden anderen 
     \hline
      3 & PriceUpdate & 0,24 & 0,24 & 0,24 \\\hline
   \end{tabular}
-	\caption{\label{tab:msgpropandsize} Nachrichtengröße in KByte.}
+	\caption{\label{tab:msgpropandsize} Nachrichtengröße in KByte. Auszug aus Sachs et al.\cite{Sachs2013}}
 \end{table}
 
 \section{Beschreibung der PCM-Modelle}
@@ -193,14 +193,14 @@ Die Akteure, SM, DC, SP und HQ, des Benchmarks sind in der Modellierung jeweils 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion1events.pdf}
-  \caption{Interaktion 1 mit Events}
+  \caption{Modell der Interaktion 1 des SPECjms2007 mit PCM-Event-Elementen}
   \label{img:interaction1system}
 \end{figure}
 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion3events.pdf}
-  \caption{Interaktion 3 mit Events}
+  \caption{Modell der Interaktion 3 des SPECjms2007 mit PCM-Event-Elementen}
   \label{img:interaction3system}
 \end{figure}
 
@@ -245,17 +245,17 @@ Die anderen zuvor vorgestellten Modelle werden dagegen wiederverwendet. Außerde
 In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 1 darstellt. Zu sehen ist, dass die einzelnen Akteure voneinander entkoppelt wurden und an einen zentralen Exchange angeschlossen wurden. Für jeden Nachrichtentyp (EventType) wurde eine Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Für die Empfangsaktionen wurde jeweils ein neues UsageScenario angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnehmen. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion1new.pdf}
-  \caption{Interaktion 1 nach Transformation}
+  \includegraphics[width=1.4\textwidth,angle=90]{images/evaluation/specjms/evaluationInteraktion1new.pdf}
+  \caption{Modell der Interaktion 1 des SPECjms2007 nach der Modelltransformation aus \autoref{ch:transformation}}
   \label{img:interaction1systemAfterTransformation}
 \end{figure}
 \subsubsection{Interaktion 3}
-In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 3 darstellt. In diesem Fall wurden Empfänger und Sender gemeinsam an den Exchange angeschlossen. Für jeden Empfänger wurde außerdem eine ein Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Die einzelnen Warteschlangen beinhalten jeweils den gleichen Nachrichtentyp, hier PriceUpdate-Nachrichten. Für die Empfangsaktionen wurde jeweils ein neues UsageScenario angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnehmen.
+In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 3 darstellt. In diesem Fall wurden Empfänger und Sender gemeinsam an den Exchange angeschlossen. Für jeden Empfänger wurde außerdem eine ein Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Die einzelnen Warteschlangen beinhalten jeweils den gleichen Nachrichtentyp, hier \emph{PriceUpdate}-Nachrichten. Für die Empfangsaktionen wurde jeweils ein neues \emph{UsageScenario} angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnehmen.
 \autoref{img:interaction3systemAfterTransformation}
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion3new.pdf}
-  \caption{Interaktion 3 nach Transformation}
+  \includegraphics[width=1.4\textwidth,angle=90]{images/evaluation/specjms/evaluationInteraktion3new.pdf}
+  \caption{Modell der Interaktion 3 des SPECjms2007 nach der Modelltransformation aus \autoref{ch:transformation}}
   \label{img:interaction3systemAfterTransformation}
 \end{figure}
 
@@ -273,7 +273,7 @@ Die Messergebnisse für Interaktion 1 des SPECjms2007 Benchmarks und der Perform
 \begin{figure}
 \center
   \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion1.pdf}
-  \caption{Latenz der einzelnen Nachrichten aus Interaktion 1 und die Vorhersage aus der Performance-Analyse.}
+  \caption{Latenz der Messung und Vorhersage für die Nachrichten aus Interaktion 1 des SPECjms2007 Benchmark}
   \label{img:specjminteraction1results}
 \end{figure}
 
@@ -284,7 +284,7 @@ Die Vorhersage der Interaktionszeit aus der Performance-Analyse ist 8,43 ms. Der
 \begin{figure}
 \center
   \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion1InteractionTime.pdf}
-  \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 1}
+  \caption{Boxplot von zehn verschiedenen Messungen von Interaktion 1 des SPECjms2007 Benchmark}
   \label{img:specjminteraction1interactiontimeresults}
 \end{figure}
 
@@ -300,7 +300,7 @@ Die Vorhersage der Interaktionszeit aus der Performance-Analyse ist 8,43 ms. Der
     Vorhersage (ms) & 2,12 & 2,12 & 2,1 & 2,1 & 2,11 & 2,1 \\\hline
     Fehler (\%)& 23,36 & 23,79 & 21,5 & 22,8 & 20,76 & 20,91 \\\hline
   \end{tabular}
-	\caption{\label{tab:interaction1error} Fehler für Interaktion 1}
+	\caption{\label{tab:interaction1error} Übersicht der Fehler für Interaktion 1 des SPECjms2007 Benchmark}
 \end{table}
 
 \subsection{Interaktion 3}
@@ -309,7 +309,7 @@ In \autoref{img:specjminteraction3results10sm} ist ein Boxplot für die Messunge
 \begin{figure}
 \center
   \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion3-10SM.pdf}
-  \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 3}
+  \caption{Boxplot von zehn verschiedenen Messungen von Interaktion 3 mit zehn Empfängern}
   \label{img:specjminteraction3results10sm}
 \end{figure}
 
@@ -317,7 +317,7 @@ In \autoref{img:specjminteraction3results1sm} wurde der Benchmark nochmal ausgef
 \begin{figure}
 \center
   \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion3-1SM.pdf}
-  \caption{Boxplot von 10 verschiedenen Messungen der Interaktion 3}
+  \caption{Boxplot von zehn verschiedenen Messungen von Interaktion 3 mit einem Empfänger}
   \label{img:specjminteraction3results1sm}
 \end{figure}
 
@@ -326,7 +326,7 @@ In \autoref{img:specjminteraction3results1sm} wurde der Benchmark nochmal ausgef
 \label{sec:evaluationzusammenfassung}
 In diesem Kapitel wurde der Ansatz dieser Masterarbeit mithilfe des SPECjms2007 Benchmark evaluiert. In \autoref{tab:gqm} wurden dazu die Ziele der Evaluierung mithilfe des GQM-Plans formuliert. Im Folgenden wird darauf eingegangen, ob und wie diese Ziele erreicht werden konnten. \par
 In \autoref{sec:specjmsmodell} wurden die PCM-Modelle, die den Benchmark modellieren, vorgestellt. Im Anschluss wurden sie mithilfe der Modeltransformation aus \autoref{ch:transformation} transformiert. Dabei konnte gezeigt werden, dass die in \autoref{ch:modellierung} vorgestellte Art eine MOM zu modellieren anwendbar ist. Somit konnte das erste Ziel dieser Arbeit erfüllt werden. 
-In \autoref{sec:specjmsmodellvorhersage} wurde die Vorhersagegenauigkeit der Modellierung und ihrer Kalibrierung geprüft. Diese hat gezeigt, dass dies bei einer Punkt-Zu-Punkt-Kommunikation möglich ist, da der Fehler der einzelnen Nachrichten unter 24\% und für die Gesamte Interaktion unter 7\% liegt. Die Vorhersagegenauigkeit für Publish/Subscribe-Kommunikation konnte, mit der aktuellen Kalibrierung, nicht gezeigt werden. Der Fehler beträgt über 40\% und ist somit nicht mehr akzeptiert. Dies zeigt, dass die aktuelle Kalibrierung Publish/Subscribe-Kommunikation nicht unterstützt. Somit konnte das zweite Ziel nur zur hälfte erreicht werden. \par
+In \autoref{sec:specjmsmodellvorhersage} wurde die Vorhersagegenauigkeit der Modellierung und ihrer Kalibrierung geprüft. Diese hat gezeigt, dass dies bei einer Punkt-Zu-Punkt-Kommunikation möglich ist, da der Fehler der einzelnen Nachrichten unter 24\% und für die Gesamte Interaktion unter 7\% liegt. Die Vorhersagegenauigkeit für Publish/Subscribe-Kommunikation konnte, mit der aktuellen Kalibrierung, nicht gezeigt werden. Der Fehler beträgt über 40\% und ist somit nicht mehr akzeptiert. Dies zeigt, dass die aktuelle Kalibrierung Publish/Subscribe-Kommunikation nicht unterstützt. Somit konnte das zweite Ziel nur zur Hälfte erreicht werden. \par
 In der Arbeit von Rathfelder \cite{Rathfelder2013} liegt der Fehler zwischen 20\% und 25\%. Somit bietet der Ansatz dieser Masterarbeit eine ähnlichen Vorhersagegenauigkeit an.
 
 %Modellierungsaufwand \\

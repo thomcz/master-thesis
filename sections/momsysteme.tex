@@ -88,7 +88,7 @@ Die Ausmessung mit zwei virtuellen Servern ausgeführt, die von bwCloud \footnot
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/benchmarkSzenarioOverview.pdf}
-  \caption{Die Beiden Testszenarien}
+  \caption{Die Testszenarien \textit{lokal} und \textit{remote}}
   \label{img:machineoverview}
 \end{figure}
 
@@ -104,7 +104,7 @@ Jede Messung wurde zehn mal durchgeführt. Die einzelnen Konfiguration wurde jew
 
 
 
-\subsubsection{Latenz einer nicht-persistenter Nachricht}
+\subsubsection{Latenz einer nicht-persistenten Nachricht}
 \label{sec:oneMsgLatency}
 Zunächst soll geprüft werden wie groß die Latenz einer einzelnen, nicht persistenten, Nachricht ist. Dabei wurde auch die Größe einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht mit ihrer Nachrichtengröße steigt.
 %B
@@ -112,7 +112,7 @@ Die Ergebnisse sind in \autoref{img:senderate1-A} abgebildet. Neben den Messerge
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-A.pdf}
-  \caption{Latenz einer Nachricht im \textit{lokal}-Szenario}
+  \caption{Latenz einer nicht-persistenten Nachricht im \textit{lokal}-Szenario}
   \label{img:senderate1-A}
 \end{figure}
 
@@ -126,7 +126,7 @@ Somit ist neben der Nachrichtengröße auch die Netzwerklatenz ein Faktor, der d
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-AvsB.pdf}
-  \caption{Latenz einer Nachricht im \textit{remote}-Szenario}
+  \caption{Latenz einer nicht-persistenten Nachricht im \textit{remote}-Szenario}
   \label{img:senderate1-B}
 \end{figure}
 
@@ -255,11 +255,11 @@ In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. \auto
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/varying-consumer.pdf}
-  \caption{Verschiedene Empfaenger Anzahl}
+  \caption{Verschiedene Anzahl an Empfängern mit gleicher Empfangsrate.}
   \label{img:varyingConsumer}
 \end{figure}
 %E
-Diese stärkere Streuung lässt sich mit der Synchronisation der Empfänger erklären, die an einer gemeinsamen Warteschlange arbeiten. Da diese Streuung nicht stark ist, wird dieser Effekt im Folgenden vernachläßigt. Somit zeigt diese Messung, dass mehrere Empfänger gemeinsam an die Leistung eines einzelnen Empfängers heran kommen. 
+Diese stärkere Streuung lässt sich mit der Synchronisation der Empfänger erklären, die an einer gemeinsamen Warteschlange arbeiten. Da diese Streuung nicht stark ist, wird dieser Effekt im Folgenden vernachlässigt. Somit zeigt diese Messung, dass mehrere Empfänger gemeinsam an die Leistung eines einzelnen Empfängers heran kommen. 
 
 \subsubsection{Mehrere Sender}
 Diese Messung soll überprüfen, ob mehrere Sender genau so schnell die gleiche Menge an Nachrichten versenden können, wie ein einzelner. Dazu wurde als Referenz ein Sender mit einer Senderate von 5000 Nachrichten die Sekunde und fünf Sender mit jeweils 1000 Nachrichten die Sekunde untersucht. Die Messung wurde mit dem \textit{lokal}-Szenario durchgeführt. Erwartet wird, dass es keinen Unterschied macht, ob ein Sender 5000 Nachrichten sendet oder fünf Sender jeweils 1000 Nachrichten senden. 
@@ -268,7 +268,7 @@ In \autoref{img:varyingProducer} sind die Ergebnisse dieser Messung zu sehen. Da
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/varying-producer.pdf}
-  \caption{Verschiedene Sender Anzahl}
+  \caption{Verschiedene Anzahl an Sendern mit gleicher Senderate.}
   \label{img:varyingProducer}
 \end{figure}
 %E

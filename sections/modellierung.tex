@@ -17,7 +17,7 @@ Dazu soll zunächst mithilfe einer Anforderungserhebung in \autoref{sec:anforder
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/modelling/oldEventBased.png}
-  \caption{Aktuelle eventbasierte Kommunikation}
+  \caption{Aktuelle und gewünschte eventbasierte-Kommunikation}
   \label{img:oldEventBased}
 \end{figure}
 
@@ -64,14 +64,14 @@ Das Repository wird vom Komponentenentwickler verwendet um neue Komponenten zu e
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/modelling/modelingRepository.pdf}
-  \caption{Repository einer MOM mit Exchange und Warteschlange}
+  \caption{Repository-Modell einer MOM mit Exchange und Warteschlange}
   \label{img:mom_repository}
 \end{figure}
 
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/modelling/modelingGuardedBranch.pdf}
-  \caption{Guarded Branch des Exchanges.receive}
+  \caption{\emph{GuardedBranch} des \texttt{Exchanges.receive} SEFF}
   \label{img:queueBranch}
 \end{figure}
 
@@ -80,7 +80,7 @@ Im Systemmodell werden die einzelnen Komponenten aus dem Repository-Modell vom S
 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/modelingSystem.pdf}
+  \includegraphics[width=1.4\textwidth, angle=90]{images/modelling/modelingSystem.pdf}
   \caption{Systemmodell einer MOM}
   \label{img:mom_system}
 \end{figure}
@@ -111,7 +111,7 @@ In \autoref{sec:oneMsgLatency} wurde die Latenz einer nicht-persistenten Nachric
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/modelling/oneMsgRegression.pdf}
-  \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse}
+  \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse für nicht-persistente Nachrichten}
   \label{img:regplot}
 \end{figure}
 
@@ -123,8 +123,8 @@ Auch die Netzwerklatenz, die in \autoref{sec:oneMsgLatency} ausgemessen wurde, h
 Neben nicht-persistenten Nachrichten wurden auch persistente Nachrichten und die Konfiguration für Lazy-Warteschlangen ausgemessen. Da sich beide Messungen ähnlich verhalten und auf den gemeinsamen Umstand, dass die Nachrichten auf die Festplatte geschrieben werden, zurückzuführen sind, wird im Folgenden die Messung mit persistenten Nachrichten betrachtet. Auch hier wurde wie oben beschrieben zunächst die Korrelation der beiden Variablen, Nachrichtengröße und Latenz, berechnet. Mit 0.995 ist diese ebenfalls sehr hoch. Die entstandene Regressionsgerade hat die Form: \[latency = 1602.5021193 + (0.0049697 * msgSize)\] und ist in \autoref{img:regplotlazy} eingezeichnet. Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird, wenn persistente Nachrichten oder Lazy-Warteschlangen betrachtet werden sollen.
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/modelling/oneMsgLazyRegression.pdf}
-  \caption{Regressionsgerade aus der Regressionsanalyse mit persistenten Nachrichten}
+  \includegraphics[width=0.7\textwidth]{images/modelling/persistentRegression.pdf}
+  \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse für persistente Nachrichten}
   \label{img:regplotlazy}
 \end{figure}
 
@@ -171,7 +171,7 @@ Da die Ankunftszeiten der beiden Akteure gleich sind, bleibt die Warteschlange d
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation1.pdf}
-  \caption{Latenz einer Nachricht mit verschiedenen Groessen (Modell vs. Real System)}
+  \caption{Messung und Vorhersage der Latenz einer nicht-persistenten Nachricht mit verschiedenen Größen.}
   \label{img:simulation1}
 \end{figure}
 
@@ -185,7 +185,7 @@ Da die Ankunftszeiten der beiden Akteure gleich sind, bleibt die Warteschlange d
     
     \hline
       \end{tabular}
-	\caption{\label{tab:sim1} Fehler in \% zwischen Messung und Modell Vorhersage für Simulation 1}
+	\caption{\label{tab:sim1} Fehler in \% zwischen Messung und Vorhersage für Simulation 1}
 \end{table}
 
 
@@ -199,7 +199,7 @@ Die Warteschlange bleibt über die Simulationsdauer leer, da die Ankunftszeiten 
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation2.pdf}
-  \caption{Latenz einer Nachricht mit verschiedenen Groessen mit Netzwerklatenz (Modell vs. Real System)}
+  \caption{Messung und Vorhersage der Latenz einer nicht-persistenten Nachricht, zu einem entfernten Broker, mit verschiedenen Größen.}
   \label{img:simulation2}
 \end{figure}
 
@@ -213,7 +213,7 @@ Die Warteschlange bleibt über die Simulationsdauer leer, da die Ankunftszeiten 
     
     \hline
       \end{tabular}
-	\caption{\label{tab:sim2} Fehler in \% zwischen Messung und Modell Vorhersage für Simulation 1}
+	\caption{\label{tab:sim2} Fehler in \% zwischen Messung und Vorhersage für Simulation 2}
 \end{table}
 
 
@@ -225,7 +225,7 @@ Die Ergebnisse sind in \autoref{img:simulation3} abgebildet. In \autoref{img:sim
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation3.pdf}
-  \caption{Anwachsen der Warteschlange (Modell vs. Real System)}
+  \caption{Messung und Vorhersage des Anwachsen der Warteschlange.}
   \label{img:simulation3}
 \end{figure}
 
@@ -250,11 +250,11 @@ Die Simulation zeigt, dass beide Empfänger die Warteschlange gemeinsam abarbeit
 \subsubsection{Simulation 5}
 Schließlich betrachtet diese Simulation nicht-persistenten Nachrichten. Sender und Empfänger haben die gleiche Ankunftszeiten und kommen einmal pro Sekunde an. Die gesendete Nachrichten haben die Größe 100, 200, 300, 400, 500 und 1000 Kbyte. Die Ressourcenanforderung für eine Nachricht wurde im Modell angepasst. Dieser ist in \autoref{sec:rmqRd} beschrieben. Verglichen wurde mit der Messung aus \autoref{sec:persistent}. Betrachtet wurde die Latenz der Nachrichten und der Füllstand der Warteschlange. \par
 %B
-Die Warteschlange bleibt bei dieser Simulation leer. In \autoref{img:simulation6} sind die Ergebnisse bezüglich der Latenz abgebildet. Neben den Vorhersagepunkten aus dieser Simulation und den Messpunkte aus der Messung mit persistenten Nachrichten, sind die Vorhersagepunkte aus \autoref{sec:rmqSimulation1} eingetragen. In \autoref{tab:sim5} sind die Fehler abgebildet. Dabei wird neben dem Fehler der Vorhersage mit persistenten Nachrichten auch der Fehler zwischen der Messung mit persistenten Nachrichten und der Vorhersage aus \autoref{sec:rmqSimulation1} berechnet. Dabei ist zunächst zu sehen, dass der Fehler zwischen der Messung und der Vorhersage mit persistenten Nachrichten zwischen 10.14\% und 22.12\% liegt. Der Fehler zwischen der Messung mit persistenten Nachrichten und der Vorhersage aus \autoref{sec:rmqSimulation1} liegt zwischen 7.38\% und 15.78\% und ist somit besser. Obwohl der Fehler im zweiten Fall geringer ist, kann dieser nicht genommen werden, da er auf einer falschen Annahme beruht.
+Die Warteschlange bleibt bei dieser Simulation leer. In \autoref{img:simulation6} sind die Ergebnisse bezüglich der Latenz abgebildet. Neben den Vorhersage aus dieser Simulation und den Messpunkte aus der Messung mit persistenten Nachrichten, ist die Vorhersage aus \autoref{sec:rmqSimulation1} eingetragen. In \autoref{tab:sim5} sind die Fehler abgebildet. Dabei wird neben dem Fehler der Vorhersage mit persistenten Nachrichten auch der Fehler zwischen der Messung mit persistenten Nachrichten und der Vorhersage aus \autoref{sec:rmqSimulation1} berechnet. Dabei ist zunächst zu sehen, dass der Fehler zwischen der Messung und der Vorhersage mit persistenten Nachrichten zwischen 10.14\% und 22.12\% liegt. Der Fehler zwischen der Messung mit persistenten Nachrichten und der Vorhersage aus \autoref{sec:rmqSimulation1} liegt zwischen 7.38\% und 15.78\% und ist somit besser. Obwohl der Fehler im zweiten Fall geringer ist, kann dieser nicht genommen werden, da er auf einer falschen Annahme beruht.
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation6.pdf}
-  \caption{Latenz einer Nachricht mit verschiedenen Groessen bei Lazy Warteschlangen (Modell vs. Real System)}
+  \caption{Messung und Vorhersage der Latenz einer persistenten Nachricht mit verschiedenen Größen.}
   \label{img:simulation6}
 \end{figure}
 
@@ -270,7 +270,7 @@ Die Warteschlange bleibt bei dieser Simulation leer. In \autoref{img:simulation6
     
     \hline
       \end{tabular}
-	\caption{\label{tab:sim5} Fehler in \% zwischen Messung und Modell Vorhersage für Simulation 1}
+	\caption{\label{tab:sim5} Fehler in \% zwischen Messung und Vorhersage für Simulation 5}
 \end{table}
 
 
