@@ -78,6 +78,12 @@
 \usepackage{ragged2e} % provides \RaggedLeft
 \usetikzlibrary{shapes.geometric, arrows}
 
+\usepackage[nonumberlist]{glossaries}
+\setacronymstyle{long-sc-short}
+\loadglsentries{glossarie}
+\makenoidxglossaries
+
+
 \addbibresource{thesis.bib}
 
 %% ====================================
@@ -124,6 +130,7 @@
 
 \listoffigures
 \listoftables
+\printnoidxglossaries
 
 %% -----------------
 %% |   Main part   |
