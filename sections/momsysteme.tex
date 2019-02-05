@@ -64,7 +64,7 @@ Da in dieser Arbeit der Fokus auf der Performance einer MOM liegt, wurde mithilf
     \item Plötzlicher anstieg ankommender Nachrichten
     \item Empfänger sind langsamer als normal
 \end{itemize}
-Das bedeutet, dass das Hauptziel von Lazy-Warteschlangen vor allem eine hohe Zuverlässigkeit ist. Da aber die Festplatte anstatt der Hauptspeicher verwendet wird, um die Nachrichten zu verwalten, ist diese Konfiguration langsamer. Im Fall, dass Performance bevorzugt wird, sollte also auf Lazy-Warteschlangen verzichtet werden. Der Unterschied von Lazy-Warteschlangen zu persistenen Nachrichten, die auch auf die Festplatte geschrieben werden, ist das bei persistenen Nachrichten der Sender entscheidet, ob die Nachricht persistiert wird. Bei Lazy-Warteschlangen, legt der Besitzer der Warteschlange fest, welche Nachrichten persisitiert werden. Der Durchsatz von RMQ kann außerdem dadurch erhöht werden, dass mehrere Warteschlangen verwendet werden. Zum Einen kann eine einzelne Warteschlange nicht mehr als ca. 50\,000 Nachrichten bearbeiten. Zum anderen sind Warteschlangen einfädig. Das heißt, dass der beste Durchsatz auf einem System möglich ist, wenn genau so viele Warteschlangen wie Kerne existieren. 
+Das bedeutet, dass das Hauptziel von Lazy-Warteschlangen vor allem eine hohe Zuverlässigkeit ist. Da aber die Festplatte anstatt der Hauptspeicher verwendet wird, um die Nachrichten zu verwalten, ist diese Konfiguration langsamer. Im Fall, dass Performance bevorzugt wird, sollte also auf Lazy-Warteschlangen verzichtet werden. Der Unterschied von Lazy-Warteschlangen zu persistenten Nachrichten, die auch auf die Festplatte geschrieben werden, ist das bei persistenten Nachrichten der Sender entscheidet, ob die Nachricht persistiert wird. Bei Lazy-Warteschlangen, legt der Besitzer der Warteschlange fest, welche Nachrichten persisitiert werden. Der Durchsatz von RMQ kann außerdem dadurch erhöht werden, dass mehrere Warteschlangen verwendet werden. Zum Einen kann eine einzelne Warteschlange nicht mehr als ca. 50\,000 Nachrichten bearbeiten. Zum anderen sind Warteschlangen einfädig. Das heißt, dass der beste Durchsatz auf einem System möglich ist, wenn genau so viele Warteschlangen wie Kerne existieren. 
 
 In der Folgenden Ausmessung von RMQ wurden diese und weitere Konfiguration untersucht um zu prüfen ob sie einen messbaren Einfluss auf die Performance haben.
 
@@ -73,7 +73,7 @@ Im Folgenden soll RMQ ausgemessen werden um quantitative Daten ableiten zu könn
 
 \subsection{Testmaschinen}
 \label{sec:testmachine}
-Die Ausmessung wurde mit zwei virtuellen Servern durchgeführt, die von bwCloud \footnote{https://www.bw-cloud.org/} zur Verfügung gestellt wurden. Die Systemspezifikation der beiden Server ist in \autoref{tab:systespec} aufgelistet. Beide Systeme haben die gleiche Systemspezifikation und haben die RMQ Version 3.7.8 installiert. Für die Ausmessung wurden zwei Szenarien betrachtet. Der Aufbau dieser ist in \autoref{img:machineoverview} abgebildet. In \autoref{img:machineoverview}a ist der Fall zu sehen, bei dem sich Sender, Empfänger und RMQ auf der selben Maschine befinden. Damit soll RMQ unter den bestmöglichen Umständen ausgemessen werden. Im Folgenden wird dieses Szenario als \textit{lokal} bezeichnet. Das andere Szenario ist in \autoref{img:machineoverview}b zu sehen. Dabei befindet sich RMQ auf der einen Maschine und Sender und Empfänger auf der anderen. Damit sollen Netzwerkeffekte ausgemessen werden. Im Folgenden wird dieses Szenario als \textit{remote} bezeichnet. Die Netzwerklatenz zwischen beiden Systemen wurde durch eine zweiminütige Messung ermittelt. Die durchschnittliche Netzwerklatenz beträgt dabei 0,556 ms. 
+Die Ausmessung wurde mit zwei virtuellen Servern durchgeführt, die von bwCloud \footnote{https://www.bw-cloud.org/} zur Verfügung gestellt wurden. Die Systemspezifikation der beiden Server ist in \autoref{tab:systespec} aufgelistet. Beide Systeme haben die gleiche Systemspezifikation und haben die RMQ Version 3.7.8 installiert. Für die Ausmessung wurden zwei Szenarien betrachtet. Der Aufbau dieser ist in \autoref{img:machineoverview} abgebildet. In \autoref{img:machineoverview}a ist der Fall zu sehen, bei dem sich Sender, Empfänger und RMQ auf der selben Maschine befinden. Damit soll RMQ unter den bestmöglichen Umständen ausgemessen werden. Dieses Szenario wird im Folgenden \textit{lokales}-Szenario bezeichnet. Das andere Szenario ist in \autoref{img:machineoverview}b zu sehen. Dabei befindet sich RMQ auf der einen Maschine und Sender und Empfänger auf der anderen. Damit sollen Netzwerkeffekte ausgemessen werden. Dieses Szenario wird im Folgenden \textit{entferntes}-Szenario bezeichnet. Die Netzwerklatenz zwischen beiden Systemen wurde durch eine zweiminütige Messung ermittelt. Die durchschnittliche Netzwerklatenz beträgt dabei 0,556 ms. 
 
 \begin{table}
   \centering
@@ -88,7 +88,7 @@ Die Ausmessung wurde mit zwei virtuellen Servern durchgeführt, die von bwCloud 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/benchmarkSzenarioOverview.pdf}
-  \caption{Die Testszenarien \textit{lokal} und \textit{remote}}
+  \caption{Die Testszenarien: \textit{lokales}- und \textit{entferntes}-Szenario.}
   \label{img:machineoverview}
 \end{figure}
 
@@ -106,7 +106,7 @@ Jede Messung wurde zehn mal durchgeführt. Die einzelnen Konfiguration wurde jew
 
 \subsubsection{Latenz einer nicht-persistenten Nachricht}
 \label{sec:oneMsgLatency}
-Zunächst soll geprüft werden wie groß die Latenz einer einzelnen, nicht persistenten, Nachricht ist. Dabei wurde auch die Größe einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht mit ihrer Nachrichtengröße steigt.
+Zunächst soll geprüft werden wie groß die Latenz einer einzelnen, nicht persistenten, Nachricht ist. Dabei wurde auch die Größe einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokale}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht mit ihrer Nachrichtengröße steigt.
 %B
 Die Ergebnisse sind in \autoref{img:senderate1-A} abgebildet. Neben den Messergebnissen ist eine Linie durch die Mediane der einzelnen Messungen gezogen. Dabei ist zu sehen, dass die Latenz einer Nachricht mit Ansteigen der Nachrichtengröße auch ansteigt. Somit verhält sich das System wie erwartet.
 \begin{figure}
@@ -116,7 +116,7 @@ Die Ergebnisse sind in \autoref{img:senderate1-A} abgebildet. Neben den Messerge
   \label{img:senderate1-A}
 \end{figure}
 
-Als nächstes wurde die Latenz einer Nachricht zu einem entfernten RMQ-Broker gemessen. Dazu wurde das \textit{remote}-Szenario verwendet. Die Nachrichtengröße variiert zwischen 1 KByte und 1 MByte. Erwartet wird, dass zu der bereits gemessenen Latenz einer Nachricht die Netzwerklatenz dazugerechnet wird.
+Als nächstes wurde die Latenz einer Nachricht zu einer entfernten RMQ-Instanz gemessen. Dazu wurde das \textit{entfernte}-Szenario verwendet. Die Nachrichtengröße variiert zwischen 1 KByte und 1 MByte. Erwartet wird, dass zu der bereits gemessenen Latenz einer Nachricht die Netzwerklatenz dazugerechnet wird.
 
 %B
 Die Ergebnisse sind in \autoref{img:senderate1-B} zu sehen. Dabei ist durch die Mediane der einzelnen Messergebnisse eine Linie gezogen. Zu sehen ist, dass auch hier die Latenz mit Ansteigen der Nachrichtengröße wächst. Die Differenz, zur vorherigen Messung, entspricht der gemessenen Netzwerklatenz.
@@ -126,12 +126,12 @@ Somit ist neben der Nachrichtengröße auch die Netzwerklatenz ein Faktor, der d
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-AvsB.pdf}
-  \caption{Latenz einer nicht-persistenten Nachricht im \textit{remote}-Szenario}
+  \caption{Vergleich der Latenz einer nicht-persistenten Nachricht im \textit{lokalen}- und \textit{entfernten}-Szenario}
   \label{img:senderate1-B}
 \end{figure}
 
 \subsubsection{Latenz einer persistente Nachricht}
-Da zuvor die Latenz nicht-persistenter Nachrichten ausgemessen wurde, wird in dieser Messung die Latenz einer persistenten Nachricht ausgemessen. Die Senderate wurde auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer persistenten Nachricht größer als die einer nicht-persistenten Nachricht ist, da die Nachricht auch auf die Festplatte geschrieben wird.
+Da zuvor die Latenz nicht-persistenter Nachrichten ausgemessen wurde, wird in dieser Messung die Latenz einer persistenten Nachricht ausgemessen. Die Senderate wurde auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokale}-Szenario verwendet. Erwartet wird, dass die Latenz einer persistenten Nachricht größer als die einer nicht-persistenten Nachricht ist, da die Nachricht auch auf die Festplatte geschrieben wird.
 %B
 In \autoref{img:senderatepersisten} sind die Ergebnisse der Messung zu sehen. Außerdem wurde zu Vergleich auch die nicht-persistente Messung eingezeichnet. Wie erwartet ist die Latenz einer persistenten Nachricht größer. Der Grund hierfür ist, dass die Nachricht auch auf die Festplatte geschrieben wird, um eine Zustellung zu garantieren. Somit hat die Wahl zwischen nicht-persistenten und persistenten Nachrichten einen Einfluss auf die Performance.
 
@@ -142,28 +142,26 @@ In \autoref{img:senderatepersisten} sind die Ergebnisse der Messung zu sehen. Au
   \label{img:senderatepersisten}
 \end{figure}
 \subsubsection{Nachrichtengröße}
-Da in den vorherigen Messung die Nachrichtengröße als Einflussfaktor auf die Latenz und somit die Performance identifiziert wurde, sollen im Folgenden weitere Effekte im Zusammenhang mit der Nachrichtengröße untersucht werden. Dazu wurde ein Sender und ein Empfänger eingerichtet. Beide senden und empfangen Nachrichten so schnell sie können; die oben beschriebene Limitierung der Senderate auf eine Nachricht pro Sekunde ist somit aufgehoben. Die Nachrichtengröße variiert zwischen 1 KByte und 200 KByte. Es wurde mit dem \textit{lokal}-Szenario ausgemessen. Erwartet wird, dass sich mit zunehmender Nachrichtengröße die insgesamt pro Sekunde gesendete Nachrichtenmenge verringert. Gleichzeitig sollte die insgesamt gesendete Datenmenge zunehmen, da die Nachrichten weniger Routing-Overhead beim RMQ-Broker verursachen.
+Da in den vorherigen Messung die Nachrichtengröße als Einflussfaktor auf die Latenz und somit die Performance identifiziert wurde, sollen im Folgenden weitere Effekte im Zusammenhang mit der Nachrichtengröße untersucht werden. Dazu wurde ein Sender und ein Empfänger eingerichtet. Beide senden und empfangen Nachrichten so schnell sie können; die oben beschriebene Limitierung der Senderate auf eine Nachricht pro Sekunde ist somit aufgehoben. Die Nachrichtengröße variiert zwischen 1 KByte und 200 KByte. Es wurde mit dem \textit{lokalen}-Szenario ausgemessen. Erwartet wird, dass sich mit zunehmender Nachrichtengröße die insgesamt pro Sekunde gesendete Nachrichtenmenge verringert. Gleichzeitig sollte der Datendurchsatz zunehmen, da die Nachrichten weniger Routing-Overhead bei RMQ verursachen.
 %B
-In \autoref{img:msgsize} sind die Ergebnisse dieser Messung abgebildet. Durch die jeweiligen Mediane wurde eine Linie gezogen. Die Auswirkung der Nachrichtengröße auf die Senderate ist dabei in \autoref{img:msgsize}a zu sehen. Diese nimmt, wie erwartet, mit zunehmender Größe ab. In \autoref{img:msgsize}b ist die insgesamt gesendete Datenmenge zu sehen. Auch hier verhält sich das System wie erwartet und die insgesamt gesendete Datenmenge nimmt zu.
+In \autoref{img:msgsize} sind die Ergebnisse dieser Messung abgebildet. Durch die jeweiligen Mediane wurde eine Linie gezogen. Die Auswirkung der Nachrichtengröße auf die Senderate ist dabei in \autoref{img:msgsize}a zu sehen. Diese nimmt, wie erwartet, mit zunehmender Größe ab. In \autoref{img:msgsize}b ist der Datendurchsatz zu sehen. Auch hier verhält sich das System wie erwartet und der Datendurchsatz nimmt zu.
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/msg-size.png}
-  \caption{TODO besseres Bild}
+  \includegraphics[width=0.7\textwidth]{images/measurement/msg-rate-vs-send-bytes.pdf}
+  \caption{Nachrichtenmange und Durchsatz in Abhängigkeit der Nachrichtengröße.}
   \label{img:msgsize}
 \end{figure}
-%E
-Wie bereits erwähnt lässt sich dieser Effekt darauf zurückführen, dass bei größeren Nachrichten der Broker weniger Routing-Overhead hat, als bei kleineren.
 %https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
 
-\subsubsection{Maximale zu sendende Datenmenge}
+\subsubsection{Maximaler Datendurchsatz}
 \label{sec:maxthroughput}
-Nachdem die Effekte der zunehmende Nachrichtengröße geprüft wurden, soll nun geprüft werden wie groß die insgesamt mögliche Datenmenge ist, die gesendet und empfangen werden kann. Dazu wurden Nachrichten der Größe 1 KByte bis 200 KByte gesendet. Es wurden zwei Messungen durchgeführt. Im Fall der ersten Messung existiert ein Sender und kein Empfänger, bei der zweiten Messung ein Sender und ein Empfänger. Die Messung wurde mit dem \textit{lokal}-Szenario durchgeführt. Erwartet wurde, dass die Messung ohne Empfänger einen höheren Durchsatz ermöglicht, da diese direkt verworfen werden. 
+Nachdem die Effekte der zunehmende Nachrichtengröße geprüft wurden, soll nun geprüft werden wie groß der mögliche Datendurchsatz ist. Dazu wurden Nachrichten der Größe 1 KByte bis 200 KByte gesendet. Es wurden zwei Messungen durchgeführt. Im Fall der ersten Messung existiert ein Sender und kein Empfänger, bei der zweiten Messung ein Sender und ein Empfänger. Die Messung wurde mit dem \textit{lokalen}-Szenario durchgeführt. Erwartet wurde, dass die Messung ohne Empfänger einen höheren Durchsatz ermöglicht, da diese direkt verworfen werden. 
 %B
-Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfänger vorhanden ist, mit zunehmender Nachrichtengröße die insgesamt gesendete Datenmenge an einen Wert bei ca. 1.5 GByte pro Sekunde annähert. Wenn ein Empfänger vorhanden ist, nähert sich die Datenmenge an 700 MByte pro Sekunde an. Dieser Uterschied lässt sich auf den fehlenden Empfänger bzw. die fehlende Warteschlange zurückführen. Es gibt somit keinen Schreib-Overhead, da die Nachricht weder im Speicher, noch auf der Festplatte abgelegt wird.
+Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfänger vorhanden ist, mit zunehmender Nachrichtengröße der Datendurchsatz sich einen Wert von ca. 1,5 GByte pro Sekunde annähert. Wenn ein Empfänger vorhanden ist, nähert sich der Datendurchsatz an 700 MByte pro Sekunde an. Dieser Unterschied lässt sich auf den fehlenden Empfänger bzw. die fehlende Warteschlange zurückführen. Es gibt somit keinen Schreib-Overhead, da die Nachricht weder im Speicher, noch auf der Festplatte abgelegt wird.
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-consumer-vs-no-consumer.pdf}
-  \caption{Maximale Datenmenge im \textit{lokal}-Szenario}
+  \caption{Maximaler Durchsatz im \textit{lokalen}-Szenario.}
   \label{img:maxByteThroughputA}
 \end{figure}
 
@@ -176,29 +174,29 @@ Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung 
 %\end{figure}
 %Dieser Effekt laesst sich darauf zurueckfuehren, dass wenn mehrere Nachrichten auf einmal gesendet werden der Broker weniger routing overhead hat.
 
-Die selbe Messung wurde mit dem \textit{remote}-Szenario durchgeführt. Erwartet wird, dass die Datenmenge kleiner ist, da die Netzwerkverbindung beachtet werden muss. 
+Die selbe Messung wurde mit dem \textit{entfernten}-Szenario durchgeführt. Erwartet wird, dass der Datendurchsatz kleiner ist, da die Netzwerkverbindung beachtet werden muss. 
 %B
-Die Gegenüberstellung für den Fall, dass es einen Sender, aber keine Empfänger gibt ist in \autoref{img:maxByteThroughputNoConsumerB} zu sehen. Die an das \textit{remote}-System gesendete Datenmenge ist dabei deutlich kleiner als zuvor. Diese nähert sich dem Wert von ca. 700 Mbyte anstatt 1.5 Gbyte an. Die Messung mit Empfänger ist in \autoref{img:maxByteThroughputB} abgebildet. Auch hier ist die gesendete Datenmenge deutlich kleiner und nähert sich nur einem Wert von ca. 400 Mbyte anstatt 700 Mbyte an.
+Die Gegenüberstellung für den Fall, dass es einen Sender, aber keine Empfänger gibt ist in \autoref{img:maxByteThroughputNoConsumerB} zu sehen. Der Datendurchsatz an das \textit{entfernte}-System ist dabei deutlich kleiner als zuvor. Diese nähert sich dem Wert von ca. 700 MByte anstatt 1,5 GByte an. Die Messung mit Empfänger ist in \autoref{img:maxByteThroughputB} abgebildet. Auch hier ist der Datendurchsatz deutlich kleiner und nähert sich nur einem Wert von ca. 400 MByte anstatt 700 MByte an.
 \begin{figure}
 \center
  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-no-consumer-AvsB.pdf}
-  \caption{Maximale Datenmenge ohne Empfänger im \textit{remote}-Szenario}
+  \caption{Vergleich des maximalen Durchsatz ohne Empfänger zwischen dem \textit{lokalen}- und  \textit{entfernten}-Szenario.}
   \label{img:maxByteThroughputNoConsumerB}
 \end{figure}
 \begin{figure}
 \center
  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-AvsB.pdf}
-  \caption{Maximale Datenmenge mit Empfänger im \textit{remote}-Szenario}
+  \caption{Vergleich des maximalen Durchsatz mit Empfänger zwischen dem \textit{lokalen}- und  \textit{entfernten}-Szenario.}
   \label{img:maxByteThroughputB}
 \end{figure}
 %E
-Obwohl beide Testmaschinen vom selben Anbieter sind, unterscheiden sich die möglichen Datenmengen zwischen einem lokalen und entfernten Broker. Dieser Unterschied kann auf den möglichen Durchsatz einer Netzwerkverbindung zuruckgeführt werden. Somit ist der mögliche Durchsatz einer Verbindung zwischen Sender, Empfänger und dem Broker ein limitierender Faktor und hat somit auch Einfluss auf die Performance des Gesamtsystems.
+Obwohl beide Testmaschinen vom selben Anbieter sind, unterscheiden sich der mögliche Datendurchsatz zwischen einer lokalen und entfernten RMQ-Instanz. Dieser Unterschied kann auf den möglichen Durchsatz einer Netzwerkverbindung zurückgeführt werden. Somit ist der mögliche Durchsatz einer Verbindung zwischen Sender, Empfänger und RMQ ein limitierender Faktor und hat somit auch Einfluss auf die Performance des Gesamtsystems.
 
 \subsubsection{Ansteigen des Füllstands der Warteschlange}
 \label{sec:queueGrowth}
-Diese Messung untersucht die Auswirkung des Warteschlangen-Füllstands auf die Latenz der einzelnen Nachrichten. Die Messung besteht aus einem Sender und einem Empfänger. Die Senderate beträgt zwei Nachrichten pro Sekunde, der Empfänger empfängt jedoch nur eine Nachricht pro Sekunde. Die Nachrichten sind dabei 1 Kbyte groß. Die Messung wurde mit \textit{lokal}-Szenario durchgeführt. Erwartet wird, dass die Latenz der Nachrichten mit Ansteigen des Warteschlangenfüllstandes wächst, da die Nachrichten länger in der Warteschlange warten, bis sie abgeholt werden.
+Diese Messung untersucht die Auswirkung des Warteschlangen-Füllstands auf die Latenz der einzelnen Nachrichten. Die Messung besteht aus einem Sender und einem Empfänger. Die Senderate beträgt zwei Nachrichten pro Sekunde, der Empfänger empfängt jedoch nur eine Nachricht pro Sekunde. Die Nachrichten sind dabei 1 KByte groß. Die Messung wurde mit dem \textit{lokalen}-Szenario durchgeführt. Erwartet wird, dass die Latenz der Nachrichten mit Ansteigen des Warteschlangenfüllstands wächst, da die Nachrichten länger in der Warteschlange warten, bis sie abgeholt werden.
 %B
-In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \autoref{img:queuegrowth}a der Füllstand der Warteschlange zu sehen. Diese wächst pro Sekunde um eine Nachricht die nicht abgeholt wird an. In \autoref{img:queuegrowth}b ist die Latenz der Nachrichten abgebildet. Wie erwartet steigt diese mit Ansteigen des Füllstandes, da die Nachrichten länger in der Warteschlange warten müssen, bis sie abgeholt werden.
+In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \autoref{img:queuegrowth}a der Füllstand der Warteschlange zu sehen. Diese wächst pro Sekunde um eine Nachricht die nicht abgeholt wird an. In \autoref{img:queuegrowth}b ist die Latenz der Nachrichten abgebildet. Wie erwartet steigt diese mit Ansteigen des Füllstands, da die Nachrichten länger in der Warteschlange warten müssen, bis sie abgeholt werden.
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/queuegrowth.pdf}
@@ -208,7 +206,7 @@ In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \a
 
 \subsubsection{Konfiguration: Warteschlangenlänge begrenzen}
 \label{sec:maxlength}
-Die vorherige Messung hat gezeigt, das sich das Anwachsen der Warteschlange negativ auf die Latenz der Nachrichten auswirkt. Wie bereits erwähnt erlaubt RMQ einige Konfigurationen. Eine davon ist das Setzen einer maximal Länge für Warteschlangen. Damit soll die Warteschlange kurz gehalten werden und die Latenz der Nachrichten klein. Damit wird dem Effekt der in der vorherigen Messung untersucht wurde, entgegengewirken. Standardmäßig wird der Kopf der Warteschlange verworfen. Mit der folgenden Messung soll diese Konfiguration untersucht werden. Dazu wurden drei Warteschlange angelegt. Diese hatten eine maximal Länge von 100, 5000 und 50.000 Nachrichten. Die Größe von 50.000 ist die RMQ-Standardgröße für Warteschlangen. Damit man die Auswirkung auf volle Warteschlangen sehen kann wurde die Sende- und Empfangsrate entsprechend angepasst. Die Senderate wurde auf 1000 und die Empfangsrate auf 100 Nachrichten pro Sekunde eingestellt. Die Nachrichten Größe war 100 Bytes. Die Messung wurde mit dem \textit{lokal}-Szenario durchgeführt. Erwartet wird, dass sobald die Warteschlange voll wird, die Latenz nicht mehr zu nimmt. Dieser Moment sollte schneller erreicht werden, je kleiner die Warteschlange ist.
+Die vorherige Messung hat gezeigt, das sich das Anwachsen der Warteschlange negativ auf die Latenz der Nachrichten auswirkt. Wie bereits erwähnt erlaubt RMQ einige Konfigurationen. Eine davon ist das Setzen einer maximal Länge für Warteschlangen. Damit soll die Warteschlange kurz gehalten werden und die Latenz der Nachrichten klein. Damit wird dem Effekt, der in der vorherigen Messung untersucht wurde, entgegengewirkt. Standardmäßig wird der Kopf der Warteschlange verworfen. Mit der folgenden Messung soll diese Konfiguration untersucht werden. Dazu wurden drei Warteschlangen angelegt. Diese hatten eine maximal Länge von 100, 5000 und 50.000 Nachrichten. Die Größe von 50.000 ist die RMQ-Standardgröße für Warteschlangen. Damit man die Auswirkung auf volle Warteschlangen sehen kann wurde die Sende- und Empfangsrate entsprechend angepasst. Die Senderate wurde auf 1000 und die Empfangsrate auf 100 Nachrichten pro Sekunde eingestellt. Die Nachrichten Größe war 100 Bytes. Die Messung wurde mit dem \textit{lokalen}-Szenario durchgeführt. Erwartet wird, dass sobald die Warteschlange voll wird, die Latenz nicht mehr zu nimmt. Dieser Moment sollte schneller erreicht werden, je kleiner die Warteschlange ist.
 %B
 Die Ergebnisse sind in \autoref{img:maxlength} abgebildet. Wie erwartet wachsen die Latenzen der Nachrichten bei den begrenzten Warteschlangen ab einem bestimmten Moment nicht weiter an. Wie in \autoref{img:maxlength}a und \autoref{img:maxlength}b zu sehen ist, tritt dieser Moment für die kürzere Warteschlange früher ein. In \autoref{img:maxlength}c wächst die Latenz immer weiter.
 \begin{figure}
@@ -218,7 +216,7 @@ Die Ergebnisse sind in \autoref{img:maxlength} abgebildet. Wie erwartet wachsen 
   \label{img:maxlength}
 \end{figure}
 %E
-Diese Konfiguration zeigt, dass die Warteschlangenbegrenzung einen Einfluss auf die Latenz hat und man diese begrenzen kann, wenn man die Warteschlangengröße begrenzt. Der Nachteil dabei ist, dass Nachrichten verworfen werden, sobald die Warteschlange voll ist. Somit hat auch die Warteschlangengröße einen Einfluss auf die Performance. 
+Diese Konfiguration zeigt, dass die Begrenzung der Warteschlangengröße einen Einfluss auf die Latenz hat, da man sie damit begrenzen kann. Der Nachteil dabei ist, dass Nachrichten verworfen werden, sobald die Warteschlange voll ist. Somit hat auch die Warteschlangengröße einen Einfluss auf die Performance. 
 
 %wenn Queue voll, dann wird Msgrate angepasst
 
@@ -233,7 +231,7 @@ Diese Konfiguration zeigt, dass die Warteschlangenbegrenzung einen Einfluss auf 
 
 \subsubsection{Konfiguration: Lazy-Warteschlangen}
 \label{sec:rmqLazy}
-Eine weitere Konfiguration die RMQ ermöglicht sind Lazy-Warteschlangen. Wie bereits erwähnt, werden dabei Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben. Dabei wird kein Unterschied gemacht ob die ankommenden Nachrichten persistent oder nicht-persistent sind. In der nächsten Messung soll untersucht werden ob die Konfiguration von Lazy-Warteschlangen Auswirkungen auf die Performance hat. Dabei wurde auch die Größe einer Nachricht betrachtet. Für die Messung wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokal}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht, im Vergleich zu nicht-persistenten Nachrichten größer ist. Außerdem sollte die Messung ähnliche Ergebnisse liefern wie die Messung mit persistenten Nachrichten.
+Eine weitere Konfiguration die RMQ ermöglicht sind Lazy-Warteschlangen. Wie bereits erwähnt, werden dabei Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben. Dabei wird kein Unterschied gemacht ob die ankommenden Nachrichten persistent oder nicht-persistent sind. In der nächsten Messung soll untersucht werden ob die Konfiguration von Lazy-Warteschlangen Auswirkungen auf die Performance hat. Dabei wurde auch die Größe einer Nachricht betrachtet. Für die Messung wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokale}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht, im Vergleich zu nicht-persistenten Nachrichten größer ist. Außerdem sollte die Messung ähnliche Ergebnisse liefern wie die Messung mit persistenten Nachrichten.
 %B
 In \autoref{img:lazy} ist ein Vergleich der Messung mit nicht-persistenten und den Messergebnissen mit Lazy-Warteschlangen abgebildet. Zu sehen ist, dass die Latenz mit Lazy-Warteschlangen größer ist, als die der nicht-persistenten Nachrichten. Außerdem sind die Messergebnisse dieser Messung und der Messung mit persistenten Nachrichten ähnlich.
 \begin{figure}
@@ -243,13 +241,13 @@ In \autoref{img:lazy} ist ein Vergleich der Messung mit nicht-persistenten und d
   \label{img:lazy}
 \end{figure}
 %E
-Grund hierfür ist das die Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben werden. Somit hat diese Konfiguration einen ähnlichen Einfluss auf die Performance, wie der Einsatz persistenter Nachrichten.
+Grund hierfür ist, dass die Nachrichten auf die Festplatte anstatt in den Hauptspeicher geschrieben werden. Somit hat diese Konfiguration einen ähnlichen Einfluss auf die Performance, wie der Einsatz persistenter Nachrichten.
 
 
 
 \subsubsection{Mehrere Empfänger}
 \label{sec:varyingConsumer}
-In \autoref{sec:queueGrowth} und \autoref{sec:maxlength} war bereits zu sehen, dass volle Warteschlangen einen Einfluss auf die Latenz haben. In dieser Messung soll geprüft werden, ob es einen Unterschied macht einen oder mehrere Empfänger eine Warteschlange abarbeiten zu lassen. Dazu wurde die Senderate eines Senders auf 1000 Nachrichten und die Empfangsrate auf 200 Nachrichten pro Sekunde limitiert. Alle Empfänger greifen auf die selbe Warteschlange zu. Außerdem wurde eine Referenzmessung mit einem Sender und einem Empfänger mit einer Sende- und Empfangsrate von 1000 durchgeführt. Die Messung wurde mit dem \textit{lokal}-Szenario durchgeführt. Erwartet wird, dass es keinen unterschied macht ob ein oder mehrere Empfänger eine Warteschlange abarbeiten.
+In \autoref{sec:queueGrowth} und \autoref{sec:maxlength} war bereits zu sehen, dass volle Warteschlangen einen Einfluss auf die Latenz haben. In dieser Messung soll geprüft werden, ob es einen Unterschied macht, einen oder mehrere Empfänger eine Warteschlange abarbeiten zu lassen. Dazu wurde die Senderate eines Senders auf 1000 Nachrichten und die Empfangsrate auf 200 Nachrichten pro Sekunde limitiert. Alle Empfänger greifen auf die selbe Warteschlange zu. Außerdem wurde eine Referenzmessung mit einem Sender und einem Empfänger mit einer Sende- und Empfangsrate von 1000 durchgeführt. Die Messung wurde mit dem \textit{lokalen}-Szenario durchgeführt. Erwartet wird, dass es keinen Unterschied macht ob ein oder mehrere Empfänger eine Warteschlange abarbeiten.
 %B
 In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. \autoref{img:varyingConsumer}a zeigt dabei einen Empfänger der alleine die Nachrichten empfängt. Da der Empfänger die Nachrichten nicht schnell genug empfängt, steigt die Latenz. In \autoref{img:varyingConsumer}b kommt ein weiterer Empfänger hinzu. Die Latenz wächst nicht ganz so schnell. \autoref{img:varyingConsumer}c zeigt fünf Empfänger die gemeinsam die Warteschlange abarbeiten. Im Vergleich zu der Referenzmessung in \autoref{img:varyingConsumer}d mit einem Empfänger, streut die Messung mit mehreren Empfängern stärker.
 \begin{figure}
@@ -262,7 +260,7 @@ In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. \auto
 Diese stärkere Streuung lässt sich mit der Synchronisation der Empfänger erklären, die an einer gemeinsamen Warteschlange arbeiten. Da diese Streuung nicht stark ist, wird dieser Effekt im Folgenden vernachlässigt. Somit zeigt diese Messung, dass mehrere Empfänger gemeinsam an die Leistung eines einzelnen Empfängers heran kommen. 
 
 \subsubsection{Mehrere Sender}
-Diese Messung soll überprüfen, ob mehrere Sender genau so schnell die gleiche Menge an Nachrichten versenden können, wie ein einzelner. Dazu wurde als Referenz ein Sender mit einer Senderate von 5000 Nachrichten die Sekunde und fünf Sender mit jeweils 1000 Nachrichten die Sekunde untersucht. Die Messung wurde mit dem \textit{lokal}-Szenario durchgeführt. Erwartet wird, dass es keinen Unterschied macht, ob ein Sender 5000 Nachrichten sendet oder fünf Sender jeweils 1000 Nachrichten senden. 
+Diese Messung soll überprüfen, ob mehrere Sender genau so schnell die gleiche Menge an Nachrichten versenden können, wie ein einzelner. Dazu wurde als Referenz ein Sender mit einer Senderate von 5000 Nachrichten die Sekunde und fünf Sender mit jeweils 1000 Nachrichten die Sekunde untersucht. Die Messung wurde mit dem \textit{lokalen}-Szenario durchgeführt. Erwartet wird, dass es keinen Unterschied macht, ob ein Sender 5000 Nachrichten sendet oder fünf Sender jeweils 1000 Nachrichten senden. 
 %B
 In \autoref{img:varyingProducer} sind die Ergebnisse dieser Messung zu sehen. Dabei ist zu sehen, dass mehr Sender etwas schlechter abschneiden als ein einzelner. 
 \begin{figure}
@@ -296,9 +294,9 @@ Auch in diesem Fall kann die höhere Latenz, der mehreren Sender, auf die Synchr
 \label{sec:rmqZusammenfassung}
 Mithilfe der durchgeführten Messungen konnten die folgenden Einflussfaktoren identifiziert werden, die einen Einfluss auf die Performance haben:
 \begin{itemize}
-    \item Die Nachrichtengröße hat einen Einfluss auf die Latenz einer Nachricht, die mögliche Senderate und die insgesamt gesendete Datenmenge.
-    \item Die Netzwerklatenz zwischen Sender, Empfänger und Broker hat einen zusätzlichen Einfluss auf die Latenz einzelner Nachrichten.
-    \item Die mögliche Datenmenge die auf einmal gesendet werden kann, ist durch die Netzwerkverbindung begrenzt.
+    \item Die Nachrichtengröße hat einen Einfluss auf die Latenz einer Nachricht, die mögliche Senderate und den Datendurchsatz.
+    \item Die Netzwerklatenz zwischen Sender, Empfänger und RMQ hat einen zusätzlichen Einfluss auf die Latenz einzelner Nachrichten.
+    \item Der Datendurchsatz, ist durch die Netzwerkverbindung begrenzt.
     \item Wenn Nachrichten direkt aus der Warteschlange empfangen werden können, ist ihre Latenz gering.
     \item Die Latenz der Nachricht steigt, wenn die Warteschlange sich füllt und die Nachrichten in ihr warten müssen um abgeholt zu werden.
     \item Das Begrenzen der Warteschlangengröße kann die Latenz der Nachrichten klein halten.
