@@ -148,20 +148,20 @@ In \autoref{img:msgsize} sind die Ergebnisse dieser Messung abgebildet. Durch di
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/msg-rate-vs-send-bytes.pdf}
-  \caption{Nachrichtenmange und Durchsatz in Abhängigkeit der Nachrichtengröße.}
+  \caption{Nachrichtenmenge und Datendurchsatz in Abhängigkeit der Nachrichtengröße.}
   \label{img:msgsize}
 \end{figure}
 %https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
 
 \subsubsection{Maximaler Datendurchsatz}
 \label{sec:maxthroughput}
-Nachdem die Effekte der zunehmende Nachrichtengröße geprüft wurden, soll nun geprüft werden wie groß der mögliche Datendurchsatz ist. Dazu wurden Nachrichten der Größe 1 KByte bis 200 KByte gesendet. Es wurden zwei Messungen durchgeführt. Im Fall der ersten Messung existiert ein Sender und kein Empfänger, bei der zweiten Messung ein Sender und ein Empfänger. Die Messung wurde mit dem \textit{lokalen}-Szenario durchgeführt. Erwartet wird, dass die Messung ohne Empfänger einen höheren Durchsatz ermöglicht, da diese direkt verworfen werden. 
+Nachdem die Effekte der zunehmende Nachrichtengröße geprüft wurden, soll nun geprüft werden wie groß der mögliche Datendurchsatz ist. Dazu wurden Nachrichten der Größe 1 KByte bis 200 KByte gesendet. Es wurden zwei Messungen durchgeführt. Im Fall der ersten Messung existiert ein Sender und kein Empfänger, bei der zweiten Messung ein Sender und ein Empfänger. Die Messung wurde mit dem \textit{lokalen}-Szenario durchgeführt. Erwartet wird, dass die Messung ohne Empfänger einen höheren Datendurchsatz ermöglicht, da diese direkt verworfen werden. 
 %B
 Die Ergebnisse sind in \autoref{img:maxByteThroughputA} zu sehen. Die Abbildung zeigt, dass wenn kein Empfänger vorhanden ist, mit zunehmender Nachrichtengröße der Datendurchsatz sich einen Wert von ca. 1,5 GByte pro Sekunde annähert. Wenn ein Empfänger vorhanden ist, nähert sich der Datendurchsatz an 700 MByte pro Sekunde an. Dieser Unterschied lässt sich auf den fehlenden Empfänger bzw. die fehlende Warteschlange zurückführen. Es gibt somit keinen Schreib-Overhead, da die Nachricht weder im Speicher, noch auf der Festplatte abgelegt wird.
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-consumer-vs-no-consumer.pdf}
-  \caption{Maximaler Durchsatz im \textit{lokalen}-Szenario.}
+  \caption{Maximaler Datendurchsatz im \textit{lokalen}-Szenario.}
   \label{img:maxByteThroughputA}
 \end{figure}
 
@@ -180,17 +180,17 @@ Die Gegenüberstellung für den Fall, dass es einen Sender, aber keine Empfänge
 \begin{figure}
 \center
  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-no-consumer-AvsB.pdf}
-  \caption{Vergleich des maximalen Durchsatz ohne Empfänger zwischen dem \textit{lokalen}- und  \textit{entfernten}-Szenario.}
+  \caption{Vergleich des maximalen Datendurchsatz ohne Empfänger zwischen dem \textit{lokalen}- und  \textit{entfernten}-Szenario.}
   \label{img:maxByteThroughputNoConsumerB}
 \end{figure}
 \begin{figure}
 \center
  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-unlimited-AvsB.pdf}
-  \caption{Vergleich des maximalen Durchsatz mit Empfänger zwischen dem \textit{lokalen}- und  \textit{entfernten}-Szenario.}
+  \caption{Vergleich des maximalen Datendurchsatz mit Empfänger zwischen dem \textit{lokalen}- und  \textit{entfernten}-Szenario.}
   \label{img:maxByteThroughputB}
 \end{figure}
 %E
-Obwohl beide Testmaschinen vom selben Anbieter sind, unterscheiden sich der mögliche Datendurchsatz zwischen einer lokalen und entfernten RMQ-Instanz. Dieser Unterschied kann auf den möglichen Durchsatz einer Netzwerkverbindung zurückgeführt werden. Somit ist der mögliche Durchsatz einer Verbindung zwischen Sender, Empfänger und RMQ ein limitierender Faktor und hat somit auch Einfluss auf die Performance des Gesamtsystems.
+Obwohl beide Testmaschinen vom selben Anbieter sind, unterscheiden sich der mögliche Datendurchsatz zwischen einer lokalen und entfernten RMQ-Instanz. Dieser Unterschied kann auf den möglichen Datendurchsatz einer Netzwerkverbindung zurückgeführt werden. Somit ist der mögliche Datendurchsatz einer Verbindung zwischen Sender, Empfänger und RMQ ein limitierender Faktor und hat somit auch Einfluss auf die Performance des Gesamtsystems.
 
 \subsubsection{Ansteigen des Füllstands der Warteschlange}
 \label{sec:queueGrowth}
@@ -252,7 +252,7 @@ In \autoref{sec:queueGrowth} und \autoref{sec:maxlength} war bereits zu sehen, d
 In \autoref{img:varyingConsumer} sind die Ergebnisse der Messung zu sehen. \autoref{img:varyingConsumer}a zeigt dabei einen Empfänger der alleine die Nachrichten empfängt. Da der Empfänger die Nachrichten nicht schnell genug empfängt, steigt die Latenz. In \autoref{img:varyingConsumer}b kommt ein weiterer Empfänger hinzu. Die Latenz wächst nicht ganz so schnell. \autoref{img:varyingConsumer}c zeigt fünf Empfänger die gemeinsam die Warteschlange abarbeiten. Im Vergleich zu der Referenzmessung in \autoref{img:varyingConsumer}d mit einem Empfänger, streut die Messung mit mehreren Empfängern stärker.
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/measurement/varying-consumer.pdf}
+  \includegraphics[width=0.9\textwidth]{images/measurement/varying-consumer.pdf}
   \caption{Verschiedene Anzahl an Empfängern mit gleicher Empfangsrate.}
   \label{img:varyingConsumer}
 \end{figure}
