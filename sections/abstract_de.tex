@@ -12,9 +12,9 @@
 
 \Abstract
 %1. Eingrenzung des Forschungsbereichs (In welchem Themengebiet ist die Arbeit angesiedelt? Wie ist das Verhältnis zum Thema der Konferenz/des Journals?)
-\gls{mom} wird in verschiedenen Domänen genutzt und wird verwendet um verteilte, und skalierbare Systeme zu bauen. Dabei werden hohe Anforderungen an Performance, Verfügbarkeit und Sicherheit gestellt.
+\gls{mom} wird in verschiedenen Domänen genutzt und wird verwendet um verteilte-, und skalierbare Systeme zu bauen. Dabei werden hohe Anforderungen an Performance, Verfügbarkeit und Sicherheit gestellt.
 %2. Beschreibung des Problems, das in dieser Arbeit gelöst werden soll (Was ist das Problem und warum ist es wichtig dies zu lösen?)
-Es gibt eine Vielzahl von verschiedenen \gls{mom}s, die jeweils unterschiedliche Ziele oder Schwerpunkte haben. Währende die einen besonderen Wert auf Performance oder auf Verfügbarkeit legen, möchten andere allseitig einsetzbar sein. Außerdem bieten \gls{mom}s eine hohe Konfigurierbarkeit an. Somit ist bereits Expertenwissen notwendig, wenn eine \gls{mom} ausgewählt oder konfiguriert werden soll. Das Ziel dieser Masterarbeit ist es, den Softwarearchitekten bei der Wahl und der Konfiguration einer \gls{mom}, bereits in der Designphase, zu unterstützen.
+Es gibt eine Vielzahl von verschiedenen \gls{mom}s, die jeweils unterschiedliche Ziele oder Schwerpunkte haben. Während die einen besonderen Wert auf Performance oder auf Verfügbarkeit legen, sind andere dafür konzipiert, allseitig einsetzbar zu sein. Außerdem bieten \gls{mom}s eine hohe Konfigurierbarkeit an. Somit ist bereits Expertenwissen notwendig, wenn eine \gls{mom} ausgewählt oder konfiguriert werden soll. Das Ziel dieser Masterarbeit ist es, den Softwarearchitekten bei der Wahl und der Konfiguration einer \gls{mom} bereits in der Designphase zu unterstützen.
 %3. Mängel an existierenden Arbeiten bzgl. des Problems (Warum ist es ein Problem, obwohl sich schon andere mit dem gleichen Thema beschäftigt haben?)
 Existierende Modellierungs- und Vorhersagetechniken vernachlässigen den Einfluss von Warteschlangen in Systemen mit einer nachrichtenbasierten Middleware. Dadurch können bestimmte Effekte der \gls{mom} nicht abgebildet werden. Ein solcher Effekt ist zum Beispiel, dass die Dauer, bis eine Nachricht beim Empfänger ankommt, länger wird, wenn die Warteschlange nicht leer ist.
 %4. Eigener Lösungsansatz (Welcher Ansatz wurde in dieser Arbeit verwendet, um das Problem zu lösen? Was ist der Beitrag dieses Artikels?)
@@ -25,4 +25,4 @@ Deshalb wurde im Rahmen dieser Masterarbeit ein Ansatz entwickelt, bei dem aus e
     \item Eine Modeltransformation um bereits existierende Modell-Elemente zum Abbilden eventbasierter Kommunikation wiederzuverwenden.
 \end{itemize}
 %5 Art der Validierung + Ergebnisse (Wie wurde nachgewiesen, dass die Arbeit die versprochenen Verbesserung wirklich vollbringt (Fallstudie, Experiment, o.ä.); Was waren die Ergebnisse der Validierung (idealerweise Prozentsatz der Verbesserung)?)
-Mithilfe des SPECjms2007 Benchmarks wurde eine Evaluation des Ansatzes durchgeführt. Dabei wurde die Anwendbarkeit und Vorhersagegenauigkeit evaluiert. Bei der Vorhersagegenauigkeit konnte bei den betrachtete Szenarien ein Vorhersagefehler von unter 26\% nachgewiesen werden.
+Mithilfe des SPECjms2007-Benchmarks wurde eine Evaluation des Ansatzes durchgeführt. Dabei wurde die Anwendbarkeit und Vorhersagegenauigkeit evaluiert. Bei der Vorhersagegenauigkeit konnte bei den betrachtete Szenarien ein Vorhersagefehler von unter 26\% nachgewiesen werden.
