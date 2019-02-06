@@ -67,7 +67,7 @@ Im Folgenden wird in \autoref{sec:specjms} der SPECjms2007 Benchmark vorgestellt
 
 \section{SPECjms2007}
 \label{sec:specjms}
-Das für die Evaluierung verwendete System ist das im SPECjms2007 Benchmark verwendete Testsystem \cite{Sachs2013}. Der Benchmark stellt eine reale Anwendung dar und umfasst eine Reihe von verschiedener Interaktionen, die sowohl Punkt-zu-Punkt- als auch Publish/Subscribe-Nachrichten umfasst. Das Hauptziel des SPECjms2007 Benchmarks ist es, einen Standard-Workload bereitzustellen, der die Leistung und Skalierbarkeit von JMS-basierten nachrichtenbasierten Middleware-Plattformen bewertet. Bei dem System handelt es sich um ein Lieferkettenmanagement für eine Supermarktkette. Der Benchmark verwendet verschiedene Nachrichtentypen und verwendet Nachrichten verschiedenen Größe. Für die Masterarbeit liegt sowohl die Implementierung des Benchmarks, als auch eine Modellierung aus einer früheren Arbeit von Christoph Rathfelder \cite{Rathfelder2013} vor. Dieses System wird für die Evaluierung verwendet werden und wird im Folgenden beschrieben. 
+Das für die Evaluierung verwendete System ist das im SPECjms2007 Benchmark verwendete Testsystem \cite{Sachs2013}. Der Benchmark stellt eine reale Anwendung dar und umfasst eine Reihe verschiedener Interaktionen, die sowohl Punkt-zu-Punkt- als auch Publish/Subscribe-Nachrichten umfasst. Das Hauptziel des SPECjms2007 Benchmarks ist es, einen Standard-Workload bereitzustellen, der die Leistung und Skalierbarkeit von JMS-basierten nachrichtenbasierten Middleware-Plattformen bewertet. Bei dem System handelt es sich um ein Lieferkettenmanagement für eine Supermarktkette. Der Benchmark verwendet verschiedene Nachrichtentypen und verwendet Nachrichten verschiedenen Größe. Für die Masterarbeit liegt sowohl die Implementierung des Benchmarks, als auch eine Modellierung aus einer früheren Arbeit von Christoph Rathfelder \cite{Rathfelder2013} vor. Dieses System wird für die Evaluierung verwendet werden und wird im Folgenden beschrieben. 
 
 \subsection{Anwendungsszenario}
 Das gewählte Anwendungsszenario bildet die Lieferkette eines Supermarktunternehmens ab. In \autoref{img:specjmsInteraction} sind die beteiligten Rollen abgebildet und wie sie miteinander kommunizieren. Die beteiligten lassen sich wie folgt gruppieren: 
@@ -97,7 +97,7 @@ Der SPECjms2007 Benchmark sieht insgesamt sieben verschiedenen Interaktionsmögl
     \item Kreditkarten Hot-List (\emph{Publisher/Subsciber}).
     
 \end{enumerate}
-Im Rahmen der Masterarbeit wurden (, aus zeitlichen Gründen,) zwei dieser Interaktionen betrachtet. Um trotzdem verschiedene Nachrichtenmodelle und Interaktionstypen betrachten zu können wurden die folgenden beiden Interaktionen ausgewählt.
+Im Rahmen der Masterarbeit wurden zwei dieser Interaktionen betrachtet. Um trotzdem verschiedene Nachrichtenmodelle und Interaktionstypen betrachten zu können wurden die folgenden beiden Interaktionen ausgewählt.
 %warum wurden nur 2 und wiese genau diese ausgewaehlt? (Zeit, welche kommunikationsarten konnten abgedeckt werden?)\\
 %Nachrichtenmodelle mit einbeziehen \\
 %Interaktionstypen mit einbeziehen \\
@@ -123,7 +123,7 @@ Diese Interaktion übt Punkt-Zu-Punkt Kommunikation zwischen einem SM und seinem
 
 \subsubsection{Interaktion 3}
 \label{sec:interaction3desc}
-Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Dabei werden persistenten Nachrichten versendet. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3seq} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet. In der Standardkonfiguration komuniziert ein HQ mit zehn SMs.
+Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und seinen SMs aus. Dabei werden persistenten Nachrichten versendet. Es handelt sich um eine Eins-Zu-Viele Kommunikation und wird ausgelöst, wenn die Preise der Ware durch die Firmenleitung (HQ) geändert werden. Um dies zu kommunizieren, sendet das HQ Nachrichten an alle SMs. In \autoref{img:specjmsInteraction3seq} ist der Ablauf der Interaktion als Sequenzdiagramm abgebildet. In der Standardkonfiguration kommuniziert ein HQ mit zehn SMs.
 \begin{itemize}
     \item Das HQ sendet ein Preisaktualisierung (\emph{PriceUpdate}).
     \item Betroffene SMs empfangen und ändern die Information in ihrem System.
@@ -141,16 +141,16 @@ Diese Interaktion übt Publisher/Subscriber Kommunikation zwischen dem HQ und se
 \subsection{Konfiguration}
 Der SPECjms2007 Benchmark erlaubt verschiedene Konfigurationen durch den Benutzer. Dabei kann die Topologie sowohl horizontal, als auch vertikal skaliert werden. Bei der horizontalen Skalierung, wird die Anzahl der Akteure erhöht, während die Anzahl der gesendeten Nachrichten pro Akteur gleich bleibt. Die vertikale Topologie erhöht die Anzahl der Nachrichten die die Sender senden. Beide Skalierungsarten werden in einer eigenen Konfigurationsdatei mithilfe des Parameters BASE eingestellt.
 
-Außerdem lassen sich für jede Nachricht die Größe und die Verteilung festlegen, mit welcher Wahrscheinlichkeit eine bestimmte Nachrichtengröße auftritt. Die Nachrichtengröße lässt sich mit einer Formel berechnen. Die Formel und ihre Bestandteile wurden in der Arbeit von Sachs et al.\cite{Sachs2013} hergeleitet. Mit folgender Formel lassen sich die Nachrichtengröße berechnen: 
-\[m1 + x * b .\] 
-Dabei kann \emph{x} vom Benutzer des Benchmarks eingestellt werden. Somit kann für jede Nachricht die Wahrscheinlichkeit und ihre Größe festgelegt werden. In \autoref{tab:parameters} sind die für diese Arbeit wichtigen Parameter abgebildet. Die Verteilungen und die dazugehörige Nachrichtengrößen sind in \autoref{tab:msgpropandsize} abgebildet.
+Außerdem lassen sich für jede Nachricht die Größe und die Verteilung festlegen, mit welcher Wahrscheinlichkeit eine bestimmte Nachrichtengröße auftritt. Die Nachrichtengröße lässt sich mit einer Formel berechnen. Die Formel und ihre Bestandteile wurden in der Arbeit von Sachs et al. \cite{Sachs2013}, mithilfe von Messungen, hergeleitet. Mit folgender Formel lassen sich die Nachrichtengröße berechnen: 
+\[m_1 + x * b .\] 
+Dabei kann $x$ vom Benutzer des Benchmarks eingestellt werden. Somit kann für jede Nachricht die Wahrscheinlichkeit und ihre Größe festgelegt werden. In \autoref{tab:parameters} sind die für diese Arbeit wichtigen Parameter abgebildet. Die Verteilungen und die dazugehörige Nachrichtengrößen sind in \autoref{tab:msgpropandsize} abgebildet.
 
 
 \begin{table}
 \center
   \begin{tabular}{|c|l|l|l|}
   \hline
-    \textbf{Interaktion} & \textbf{Nachricht} & \textit{m1} & \textit{b}  \\
+    \textbf{Interaktion} & \textbf{Nachricht} & \textit{\(m_1\)} & \textit{b}  \\
     \hline \hline
     \multirow{6}{*}{1} & Order & 0,0565 & 1,4534 \\\cline{2-4}
     & OrderConf & 0,0565 & 1,4534 \\\cline{2-4}
@@ -161,7 +161,7 @@ Dabei kann \emph{x} vom Benutzer des Benchmarks eingestellt werden. Somit kann f
     \hline
      3 & PriceUpdate & - & 2,310 \\\hline
   \end{tabular}
-	\caption{\label{tab:parameters} Parameter zur Berechnung der Nachrichtengröße. Auszug aus Sachs et al.\cite{Sachs2013}}
+	\caption{\label{tab:parameters} Parameter zur Berechnung der Nachrichtengröße. Auszug aus Sachs et al. \cite{Sachs2013}}
 \end{table}
 
 \begin{table}
@@ -261,7 +261,7 @@ In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmo
 
 \section{Evaluation der Vorhersagegenauigkeit}
 \label{sec:specjmsmodellvorhersage}
-Im Folgenden soll die Vorhersagegenauigkeit des Ansatzes dieser Masterarbeit mithilfe des zuvor vorgestellten SPECjms2007 Benchmark und der Modellierung dessen gezeigt werden. Wie bereits erwähnt werden dazu die Interaktionen eins und drei in ihrer, vom Benchmark vorgegebenen, Standardkonfiguration getestet. Als MOM wurde RMQ verwendet. Die einzelnen Messungen starteten mit eine zehn minütigen Aufwärmphase. Im Anschluss wurde eine 30 minütige Messung durchgeführt. Die Dauer wurde aus der Standardkonfiguration des Benchmarks übernommen. Jede Messung wurde zehn mal durchgeführt. Die Experimentumgebung ist, wie schon beim Ausmessen von RMQ, auf einem virtuellen Server ausgeführt worden. Die Spezifikation des Systems ist in \autoref{tab:systespec} abgebildet. Es wurde der Fall betrachtet, dass alle Sender, Empfänger und RMQ sich auf der selben Maschine befinden. Somit wurde der Aufbau wie in \autoref{img:machineoverview}a betrachtet. Für die Vorhersage wurde eine Performance-Analyse mithilfe der Palladio-Bench durchgeführt. Als Analysewerkzeug wurde \textbf{SimuCom} verwendet. Im Folgenden werden die Ergebnisse der Messungen und der Vorhersagen aus der Performance-Analyse, für beide Interaktionen und der jeweiligen Konfigurationen, präsentiert. Dazu wird der Fehler zwischen dem gemessenen und vorhergesagten Wert, für die Latenz einer Nachricht, berechnet. Die dazu verwendete Formel ist:
+Im Folgenden soll die Vorhersagegenauigkeit des Ansatzes dieser Masterarbeit mithilfe des zuvor vorgestellten SPECjms2007 Benchmark und der Modellierung dessen gezeigt werden. Wie bereits erwähnt werden dazu die Interaktionen eins und drei in ihrer, vom Benchmark vorgegebenen, Standardkonfiguration getestet. Als MOM wurde RMQ verwendet. Die einzelnen Messungen starteten mit eine zehn minütigen Aufwärmphase. Im Anschluss wurde eine 30 minütige Messung durchgeführt. Die Dauer wurde aus der Standardkonfiguration des Benchmarks übernommen. Jede Messung wurde zehn mal durchgeführt. Die Experimentumgebung ist, wie schon beim Ausmessen von RMQ, auf einem virtuellen Server ausgeführt worden. Die Spezifikation des Systems ist in \autoref{tab:systespec} abgebildet. Es wurde der Fall betrachtet, dass alle Sender, Empfänger und RMQ sich auf der selben Maschine befinden. Somit wurde der Aufbau wie in \autoref{img:machineoverview}a betrachtet. Für die Vorhersage wurde eine Performance-Analyse mithilfe der Palladio-Bench durchgeführt. Als Analysewerkzeug wurde \emph{SimuCom} verwendet. Im Folgenden werden die Ergebnisse der Messungen und der Vorhersagen aus der Performance-Analyse, für beide Interaktionen und der jeweiligen Konfigurationen, präsentiert. Dazu wird der relative Fehler zwischen dem gemessenen und vorhergesagten Wert, für die Latenz einer Nachricht, berechnet. Die dazu verwendete Formel ist:
 \[ Fehler\% = \frac{|Vorhersage - Messung|}{Messung} * 100 \]
 Der SPECjms2007 Benchmark liefert für jede Interaktion eine Interaktionszeit, die angibt, wie lange die Interaktion vom Senden der ersten Nachricht, bis zum Empfangen der letzten Nachricht gedauert hat. Außerdem wird für jede Nachricht die gesendet wird, auch die Latenz geliefert. Bei der Präsentation der Ergebnisse werden beide Werte verglichen. Die Performance-Analyse liefert hingegen nur die Latenz der einzelnen Nachrichten. Um eine Annäherung an die Interaktionszeit zu bekommen, werden die jeweils relevanten Ergebnisse aufaddiert.
 %CPU Auslastung des Specjms vs. Modellierung\\
@@ -276,7 +276,7 @@ Die Messergebnisse für Interaktion 1 des SPECjms2007 Benchmarks und der Perform
   \label{img:specjminteraction1results}
 \end{figure}
 
-In \autoref{img:specjminteraction1interactiontimeresults} ist außerdem ein Boxplot für die gesamte Interaktionszeit abgebildet. Diese setzt sich aus der Latenz der einzelnen Nachrichten wie folgt zusammen: \[Order + max(OrderConf, ShipDep, StatInfoOrder) + ShipInfo + ShipConf\] 
+In \autoref{img:specjminteraction1interactiontimeresults} ist außerdem ein Boxplot für die gesamte Interaktionszeit abgebildet. Diese setzt sich aus der Latenz der einzelnen Nachrichten wie folgt zusammen: \[\mathit{Order} + max(\mathit{OrderConf}, \mathit{ShipDep}, \mathit{StatInfoOrder}) + \mathit{ShipInfo} + \mathit{ShipConf}\] 
 Die Vorhersage der Interaktionszeit aus der Performance-Analyse ist 8,43 ms. Der Fehler zwischen dem Median der gemessenen Interaktionszeit und der Vorhersage beträgt 6,37\%.
 %noch mit groesseren Nachrichten \\
 
