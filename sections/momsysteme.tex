@@ -131,6 +131,7 @@ Somit ist neben der Nachrichtengröße auch die Netzwerklatenz ein Faktor, der d
 \end{figure}
 
 \subsubsection{Latenz einer persistente Nachricht}
+\label{sec:persistent}
 Da zuvor die Latenz nicht-persistenter Nachrichten ausgemessen wurde, wird in dieser Messung die Latenz einer persistenten Nachricht ausgemessen. Die Senderate wurde auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokale}-Szenario verwendet. Erwartet wird, dass die Latenz einer persistenten Nachricht größer als die einer nicht-persistenten Nachricht ist, da die Nachricht auch auf die Festplatte geschrieben wird.
 %B
 In \autoref{img:senderatepersisten} sind die Ergebnisse der Messung zu sehen. Außerdem wurde zu Vergleich auch die nicht-persistente Messung eingezeichnet. Wie erwartet ist die Latenz einer persistenten Nachricht größer. Der Grund hierfür ist, dass die Nachricht auch auf die Festplatte geschrieben wird, um eine Zustellung zu garantieren. Somit hat die Wahl zwischen nicht-persistenten und persistenten Nachrichten einen Einfluss auf die Performance.
