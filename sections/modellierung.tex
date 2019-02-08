@@ -16,8 +16,8 @@ Wie bereits in Abschnitt \ref{sec:eventbasetransformation} beschrieben, bietet d
 Dazu wird zunächst mithilfe einer Anforderungserhebung in \autoref{sec:anforderungserhebung} Anforderungen gesammelt werden, die eine solche Modellierung erfüllen soll. Im Anschluss wird in \autoref{sec:modell} die Modellierung einer MOM vorgestellt, die die Anforderungen erfüllen soll. In \autoref{sec:rmqRd} soll das Modell mithilfe der in Abschnitt \ref{sec:rmqBenchmark} ausgemessenen MOM kalibriert werden. Ziel dabei ist, dass das kalibrierte Modell sich wie die echte MOM verhält und die Einflussfaktoren, die dabei identifiziert wurden, auch sichtbar werden. Dazu wird in Abschnitt \ref{sec:performanceanalyse} das MOM-Modell in mehreren Simulationen eingesetzt und mit den Messungen verglichen. 
 \begin{figure}
 \center
-  \includegraphics[width=1\textwidth]{images/modelling/oldEventBased.png}
-  \caption{Aktuelle und gewünschte event-basierte-Kommunikation}
+  \includegraphics[width=1\textwidth]{images/modelling/modelingIstSoll.pdf}
+  \caption{Aktuelle und gewünschte event-basierte-Kommunikation.}
   \label{img:oldEventBased}
 \end{figure}
 
@@ -81,7 +81,7 @@ Im Systemmodell werden die einzelnen Komponenten aus dem Repository-Modell vom S
 \begin{figure}
 \center
   \includegraphics[width=1.4\textwidth, angle=90]{images/modelling/modelingSystem.pdf}
-  \caption{Systemmodell einer MOM}
+  \caption{Systemmodell einer MOM.}
   \label{img:mom_system}
 \end{figure}
 \subsection{Ausführungsumgebung und Allokation}
@@ -89,7 +89,7 @@ Im Ausführungsumgebungs-Modell kann der Software-Verteilungs-Experte die Hardwa
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/modelling/modelingRecEnv.pdf}
-  \caption{Ausführungsumgebung und Allokation einer MOM}
+  \caption{Ausführungsumgebung und Allokation einer MOM.}
   \label{img:mom_ressorceEnv}
 \end{figure}
 
@@ -98,20 +98,20 @@ Im Nutzungsmodell wird die Benutzung des Systems durch den Domänenexperten mode
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/modelling/modelingUsage.pdf}
-  \caption{Nutzungsmodell einer MOM mit einem Sender und Empfänger}
+  \caption{Nutzungsmodell einer MOM mit einem Sender und Empfänger.}
   \label{img:mom_usage}
 \end{figure}
 
 \section{Modellkalibrierung}
 \label{sec:rmqRd}
-In \cite{palladio17} wird Modellkalibrierung als Anreicherung von Modellen mit quantitativen Daten, wie Ressourcenbedarf, beschrieben. Je nachdem wie weit entwickelt das System ist, können diese Daten mithilfe von verschiedenen Techniken gewonnen werden. Mithilfe von Application-Performance-Monitoring wurde in Abschnitt \ref{sec:rmqBenchmark} RMQ ausgemessen und die Ergebnisse dort beschrieben. Im Folgenden sollen die Ergebnisse interpretiert und benutzt werden um die Modelle zu kalibrieren.
+In \cite{palladio17} wird Modellkalibrierung als Anreicherung von Modellen mit quantitativen Daten, wie Ressourcenbedarf, beschrieben. Je nachdem wie weit entwickelt das System ist, können diese Daten mithilfe von verschiedenen Techniken gewonnen werden. In Abschnitt \ref{sec:rmqBenchmark} wurde RMQ ausgemessen und die Ergebnisse beschrieben. Im Folgenden sollen die Ergebnisse interpretiert und benutzt werden, um die Modelle zu kalibrieren.
 %Das Ziel ist, dass der Benutzer keinen MOM spezifischen RD angeben muss. \\
 
 In Abschnitt \ref{sec:oneMsgLatency} wurde die Latenz einer nicht-persistenten Nachricht mit verschiedenen Größen ausgemessen. Darin ist ein lineares Wachstum der Latenz mit Ansteigen der Nachrichtengröße zu beobachten. Dies legt die Vermutung nahe, dass diese beiden Variablen voneinander abhängen. Um diese Vermutung zu bestätigen wurde für die Variablen Latenz und Nachrichtengröße die Korrelation berechnet. Dabei ist die Korrelation ein statistisches Maß, das den Grad der linearen Abhängigkeit zwischen zwei Variablen anzeigt, die im Paar auftreten. Ist diese Abhängigkeit hoch, liegt der Wert nahe eins. Liegt der Wert dagegen bei minus eins, besteht eine negative Korrelation, d.h. steigt Variable \texttt{A}, sinkt Variable \texttt{B}. Wenn der Wert nahe oder gleich null ist, besteht keine Abhängigkeit. Die Korrelation der Variablen Latenz und Nachrichtengröße ist 0,99. Somit ist eine hohe lineare Abhängigkeit der Variablen gezeigt. Als nächstes soll mithilfe einer linearen Regressionsanalyse ein Ressourcenbedarf für das Modell definiert werden. Das Ziel einer linearen Regressionsanalyse ist es, eine lineare Beziehung zwischen einer Prädiktorvariable \texttt{Y} und der Reaktionsvariable \texttt{X} herzustellen, so dass der Wert von \texttt{X} geschätzt werden kann, wenn nur der Wert des Prädiktoren \texttt{Y} bekannt ist. Die dabei entstandene Regressionsgerade hat die Form: \[Latenz = 1256,2782902 + (0,003299 * Nachrichtengr.)\] und ist in \autoref{img:regplot} eingezeichnet. Da bei der Messung Sender und Empfänger nicht getrennt ausgemessen werden konnten, soll dieser Term als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird. Der Ressourcenbedarf wird als \emph{Delay}-Ressource modelliert. Dabei wird die Annahme getroffen, dass der Ressourcenbedarf in der jeweiligen Warteschlange anfällt, sobald die Nachricht aus ihr entnommen wird. 
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/modelling/oneMsgRegression.pdf}
-  \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse für nicht-persistente Nachrichten}
+  \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse für nicht-persistente Nachrichten.}
   \label{img:regplot}
 \end{figure}
 
@@ -120,7 +120,7 @@ Neben nicht-persistenten Nachrichten wurden auch persistente Nachrichten und die
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/modelling/persistentRegression.pdf}
-  \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse für persistente Nachrichten}
+  \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse für persistente Nachrichten.}
   \label{img:regplotpersistent}
 \end{figure}
 

@@ -12,16 +12,16 @@
 
 \Abstract
 %1. Eingrenzung des Forschungsbereichs (In welchem Themengebiet ist die Arbeit angesiedelt? Wie ist das Verhältnis zum Thema der Konferenz/des Journals?)
-\gls{mom} wird in verschiedenen Domänen genutzt und wird verwendet um verteilte-, und skalierbare Systeme zu bauen. Dabei werden hohe Anforderungen an Performance, Verfügbarkeit und Sicherheit gestellt.
+Nachrichtenbasierte Middleware (MOM) wird in verschiedenen Domänen genutzt und wird verwendet um verteilte-, und skalierbare Systeme zu bauen. Dabei werden hohe Anforderungen an Performance, Verfügbarkeit und Sicherheit gestellt.
 %2. Beschreibung des Problems, das in dieser Arbeit gelöst werden soll (Was ist das Problem und warum ist es wichtig dies zu lösen?)
-Es gibt eine Vielzahl von verschiedenen \gls{mom}s, die jeweils unterschiedliche Ziele oder Schwerpunkte haben. Während die einen besonderen Wert auf Performance oder auf Verfügbarkeit legen, sind andere dafür konzipiert, allseitig einsetzbar zu sein. Außerdem bieten \gls{mom}s eine hohe Konfigurierbarkeit an. Somit ist bereits Expertenwissen notwendig, wenn eine \gls{mom} ausgewählt oder konfiguriert werden soll. Das Ziel dieser Masterarbeit ist es, den Softwarearchitekten bei der Wahl und der Konfiguration einer \gls{mom} bereits in der Designphase zu unterstützen.
+Es gibt eine Vielzahl von verschiedenen MOMs, die jeweils unterschiedliche Ziele oder Schwerpunkte haben. Während die einen besonderen Wert auf Performance oder auf Verfügbarkeit legen, sind andere dafür konzipiert, allseitig einsetzbar zu sein. Außerdem bieten MOMs eine hohe Konfigurierbarkeit an. Somit ist bereits Expertenwissen notwendig, wenn eine MOM ausgewählt oder konfiguriert werden soll. Das Ziel dieser Masterarbeit ist es, den Softwarearchitekten bei der Wahl und der Konfiguration einer MOM bereits in der Designphase zu unterstützen.
 %3. Mängel an existierenden Arbeiten bzgl. des Problems (Warum ist es ein Problem, obwohl sich schon andere mit dem gleichen Thema beschäftigt haben?)
-Existierende Modellierungs- und Vorhersagetechniken vernachlässigen den Einfluss von Warteschlangen in Systemen mit einer nachrichtenbasierten Middleware. Dadurch können bestimmte Effekte der \gls{mom} nicht abgebildet werden. Ein solcher Effekt ist zum Beispiel, dass die Dauer, bis eine Nachricht beim Empfänger ankommt, länger wird, wenn die Warteschlange nicht leer ist.
+Existierende Modellierungs- und Vorhersagetechniken vernachlässigen den Einfluss von Warteschlangen in Systemen mit einer nachrichtenbasierten Middleware. Dadurch können bestimmte Effekte der MOM nicht abgebildet werden. Ein solcher Effekt ist zum Beispiel, dass die Dauer, bis eine Nachricht beim Empfänger ankommt, länger wird, wenn die Warteschlange nicht leer ist.
 %4. Eigener Lösungsansatz (Welcher Ansatz wurde in dieser Arbeit verwendet, um das Problem zu lösen? Was ist der Beitrag dieses Artikels?)
-Deshalb wurde im Rahmen dieser Masterarbeit ein Ansatz entwickelt, bei dem aus einer \gls{mom} ein wiederverwendbarer Modell-Baustein wird, bei dem Warteschlangen explizit betrachtet werden. Die Beiträge der Masterarbeit können wie folgt zusammengefasst werden:
+Deshalb wurde im Rahmen dieser Masterarbeit ein Ansatz entwickelt, bei dem aus einer MOM ein wiederverwendbarer Modell-Baustein wird, bei dem Warteschlangen explizit betrachtet werden. Die Beiträge der Masterarbeit können wie folgt zusammengefasst werden:
 \begin{itemize}
-    \item Auswahl und Ausmessen einer \gls{mom}, mithilfe eines Benchmarks um bestimmte Effekte und Ressourcenanforderungen zu untersuchen.
-    \item Modellierung einer \gls{mom} im \gls{pcm} mit anschließender Kalibrierung, damit die Modellierung in Performance-Analysen eingesetzt werden kann.
+    \item Auswahl und Ausmessen einer MOM, mithilfe eines Benchmarks um bestimmte Effekte und Ressourcenanforderungen zu untersuchen.
+    \item Modellierung einer MOM im Palladio-Komponenten-Modell (PCM) mit anschließender Kalibrierung, damit die Modellierung in Performance-Analysen eingesetzt werden kann.
     \item Eine Modeltransformation um bereits existierende Modell-Elemente zum Abbilden event-basierter Kommunikation wiederzuverwenden.
 \end{itemize}
 %5 Art der Validierung + Ergebnisse (Wie wurde nachgewiesen, dass die Arbeit die versprochenen Verbesserung wirklich vollbringt (Fallstudie, Experiment, o.ä.); Was waren die Ergebnisse der Validierung (idealerweise Prozentsatz der Verbesserung)?)

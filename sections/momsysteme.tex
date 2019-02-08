@@ -52,7 +52,7 @@ In \autoref{img:rmq_architecture} ist ein Beispiel für eine mögliche RMQ-Archi
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/measurement/rmqexample.pdf}
-  \caption{Beispiel einer Kommunikation in RMQ}
+  \caption{Beispiel einer Kommunikation in RMQ.}
   \label{img:rmq_architecture}
 \end{figure}
 %https://www.cloudamqp.com/blog/2015-05-18-part1-rabbitmq-for-beginners-what-is-rabbitmq.html
@@ -82,7 +82,7 @@ Die Ausmessung wurde mit zwei virtuellen Servern durchgeführt, die von bwCloud 
     \hline
      4 GB & 15 GB & 2 & 2.4 GHz & Ubuntu 18.04
   \end{tabular}
-	\caption{\label{tab:systespec} bwCloud VM Spezifikation}
+	\caption{\label{tab:systespec} bwCloud-VM-Spezifikation.}
 \end{table}
 
 \begin{figure}
@@ -109,10 +109,11 @@ Jede Messung wurde zehn mal durchgeführt. Die einzelnen Konfiguration wurde jew
 Zunächst soll geprüft werden, wie groß die Latenz einer einzelnen, nicht persistenten, Nachricht ist. Dabei wurde auch die Größe einer Nachricht betrachtet. Dazu wurde die Senderate auf eine Nachricht pro Sekunde reduziert und die Nachrichtengröße zwischen 1 KByte und 1 MByte variiert. Für diese Messung wurde das \textit{lokale}-Szenario verwendet. Erwartet wird, dass die Latenz einer Nachricht mit ihrer Nachrichtengröße steigt.
 %B
 Die Ergebnisse sind in \autoref{img:senderate1-A} abgebildet. Neben den Messergebnissen ist eine Linie durch die Mediane der einzelnen Messungen gezogen. Dabei ist zu sehen, dass die Latenz einer Nachricht mit Ansteigen der Nachrichtengröße auch ansteigt. Somit verhält sich das System wie erwartet.
+
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-A.pdf}
-  \caption{Latenz einer nicht-persistenten Nachricht im \textit{lokal}-Szenario}
+  \includegraphics[width=0.6\textwidth]{images/measurement/rate-limit-1-A.pdf}
+  \caption{Latenz einer nicht-persistenten Nachricht im \textit{lokalen}-Szenario.}
   \label{img:senderate1-A}
 \end{figure}
 
@@ -125,8 +126,8 @@ Somit ist neben der Nachrichtengröße auch die Netzwerklatenz ein Faktor, der d
 
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/measurement/rate-limit-1-AvsB.pdf}
-  \caption{Vergleich der Latenz einer nicht-persistenten Nachricht im \textit{lokalen}- und \textit{entfernten}-Szenario}
+  \includegraphics[width=0.6\textwidth]{images/measurement/rate-limit-1-AvsB.pdf}
+  \caption{Vergleich der Latenz einer nicht-persistenten Nachricht im \textit{lokalen}- und \textit{entfernten}-Szenario.}
   \label{img:senderate1-B}
 \end{figure}
 
@@ -200,7 +201,7 @@ Diese Messung untersucht die Auswirkung des Warteschlangen-Füllstands auf die L
 In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \autoref{img:queuegrowth}a der Füllstand der Warteschlange zu sehen. Diese wächst pro Sekunde um eine Nachricht die nicht abgeholt wird an. In \autoref{img:queuegrowth}b ist die Latenz der Nachrichten abgebildet. Wie erwartet steigt diese mit Ansteigen des Füllstands, da die Nachrichten länger in der Warteschlange warten müssen, bis sie abgeholt werden.
 \begin{figure}
 \center
-  \includegraphics[width=0.7\textwidth]{images/measurement/queuegrowth.pdf}
+  \includegraphics[width=0.8\textwidth]{images/measurement/queuegrowth.pdf}
   \caption{Wachstum einer Warteschlange und Auswirkung auf die Latenz.}
   \label{img:queuegrowth}
 \end{figure}
@@ -210,9 +211,9 @@ In \autoref{img:queuegrowth} sind die Messergebnisse abgebildet. Dabei ist in \a
 Die vorherige Messung hat gezeigt, dass sich das Anwachsen der Warteschlange negativ auf die Latenz der Nachrichten auswirkt. Wie bereits erwähnt erlaubt RMQ einige Konfigurationen. Eine davon ist das Setzen einer maximal Länge für Warteschlangen. Damit soll die Warteschlange kurz gehalten werden und die Latenz der Nachrichten klein. Damit wird dem Effekt, der in der vorherigen Messung untersucht wurde, entgegengewirkt. Standardmäßig wird der Kopf der Warteschlange verworfen. Mit der folgenden Messung soll diese Konfiguration untersucht werden. Dazu wurden drei Warteschlangen angelegt. Diese hatten eine maximal Länge von 100, 5000 und 50.000 Nachrichten. Die Größe von 50.000 ist die RMQ-Standardgröße für Warteschlangen. Damit man die Auswirkung auf volle Warteschlangen sehen kann wurde die Sende- und Empfangsrate entsprechend angepasst. Die Senderate wurde auf 1000 und die Empfangsrate auf 100 Nachrichten pro Sekunde eingestellt. Die Nachrichten Größe war 100 Bytes. Die Messung wurde mit dem \textit{lokalen}-Szenario durchgeführt. Erwartet wird, dass sobald die Warteschlange voll wird, die Latenz nicht mehr zu nimmt. Dieser Moment sollte schneller erreicht werden, je kleiner die Warteschlange ist.
 %B
 Die Ergebnisse sind in \autoref{img:maxlength} abgebildet. Wie erwartet, wachsen die Latenzen der Nachrichten bei den begrenzten Warteschlangen ab einem bestimmten Moment nicht weiter an. Wie in \autoref{img:maxlength}a und \autoref{img:maxlength}b zu sehen ist, tritt dieser Moment für die kürzere Warteschlange früher ein. In \autoref{img:maxlength}c wächst die Latenz immer weiter.
-\begin{figure}
+\begin{figure}[t]
 \center
-  \includegraphics[width=0.7\textwidth]{images/measurement/max-length.pdf}
+  \includegraphics[width=0.9\textwidth]{images/measurement/max-length.pdf}
   \caption{Auswirkung auf die Latenz bei verschieden großen Warteschlangen.}
   \label{img:maxlength}
 \end{figure}

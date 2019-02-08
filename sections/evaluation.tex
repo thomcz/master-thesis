@@ -49,7 +49,7 @@ Im Folgenden wird in \autoref{sec:specjms} der SPECjms2007-Benchmark vorgestellt
     Metrik & Fehler in \% zwischen Messung und Vorhersage? \\
     \hline
   \end{tabular}
-	\caption{\label{tab:gqm} Ziele, Fragen und Metriken für die Evaluierung, nach der GQM-Methode}
+	\caption{\label{tab:gqm} Ziele, Fragen und Metriken für die Evaluierung, nach der GQM-Methode.}
 \end{table}
 
 
@@ -81,7 +81,7 @@ Das gewählte Anwendungsszenario bildet die Lieferkette eines Supermarktunterneh
 \begin{figure}
 \center
   \includegraphics[width=0.7\textwidth]{images/evaluation/specjms/specjmsOverview.pdf}
-  \caption{Anwendungszenario des SPECjms2007-Benchmark}
+  \caption{Anwendungszenario des SPECjms2007-Benchmark.}
   \label{img:specjmsInteraction}
 \end{figure}
 
@@ -180,7 +180,7 @@ Dabei kann $x$ vom Benutzer des Benchmarks eingestellt werden. Somit kann für j
     \hline
      3 & PriceUpdate & 0,24 & 0,24 & 0,24 \\\hline
   \end{tabular}
-	\caption{\label{tab:msgpropandsize} Nachrichtengröße in KByte. Auszug aus Sachs et al.\cite{Sachs2013}}
+	\caption{\label{tab:msgpropandsize} Nachrichtengröße in KByte. Auszug aus Sachs et al.\cite{Sachs2013}.}
 \end{table}
 
 \section{Beschreibung der PCM-Modelle}
@@ -193,14 +193,14 @@ Die Akteure, SM, DC, SP und HQ, des Benchmarks sind in der Modellierung jeweils 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion1events.pdf}
-  \caption{Modell der Interaktion 1 des SPECjms2007 mit PCM-Event-Elementen}
+  \caption{Modell der Interaktion 1 des SPECjms2007 mit PCM-Event-Elementen.}
   \label{img:interaction1system}
 \end{figure}
 
 \begin{figure}
 \center
   \includegraphics[width=1\textwidth]{images/evaluation/specjms/evaluationInteraktion3events.pdf}
-  \caption{Modell der Interaktion 3 des SPECjms2007 mit PCM-Event-Elementen}
+  \caption{Modell der Interaktion 3 des SPECjms2007 mit PCM-Event-Elementen.}
   \label{img:interaction3system}
 \end{figure}
 
@@ -227,13 +227,13 @@ Zusätzlich enthält die Modellierung des SPECjms2007-Benchmark ein Middleware-R
     \hline
      3 & PriceUpdate & 0,501 & 0,501 & 0,501 \\\hline
   \end{tabular}
-	\caption{\label{tab:specjmsMsgSizeRd} Ausgerechnete Ressourcenanforderungen für die Nachrichten. Auszug aus \cite{Rathfelder2013}}
+	\caption{\label{tab:specjmsMsgSizeRd} Ausgerechnete Ressourcenanforderungen für die Nachrichten. Auszug aus \cite{Rathfelder2013}.}
 \end{table}
 
 
 
 \subsection{Anpassung des Modells}
-Während in der Arbeit von Rathfelder jede Nachricht des SPECjms2007 ausgemessen wurde und anschließend über eine Fallunterscheidung in das Middleware-Modell eingesetzt wurde, wurde in dieser Masterarbeit zuerst ein allgemeines System ausgemessen um ein Middleware-Modell zu kalibrieren. Mithilfe dieses Middleware-Modells sollen Vorhersagen über verschiedene Systeme getroffen werden können. Dies ist mit dem Middleware-Repository-Modell aus der Arbeit von Rathfelder nicht möglich, da eine Middleware für ein bestimmtes System ausgemessen wurde. Deshalb wird dieses Middleware-Repository und die darin enthaltene Modellkalibrierung, in der weiteren Evaluierung nicht weiter verwendet und durch den Ansatz aus dieser Masterarbeit ersetzt. 
+In der Dissertation von Rathfelder \cite{Rathfelder2013} wurde jede Nachricht des SPECjms2007-Benchmark ausgemessen und eine Ressourcenanforderung abgeleitet. Anschließend wurde das Middleware-Modell damit kalibriert. Im Unterschied dazu, wurde in dieser Masterarbeit ein allgemeines System ausgemessen und im Anschluss ein Middleware-Modell kalibriert. Mithilfe dieses Middleware-Modells sollen Vorhersagen über verschiedene Systeme getroffen werden können. Dies ist mit dem Middleware-Repository-Modell aus der Arbeit von Rathfelder nicht möglich, da die Middleware für ein bestimmtes System ausgemessen wurde. Deshalb wird dieses Middleware-Repository und die darin enthaltene Modellkalibrierung, in der weiteren Evaluierung nicht weiter verwendet und durch den Ansatz aus dieser Masterarbeit ersetzt. 
 Die anderen zuvor vorgestellten Modelle werden dagegen wiederverwendet. Außerdem wird eine neue Parameterbelegung für die einzelnen \emph{EmitEventAction}s spezifiziert. Anstelle das die Ressourcenanforderung im Middleware-Modell spezifiziert werden, wird nun die Größe der einzelnen Nachrichten bei der jeweiligen \emph{EmitEventAction}, mithilfe einer Parameterbelegung, spezifiziert. Eine weitere Anpassung ist, dass die Event-Transformation, die das Middleware-Modell in die Systemarchitektur einwebt nicht verwendet wird. Stattdessen werden die Event-Modell-Elemente mithilfe der in \autoref{ch:transformation} vorgestellten Modell-Transformation transformiert. Die Ergebnisse der Transformation werden im Folgenden vorgestellt.
 
 
@@ -246,7 +246,7 @@ In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmo
 \begin{figure}
 \center
   \includegraphics[width=1.4\textwidth,angle=90]{images/evaluation/specjms/evaluationInteraktion1new.pdf}
-  \caption{Modell der Interaktion 1 des SPECjms2007 nach der Modelltransformation aus \autoref{ch:transformation}}
+  \caption{Modell der Interaktion 1 des SPECjms2007 nach der Modelltransformation aus \autoref{ch:transformation}.}
   \label{img:interaction1systemAfterTransformation}
 \end{figure}
 \subsubsection{Interaktion 3}
@@ -254,7 +254,7 @@ In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmo
 \begin{figure}
 \center
   \includegraphics[width=1.4\textwidth,angle=90]{images/evaluation/specjms/evaluationInteraktion3new.pdf}
-  \caption{Modell der Interaktion 3 des SPECjms2007 nach der Modelltransformation aus \autoref{ch:transformation}}
+  \caption{Modell der Interaktion 3 des SPECjms2007 nach der Modelltransformation aus \autoref{ch:transformation}.}
   \label{img:interaction3systemAfterTransformation}
 \end{figure}
 
