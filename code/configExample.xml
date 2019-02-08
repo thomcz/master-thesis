@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Queues>
-    <Queue name="OrderQueue" eventHandler="Order" ressource="Middleware" lazy="true"/>
-    <Queue name="OrderConfQueue" eventHandler="OrderConf" ressource="Middleware" lazy="false"/>
+    <Queue 
+        name="OrderQueue" eventHandler="Order" ressource="Middleware" lazy="true"/>
+    <Queue 
+        name="OrderConfQueue" eventHandler="OrderConf" ressource="Middleware"/>
 </Queues>
 <Exchanges>
-    <Exchange name="OrderExchange" ressource="Middleware" throughput="70000000" latency="0.2">
-        <Queue name="OrderQueue"/>
-        <Queue name="OrderConfQueue"/>
+    <Exchange 
+        name="Exchange" ressource="Middleware" throughput="70000000" latency="0.2">
+            <Queue name="OrderQueue"/>
+            <Queue name="OrderConfQueue"/>
     </Exchange>
 </Exchanges>

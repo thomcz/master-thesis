@@ -13,7 +13,7 @@
 %% Available page modes: oneside, twoside
 %% Available languages: english, ngerman
 %% Available modes: draft, final (see README)
-\documentclass[twoside, ngerman, draft]{sdqthesis}
+\documentclass[twoside, ngerman, final]{sdqthesis}
 \usepackage{todonotes}
 %% ---------------------------------
 %% | Information about the thesis  |
@@ -77,6 +77,30 @@
 \usepackage{pdflscape} % provides the landscape environment
 \usepackage{ragged2e} % provides \RaggedLeft
 \usetikzlibrary{shapes.geometric, arrows}
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+\lstset{
+  basicstyle=\small,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+}
 
 \usepackage[nonumberlist]{glossaries}
 \setacronymstyle{long-sc-short}
