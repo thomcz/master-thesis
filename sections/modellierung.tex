@@ -108,7 +108,7 @@ In \cite{palladio17} wird Modellkalibrierung als Anreicherung von Modellen mit q
 %Das Ziel ist, dass der Benutzer keinen MOM spezifischen RD angeben muss. \\
 
 In Abschnitt \ref{sec:oneMsgLatency} wurde die Latenz einer nicht-persistenten Nachricht mit verschiedenen Größen ausgemessen. Darin ist ein lineares Wachstum der Latenz mit Ansteigen der Nachrichtengröße zu beobachten. Dies legt die Vermutung nahe, dass diese beiden Variablen voneinander abhängen. Um diese Vermutung zu bestätigen wurde für die Variablen Latenz und Nachrichtengröße die Korrelation berechnet. Dabei ist die Korrelation ein statistisches Maß, das den Grad der linearen Abhängigkeit zwischen zwei Variablen anzeigt, die im Paar auftreten. Ist diese Abhängigkeit hoch, liegt der Wert nahe eins. Liegt der Wert dagegen bei minus eins, besteht eine negative Korrelation, d.h. steigt Variable \texttt{A}, sinkt Variable \texttt{B}. Wenn der Wert nahe oder gleich null ist, besteht keine Abhängigkeit. Die Korrelation der Variablen Latenz und Nachrichtengröße ist 0,99. Somit ist eine hohe lineare Abhängigkeit der Variablen gezeigt. Als nächstes soll mithilfe einer linearen Regressionsanalyse ein Ressourcenbedarf für das Modell definiert werden. Das Ziel einer linearen Regressionsanalyse ist es, eine lineare Beziehung zwischen einer Prädiktorvariable \texttt{Y} und der Reaktionsvariable \texttt{X} herzustellen, so dass der Wert von \texttt{X} geschätzt werden kann, wenn nur der Wert des Prädiktoren \texttt{Y} bekannt ist. Die dabei entstandene Regressionsgerade hat die Form: \[Latenz = 1256,2782902 + (0,003299 * Nachrichtengr.)\] und ist in \autoref{img:regplot} eingezeichnet. Da bei der Messung Sender und Empfänger nicht getrennt ausgemessen werden konnten, soll dieser Term als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird. Der Ressourcenbedarf wird als \emph{Delay}-Ressource modelliert. Dabei wird die Annahme getroffen, dass der Ressourcenbedarf in der jeweiligen Warteschlange anfällt, sobald die Nachricht aus ihr entnommen wird. 
-\begin{figure}
+\begin{figure}[!ht]
 \center
   \includegraphics[width=0.7\textwidth]{images/modelling/oneMsgRegression.pdf}
   \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse für nicht-persistente Nachrichten.}
@@ -117,7 +117,8 @@ In Abschnitt \ref{sec:oneMsgLatency} wurde die Latenz einer nicht-persistenten N
 
 \par
 Neben nicht-persistenten Nachrichten wurden auch persistente Nachrichten und die Konfiguration für Lazy-Warteschlangen ausgemessen. Im Folgenden betrachten wir den Fall der persistenten Nachrichten. Auch hier wurde wie oben beschrieben zunächst die Korrelation der beiden Variablen, Nachrichtengröße und Latenz, berechnet. Mit 0,995 ist diese ebenfalls sehr hoch. Die entstandene Regressionsgerade hat die Form: \[Latenz = 2082,691737 + (0,004737 * Nachrichtengr.)\] und ist in \autoref{img:regplotpersistent} eingezeichnet. Dieser Term soll nun als Ressourcenbedarf einer Nachricht dienen, sobald diese aus der Warteschlange entnommen wird, wenn persistente Nachrichten betrachtet werden sollen. Der Ressourcenbedarf wird als \emph{Delay}-Ressource modelliert.
-\begin{figure}
+
+\begin{figure}[!ht]
 \center
   \includegraphics[width=0.7\textwidth]{images/modelling/persistentRegression.pdf}
   \caption{Messpunkte und die Regressionsgerade aus der Regressionsanalyse für persistente Nachrichten.}
@@ -255,7 +256,7 @@ Die Warteschlange bleibt bei dieser Simulation leer. In \autoref{img:simulationL
 Diese Simulation betrachtet zusätzlich die Netzwerklatenz mit. Dazu sind Sender, Empfänger und MOM auf unterschiedlichen Maschinen. Die Nachrichten haben die Größen 100, 200, 300, 400, 500 und 1000 KByte. Im Modell wurden für die \emph{LinkingRessource} der Durchsatz und die Latenz, wie in \autoref{sec:rmqRd} beschrieben, für entfernte MOMs angepasst. Die Messung, mit der verglichen wurde, ist in Abschnitt \ref{sec:oneMsgLatency} beschrieben. Es wurden der Füllstand der Warteschlange und die Latenz der Nachrichten betrachtet. 
 %B
 Die Warteschlange bleibt über die Simulationsdauer leer, da die Ankunftszeiten der Sender und Empfänger gleich sind. Die Latenz der Nachrichten ist in \autoref{img:simulation2} abgebildet. Außerdem sind die Messpunkte aus der Messung eingetragen. In \autoref{tab:sim2} ist der Fehler für jede Größe angegeben. Der Fehler liegt zwischen 21.15\% und 33.43\%.
-\begin{figure}
+\begin{figure}[t]
 \center
   \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation2.pdf}
   \caption{Messung und Vorhersage der Latenz einer nicht-persistenten Nachricht, zu einer entfernten MOM, mit verschiedenen Größen.}
@@ -282,7 +283,7 @@ Die Warteschlange bleibt über die Simulationsdauer leer, da die Ankunftszeiten 
 In dieser Simulation wird die Auswirkung der Ankunftszeiten auf das System geprüft. Verglichen wird mit der Messung aus Abschnitt \ref{sec:queueGrowth}. Dabei ist die Ankunftszeit des Senders einmal pro Sekunde und die des Empfängers einmal alle zwei Sekunden. Der Füllstand der Warteschlange, sowie die Latenz der Nachrichten wird über die Zeit betrachtet.
 %B
 Die Ergebnisse sind in \autoref{img:simulation3} abgebildet. In \autoref{img:simulation3}a ist zu sehen, dass sich der Füllstand der Warteschlange bei Messung und Simulation gleich verhält und über die Zeit ansteigen, da jede Sekunde eine Nachricht in der Warteschlange unbearbeitet bleibt. In \autoref{img:simulation3}b sieht man außerdem die Auswirkungen auf die Latenz der einzelnen Nachrichten. Während bei der Messung die Latenz für die Nachrichten steigt, bleibt sie in der Modellierung unverändert. Dies liegt daran, dass die Latenz auch vom Füllstand der Warteschlange abhängt. In diesem Fall müsste der Füllstand bei der Berechnung der Latenz mit berücksichtigt werden. Dies ist mit \emph{SimuCom} nicht möglich. 
-\begin{figure}
+\begin{figure}[t]
 \center
   \includegraphics[width=0.7\textwidth]{images/modelSimulationResults/simulation3.pdf}
   \caption{Messung und Vorhersage des Anwachsen der Warteschlange.}
