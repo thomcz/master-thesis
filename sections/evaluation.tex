@@ -17,7 +17,7 @@ Das Hauptziel dieser Masterarbeit ist es, eine Modellierung einer MOM mit expliz
 Die Ziele und die Bewertung, ob diese erreicht werden konnten werden mithilfe der Goal-Question-Metric (GQM) untersucht.
 Die GQM-Methode \cite{gqm} spezifiziert Ziele für das zu evaluierende Konzept. Daraufhin werden zu den Zielen Fragen spezifiziert, mit denen die Erfüllung des Ziels überprüft werden soll. Schließlich werden Metriken festgelegt, durch die die Fragen beantwortet werden sollen. Aus \autoref{tab:gqm} können die Ziele, Fragen und Metriken entnommen werden, mit denen diese Masterarbeit evaluiert werden soll.
 
-Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modellierung von MOMs in Palladio zu ermöglichen. Das zweite Ziel ist es, Vorhersagen mithilfe der Performance-Analyse zu ermöglichen und dadurch die Entscheidungsfindung, welche MOM verwendet werden soll, bereits zur Modellierungszeit und aus Architekturperspektive zu verbessern. Die dazu definierten Fragen prüfen ob mithilfe der Modellierung sowohl Punkt-Zu-Punkt, als auch Publish/Subscribe-Kommunikation vorhergesagt werden können. Dabei dient der Fehler zwischen Messung und Vorhersage als Metrik. In der Literatur ist ein Fehler zwschen 35\% und 40\% akzeptiert \cite{error}.
+Ein Ziel, das mithilfe dieser Masterarbeit erreicht werden soll, ist die Modellierung von MOMs in Palladio zu ermöglichen. Das zweite Ziel ist es, Vorhersagen mithilfe der Performance-Analyse zu ermöglichen und dadurch die Entscheidungsfindung, welche MOM verwendet werden soll, bereits zur Modellierungszeit und aus Architekturperspektive zu verbessern. Die dazu definierten Fragen prüfen ob mithilfe der Modellierung sowohl Punkt-Zu-Punkt, als auch Publish/Subscribe-Kommunikation vorhergesagt werden können. Dabei dient der relative Fehler zwischen Messung und Vorhersage als Metrik. In der Literatur ist ein Fehler zwischen 35\% und 40\% akzeptiert \cite{error}.
 
 Im Folgenden wird in \autoref{sec:specjms} der SPECjms2007-Benchmark vorgestellt, mit dem die Evaluierung durchgeführt wird. Anschließend werden in \autoref{sec:specjmsmodell} die PCM-Modellierung des Benchmarks beschrieben. Im Anschluss wird in \autoref{sec:specjmsmodellvorhersage} die Vorhersagegenauigkeit der Modellierung untersucht. Schließlich werden in \autoref{sec:evaluationzusammenfassung} die Ergebnisse zusammengefasst und diskutiert. 
 \begin{table}
@@ -68,7 +68,7 @@ Im Folgenden wird in \autoref{sec:specjms} der SPECjms2007-Benchmark vorgestellt
 
 \section{SPECjms2007}
 \label{sec:specjms}
-Das für die Evaluierung verwendete System ist das im SPECjms2007-Benchmark verwendete Testsystem \cite{Sachs2013}. Der Benchmark stellt eine reale Anwendung dar und umfasst eine Reihe verschiedener Interaktionen, die sowohl Punkt-zu-Punkt- als auch Publish/Subscribe-Nachrichten umfasst. Das Hauptziel des SPECjms2007-Benchmarks ist es, einen Standard-Workload bereitzustellen, der die Leistung und Skalierbarkeit von JMS-basierten nachrichtenbasierten Middleware-Plattformen bewertet. Bei dem System handelt es sich um ein Lieferkettenmanagement für eine Supermarktkette. Der Benchmark verwendet verschiedene Nachrichtentypen und verwendet Nachrichten verschiedenen Größe. Für die Masterarbeit liegt sowohl die Implementierung des Benchmarks, als auch eine Modellierung aus einer früheren Arbeit von Christoph Rathfelder \cite{Rathfelder2013} vor. Dieses System wird für die Evaluierung verwendet werden und wird im Folgenden beschrieben. 
+Das für die Evaluierung verwendete System ist das im SPECjms2007-Benchmark verwendete Testsystem \cite{Sachs2013}. Der Benchmark stellt eine reale Anwendung dar und umfasst eine Reihe verschiedener Interaktionen, die sowohl Punkt-zu-Punkt- als auch Publish/Subscribe-Nachrichten umfasst. Das Hauptziel des SPECjms2007-Benchmarks ist es, einen Standard-Workload bereitzustellen, der die Leistung und Skalierbarkeit von JMS-basierten nachrichtenbasierten Middleware-Plattformen bewertet. Bei dem System handelt es sich um ein Lieferkettenmanagement für eine Supermarktkette. Der Benchmark verwendet verschiedene Nachrichtentypen und Nachrichten in verschiedenen Größe. Für die Masterarbeit liegt sowohl die Implementierung des Benchmarks, als auch eine Modellierung aus einer früheren Arbeit von Rathfelder \cite{Rathfelder2013} vor. Dieses System wird für die Evaluierung verwendet und wird im Folgenden beschrieben. 
 
 \subsection{Anwendungsszenario}
 Das gewählte Anwendungsszenario bildet die Lieferkette eines Supermarktunternehmens ab. In \autoref{img:specjmsInteraction} sind die beteiligten Rollen abgebildet und wie sie miteinander kommunizieren. Die beteiligten lassen sich wie folgt gruppieren: 
@@ -144,7 +144,7 @@ Der SPECjms2007-Benchmark erlaubt verschiedene Konfigurationen durch den Benutze
 
 Außerdem lassen sich für jede Nachricht die Größe und die Verteilung festlegen, mit welcher Wahrscheinlichkeit eine bestimmte Nachrichtengröße auftritt. Die Nachrichtengröße lässt sich mit einer Formel berechnen. Die Formel und ihre Bestandteile wurden in der Arbeit von Sachs et al. \cite{Sachs2013}, mithilfe von Messungen, hergeleitet. Mit folgender Formel lassen sich die Nachrichtengröße berechnen: 
 \[m_1 + x * b .\] 
-Dabei kann $x$ vom Benutzer des Benchmarks eingestellt werden. Somit kann für jede Nachricht die Wahrscheinlichkeit und ihre Größe festgelegt werden. In \autoref{tab:parameters} sind die für diese Arbeit wichtigen Parameter abgebildet. Die Verteilungen und die dazugehörige Nachrichtengrößen sind in \autoref{tab:msgpropandsize} abgebildet.
+Dabei kann $x$ vom Benutzer des Benchmarks eingestellt werden. Somit kann für jede Nachricht die Wahrscheinlichkeit und ihre Größe festgelegt werden. Die Variablen $m1$ und $b$ können aus \autoref{tab:parameters} entnommen werden. Die Tabelle beinhaltet die für diese Arbeit wichtigen Parameter. Die Verteilungen und die dazugehörige Nachrichtengrößen sind in \autoref{tab:msgpropandsize} abgebildet.
 
 
 \begin{table}
@@ -235,7 +235,8 @@ Zusätzlich enthält die Modellierung des SPECjms2007-Benchmark ein Middleware-R
 
 \subsection{Anpassung des Modells}
 In der Dissertation von Rathfelder \cite{Rathfelder2013} wurde jede Nachricht des SPECjms2007-Benchmark ausgemessen und eine Ressourcenanforderung abgeleitet. Anschließend wurde das Middleware-Modell damit kalibriert. Im Unterschied dazu, wurde in dieser Masterarbeit ein allgemeines System ausgemessen und im Anschluss ein Middleware-Modell kalibriert. Mithilfe dieses Middleware-Modells sollen Vorhersagen über verschiedene Systeme getroffen werden können. Dies ist mit dem Middleware-Repository-Modell aus der Arbeit von Rathfelder nicht möglich, da die Middleware für ein bestimmtes System ausgemessen wurde. Deshalb wird dieses Middleware-Repository und die darin enthaltene Modellkalibrierung, in der weiteren Evaluierung nicht weiter verwendet und durch den Ansatz aus dieser Masterarbeit ersetzt. 
-Die anderen zuvor vorgestellten Modelle werden dagegen wiederverwendet. Außerdem wird eine neue Parameterbelegung für die einzelnen \emph{EmitEventAction}s spezifiziert. Anstelle das die Ressourcenanforderung im Middleware-Modell spezifiziert werden, wird nun die Größe der einzelnen Nachrichten bei der jeweiligen \emph{EmitEventAction}, mithilfe einer Parameterbelegung, spezifiziert. Eine weitere Anpassung ist, dass die Event-Transformation, die das Middleware-Modell in die Systemarchitektur einwebt nicht verwendet wird. Stattdessen werden die Event-Modell-Elemente mithilfe der in \autoref{ch:transformation} vorgestellten Modell-Transformation transformiert. Die Ergebnisse der Transformation werden im Folgenden vorgestellt.
+Die anderen zuvor vorgestellten Modelle werden dagegen wiederverwendet. \par
+Ressourcenanforderung werden nicht mehr im Middleware-Modell spezifiziert. Stattdessen werden die Nachrichtengrößen bei der jeweiligen \emph{EmitEventAction}, mithilfe einer Parameterbelegung, spezifiziert. Eine weitere Anpassung ist, dass die Event-Transformation, die das Middleware-Modell in die Systemarchitektur einwebt nicht verwendet wird. Stattdessen werden die Event-Modell-Elemente mithilfe der in \autoref{ch:transformation} vorgestellten Modell-Transformation transformiert. Die Ergebnisse der Transformation werden im Folgenden vorgestellt.
 
 
 
@@ -243,7 +244,7 @@ Die anderen zuvor vorgestellten Modelle werden dagegen wiederverwendet. Außerde
 
 
 \subsubsection{Interaktion 1}
-In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 1 darstellt. Zu sehen ist, dass die einzelnen Akteure voneinander entkoppelt wurden und an einen zentralen Exchange angeschlossen wurden. Für jeden Nachrichtentyp (\emph{EventType}) wurde eine Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Für die Empfangsaktionen wurde jeweils ein neues \emph{UsageScenario} angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnehmen. 
+In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 1 darstellt. Zu sehen ist, dass die einzelnen Akteure voneinander entkoppelt wurden und an einen zentralen Exchange angeschlossen wurden. Für jeden Nachrichtentyp (\emph{EventType}) wurde eine Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Für die Empfangsaktionen wurde jeweils ein neues \emph{UsageScenario} angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnimmt. 
 \begin{figure}
 \center
   \includegraphics[width=1.4\textwidth,angle=90]{images/evaluation/specjms/evaluationInteraktion1new.pdf}
@@ -251,7 +252,7 @@ In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmo
   \label{img:interaction1systemAfterTransformation}
 \end{figure}
 \subsubsection{Interaktion 3}
-In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 3 darstellt. In diesem Fall wurden Empfänger und Sender gemeinsam an den Exchange angeschlossen. Für jeden Empfänger wurde außerdem eine Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Die einzelnen Warteschlangen beinhalten jeweils den gleichen Nachrichtentyp, hier \texttt{PriceUpdate}-Nachrichten. Für die Empfangsaktionen wurde jeweils ein neues \emph{UsageScenario} angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnehmen.
+In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmodells abgebildet, der die Interaktion 3 darstellt. In diesem Fall wurden Empfänger und Sender gemeinsam an den Exchange angeschlossen. Für jeden Empfänger wurde außerdem eine Warteschlange angelegt, die ebenfalls an den Exchange angeschlossen wurde. Die einzelnen Warteschlangen beinhalten jeweils den gleichen Nachrichtentyp, hier \texttt{PriceUpdate}-Nachrichten. Für die Empfangsaktionen wurde jeweils ein neues \emph{UsageScenario} angelegt, die jeweils die angeforderte Nachricht, sobald sie in der Warteschlange ist, entnimmt.
 \begin{figure}
 \center
   \includegraphics[width=1.4\textwidth,angle=90]{images/evaluation/specjms/evaluationInteraktion3new.pdf}
@@ -262,17 +263,17 @@ In \autoref{img:interaction1systemAfterTransformation} ist der Teil des Systemmo
 
 \section{Evaluation der Vorhersagegenauigkeit}
 \label{sec:specjmsmodellvorhersage}
-Im Folgenden soll die Vorhersagegenauigkeit des Ansatzes dieser Masterarbeit mithilfe des zuvor vorgestellten SPECjms2007-Benchmark und der Modellierung dessen gezeigt werden. Wie bereits erwähnt werden dazu die Interaktionen eins und drei in ihrer, vom Benchmark vorgegebenen, Standardkonfiguration getestet. Als MOM wurde RabbitMQ (RMQ) verwendet. Die einzelnen Messungen starteten mit eine zehn minütigen Aufwärmphase. Im Anschluss wurde eine 30 minütige Messung durchgeführt. Die Dauer wurde aus der Standardkonfiguration des Benchmarks übernommen. Jede Messung wurde zehn mal durchgeführt. Die Experimentumgebung ist, wie schon beim Ausmessen von RMQ, auf einem virtuellen Server ausgeführt worden. Die Spezifikation des Systems ist in \autoref{tab:systespec} abgebildet. Es wurde der Fall betrachtet, dass alle Sender, Empfänger und RMQ sich auf der selben Maschine befinden. Somit wurde der Aufbau wie in \autoref{img:machineoverview}a betrachtet. Für die Vorhersage wurde eine Performance-Analyse mithilfe der Palladio-Bench durchgeführt. Als Analysewerkzeug wurde \emph{SimuCom} verwendet. Im Folgenden werden die Ergebnisse der Messungen und der Vorhersagen aus der Performance-Analyse, für beide Interaktionen und der jeweiligen Konfigurationen, präsentiert. Dazu wird der relative Fehler zwischen dem gemessenen und vorhergesagten Wert, für die Latenz einer Nachricht, berechnet. Die dazu verwendete Formel ist:
+Im Folgenden soll die Vorhersagegenauigkeit des Ansatzes dieser Masterarbeit mithilfe des zuvor vorgestellten SPECjms2007-Benchmark und der Modellierung dessen gezeigt werden. Wie bereits erwähnt werden dazu die Interaktionen eins und drei in ihrer, vom Benchmark vorgegebenen, Standardkonfiguration getestet. Als MOM wurde RabbitMQ (RMQ) verwendet. Die einzelnen Messungen starteten mit einer zehn minütigen Aufwärmphase. Im Anschluss wurde eine 30 minütige Messung durchgeführt. Die Dauer wurde aus der Standardkonfiguration des Benchmarks übernommen. Jede Messung wurde zehn mal durchgeführt. Die Experimentumgebung ist, wie schon beim Ausmessen von RMQ, auf einem virtuellen Server ausgeführt worden. Die Spezifikation des Systems ist in \autoref{tab:systespec} abgebildet. Es wurde der Fall betrachtet, dass alle Sender, Empfänger und RMQ sich auf der selben Maschine befinden. Somit wurde der Aufbau wie in \autoref{img:machineoverview}a betrachtet. Für die Vorhersage wurde eine Performance-Analyse mithilfe der Palladio-Bench durchgeführt. Als Analysewerkzeug wurde \emph{SimuCom} verwendet. Im Folgenden werden die Ergebnisse der Messungen und der Vorhersagen aus der Performance-Analyse, für beide Interaktionen und der jeweiligen Konfigurationen, präsentiert. Dazu wird der relative Fehler zwischen dem gemessenen und vorhergesagten Wert, für die Latenz einer Nachricht, berechnet. Die dazu verwendete Formel ist:
 \[ Fehler\% = \frac{|Vorhersage - Messung|}{Messung} * 100 \]
 Der SPECjms2007-Benchmark liefert für jede Interaktion eine Interaktionszeit, die angibt, wie lange die Interaktion vom Senden der ersten Nachricht, bis zum Empfangen der letzten Nachricht gedauert hat. Außerdem wird für jede Nachricht die gesendet wird, auch die Latenz geliefert. Bei der Präsentation der Ergebnisse werden beide Werte verglichen. Die Performance-Analyse liefert hingegen nur die Latenz der einzelnen Nachrichten. Um eine Annäherung an die Interaktionszeit zu bekommen, werden die jeweils relevanten Ergebnisse aufaddiert.
 %CPU Auslastung des Specjms vs. Modellierung\\
 %mehrer Messungen für Interaktion => Boxplot, der einen Median zeigt. Mit diesem wird dann das Modell verglichen.
 \subsection{Interaktion 1}
-Die Messergebnisse für Interaktion 1 des SPECjms2007-Benchmarks und der Performance-Analyse des Modells, sind in \autoref{img:specjminteraction1results} abgebildet. Dabei sind für jede Nachricht die jeweiligen Messergebnisse, der Durchschnittslatenz, eingezeichnet. Außerdem wurde für jede Nachricht der Median eingezeichnet. Die Vorhersage durch die Performance-Analyse wurde auch eingetragen. In \autoref{tab:interaction1error} sind die Fehler für die jeweilige Nachricht eingetragen. Dabei ist zu sehen, dass dieser zwischen 20,76\% und 23,79\% liegt. 
+Die Messergebnisse für Interaktion 1 des SPECjms2007-Benchmarks und der Perfor\-mance-Analyse des Modells, sind in \autoref{img:specjminteraction1results} abgebildet. Dabei sind für jede Nachricht die jeweiligen Messergebnisse und der Median eingezeichnet. Die Vorhersage, durch die Performance-Analyse, wurde auch eingetragen. In \autoref{tab:interaction1error} sind die Fehler für die jeweilige Nachricht eingetragen. Dabei ist zu sehen, dass dieser zwischen 20,76\% und 23,79\% liegt. 
 
 \begin{figure}
 \center
-  \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion1.pdf}
+  \includegraphics[width=0.7\textwidth]{images/evaluation/specjmsresults/interaktion1.pdf}
   \caption{Latenz der Messung und Vorhersage für die Nachrichten aus Interaktion 1 des SPECjms2007-Benchmark.}
   \label{img:specjminteraction1results}
 \end{figure}
@@ -281,9 +282,9 @@ In \autoref{img:specjminteraction1interactiontimeresults} ist außerdem ein Boxp
 Die Vorhersage der Interaktionszeit aus der Performance-Analyse ist 8,43 ms. Der Fehler zwischen dem Median der gemessenen Interaktionszeit und der Vorhersage beträgt 6,37\%.
 %noch mit groesseren Nachrichten \\
 
-\begin{figure}
+\begin{figure}[t]
 \center
-  \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion1InteractionTime.pdf}
+  \includegraphics[width=0.7\textwidth]{images/evaluation/specjmsresults/interaktion1InteractionTime.pdf}
   \caption{Boxplot von zehn verschiedenen Messungen von Interaktion 1 des SPECjms2007-Benchmark.}
   \label{img:specjminteraction1interactiontimeresults}
 \end{figure}
@@ -306,9 +307,9 @@ Die Vorhersage der Interaktionszeit aus der Performance-Analyse ist 8,43 ms. Der
 \subsection{Interaktion 3}
 In \autoref{img:specjminteraction3results10sm} ist ein Boxplot für die Messungen der Interaktion 3 des SPECjms2007-Benchmark eingezeichnet. Der Median der Latenz, der \texttt{PriceUpdate}-Nachricht, beträgt 4,3 ms. Die Performance-Analyse liefert eine Latenz von 2,1 ms. Der Fehler liegt somit bei 51,16\% und ist somit höher als 40\%, was der in der Literatur akzeptierte Wert ist.
 
-\begin{figure}
+\begin{figure}[t]
 \center
-  \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion3-10SM.pdf}
+  \includegraphics[width=0.7\textwidth]{images/evaluation/specjmsresults/interaktion3-10SM.pdf}
   \caption{Boxplot von zehn verschiedenen Messungen von Interaktion 3 mit zehn Empfängern.}
   \label{img:specjminteraction3results10sm}
 \end{figure}
@@ -316,7 +317,7 @@ In \autoref{img:specjminteraction3results10sm} ist ein Boxplot für die Messunge
 In \autoref{img:specjminteraction3results1sm} wurde der Benchmark nochmal ausgeführt, jedoch mit einem SM, anstatt zehn SMs. Der Median der Latenz beträgt in diesem Fall 2,84 ms. Die Performance-Analyse liefert wieder eine Latenz von 2,1 ms. Der Fehler liegt nun bei 26,06\%. Dies liegt wahrscheinlich daran, dass beim Senden einer Publish/Subscribe-Nachricht eine nicht beachtete Ressourcenanforderung im Exchange stattfindet.
 \begin{figure}
 \center
-  \includegraphics[width=0.6\textwidth]{images/evaluation/specjmsresults/interaktion3-1SM.pdf}
+  \includegraphics[width=0.7\textwidth]{images/evaluation/specjmsresults/interaktion3-1SM.pdf}
   \caption{Boxplot von zehn verschiedenen Messungen von Interaktion 3 mit einem Empfänger.}
   \label{img:specjminteraction3results1sm}
 \end{figure}
@@ -325,9 +326,9 @@ In \autoref{img:specjminteraction3results1sm} wurde der Benchmark nochmal ausgef
 \section{Zusammenfassung der Evaluation}
 \label{sec:evaluationzusammenfassung}
 In diesem Kapitel wurde der Ansatz dieser Masterarbeit mithilfe des SPECjms2007-Benchmark evaluiert. In \autoref{tab:gqm} wurden dazu die Ziele der Evaluierung mithilfe des GQM-Plans formuliert. Im Folgenden wird darauf eingegangen, ob und wie diese Ziele erreicht werden konnten. \par
-In \autoref{sec:specjmsmodell} wurden die PCM-Modelle, die den Benchmark modellieren, vorgestellt. Im Anschluss wurden sie mithilfe der Modeltransformation aus \autoref{ch:transformation} transformiert. Dabei konnte gezeigt werden, dass die in \autoref{ch:modellierung} vorgestellte Art eine MOM zu modellieren anwendbar ist. Somit konnte das erste Ziel dieser Arbeit erfüllt werden. 
+In \autoref{sec:specjmsmodell} wurden die PCM-Modelle, die den Benchmark modellieren, vorgestellt. Im Anschluss wurden sie mithilfe der Modeltransformation aus \autoref{ch:transformation} transformiert. Dabei konnte gezeigt werden, dass die in \autoref{ch:modellierung} vorgestellte Art, eine MOM zu modellieren, anwendbar ist. Somit konnte das erste Ziel dieser Arbeit erfüllt werden. 
 In \autoref{sec:specjmsmodellvorhersage} wurde die Vorhersagegenauigkeit der Modellierung und ihrer Kalibrierung geprüft. Diese hat gezeigt, dass dies bei einer Punkt-Zu-Punkt-Kommunikation möglich ist, da der Fehler der einzelnen Nachrichten unter 24\% und für die Gesamte Interaktion unter 7\% liegt. Die Vorhersagegenauigkeit für Publish/Subscribe-Kommunikation konnte, mit der aktuellen Kalibrierung, nicht gezeigt werden. Der Fehler beträgt über 40\% und ist somit nicht mehr akzeptiert. Dies zeigt, dass die aktuelle Kalibrierung Publish/Subscribe-Kommunikation nicht unterstützt. Somit konnte das zweite Ziel nur zur Hälfte erreicht werden. \par
-In der Arbeit von Rathfelder \cite{Rathfelder2013} liegt der Fehler, der einzelnen Interaktionen, zwischen 20\% und 25\%. Mit dem Ansatz aus dieser Masterarbeit konnte, zumindest für Interaktion 1, eine ähnliche Vorhersagegenauigkeit erzielt werden. Dabei konnte dies erreicht werden ohne die Ressourcenanforderung jeder einzelnen Nachricht auszumessen. 
+In der Arbeit von Rathfelder \cite{Rathfelder2013} liegt der Fehler, der einzelnen Interaktionen, zwischen 20\% und 25\%. Mit dem Ansatz aus dieser Masterarbeit konnte, zumindest für Interaktion 1, eine ähnliche Vorhersagegenauigkeit erzielt werden. Dies konnte ohne Ausmessung der Ressourcenanforderung für jede Nachricht erreicht werden.
 
 %Modellierungsaufwand \\
 
